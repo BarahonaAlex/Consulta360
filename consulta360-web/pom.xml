@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>gt.gob.sat.fiscalizacion</groupId>
+    <artifactId>consulta360-web</artifactId>
+    <version>1.7.2</version>
+    <packaging>war</packaging>
+
+    <name>consulta360-web</name>
+    <description>Frontend del proyecto</description>
+    <inceptionYear>2017</inceptionYear>
+
+    <!-- .......................................................................
+    ... Proyecto principal
+    ........................................................................ -->
+    <parent>
+        <groupId>gt.gob.sat.arquitectura</groupId>
+        <artifactId>sat-war-primefaces</artifactId>
+        <version>3.2.2</version>
+    </parent>
+    
+
+    <!-- .......................................................................
+    ... Informacion de quien desarrolla este artefacto
+    ........................................................................ -->
+    <developers>
+        <developer>
+            <id>adcastic</id>
+            <name>Alvaro Daniel Castillo Carrera</name>
+            <email>adcastic@sat.gob.gt</email>
+        </developer>        
+        <developer>
+            <id>dealonzo</id>
+            <name>Douglas Enrique Alonzo Chun</name>
+            <email>dealonzo@sat.gob.gt</email>
+        </developer>  
+    </developers>
+    
+    
+    <!-- .......................................................................
+    ... Propiedades de configuracion
+    ........................................................................ -->
+    <properties>
+        <!-- Indica el nombre final para el archivo WAR generado -->
+        <proyecto.contexto>consulta360##${project.version}</proyecto.contexto>
+        
+        <!-- Nombre del paquete principal por intendencia -->
+        <proyecto.paquete.intendencia>fiscalizacion</proyecto.paquete.intendencia>
+        
+        <!-- Nombre del paquete principal por proyecto -->
+        <proyecto.paquete.principal>consulta360</proyecto.paquete.principal>
+    </properties>
+    
+    
+    <!-- .......................................................................
+    ... Declaracion de las dependencias del proyecto
+    ........................................................................ -->
+    <dependencies>
+        <dependency>
+            <groupId>gt.gob.sat.arquitectura</groupId>
+            <artifactId>fwk-java-config</artifactId>
+            <version>3.3.1</version>
+            <scope>compile</scope>
+        </dependency>
+        
+        <!-- ...................................................................
+        ... Dependencias de los otros modulos del proyecto
+        .................................................................... -->
+        <dependency>
+            <groupId>gt.gob.sat.fiscalizacion</groupId>
+            <artifactId>consulta360-comun</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>gt.gob.sat.fiscalizacion</groupId>
+            <artifactId>consulta360-core</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-remoting</artifactId>
+            <version>2.0.8</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-web</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-aop</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>gt.gob.sat.aduanas</groupId>
+            <artifactId>aduana-utilitarios-rmi</artifactId>
+            <version>1.3.0</version>
+            <scope>compile</scope>
+        </dependency>
+    
+        <!-- ...................................................................
+        ... Dependencias para SEGURIDAD
+        .................................................................... -->
+        <dependency>
+            <groupId>gt.gob.sat.arquitectura.seguridad</groupId>
+            <artifactId>security-agent</artifactId>
+            <version>2.1.0</version>
+            <scope>provided</scope>
+        </dependency> 
+        <dependency>
+            <groupId>gt.gob.sat.arquitectura.seguridad</groupId>
+            <artifactId>crypto-utils</artifactId>
+            <version>1.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- ua detector -->
+        
+        <dependency>
+            <groupId>net.sf.uadetector</groupId>
+            <artifactId>uadetector-resources</artifactId>
+            <version>2013.10</version>
+            <scope>compile</scope>           
+        </dependency>
+      
+        <dependency>
+            <groupId>net.sf.uadetector</groupId>
+            <artifactId>uadetector-core</artifactId>
+            <version>0.9.10</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>gt.gob.sat.config.properties</groupId>
+            <artifactId>properties-loader</artifactId>
+            <version>1.0.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>9.2.1.jre8</version>
+            <type>jar</type>
+        </dependency>
+        <!-- ...................................................................
+        ... Dependencias de apache poi
+        .................................................................... -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>4.1</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.6</version>
+        </dependency>
+        
+            
+    </dependencies>
+    
+</project>

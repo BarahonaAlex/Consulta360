@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    
+    <groupId>gt.gob.sat.fiscalizacion</groupId>
+    <artifactId>consulta360-comun</artifactId>
+    <version>1.7.2</version>
+    <packaging>jar</packaging>
+    
+    <name>consulta360-comun</name>
+    <description>Clases comunes a los demas componentes del proyecto</description>
+    <inceptionYear>2017</inceptionYear>
+    
+    <!-- .......................................................................
+    ... Proyecto principal
+    ........................................................................ -->
+    <parent>
+        <groupId>gt.gob.sat.arquitectura</groupId>
+        <artifactId>sat-config</artifactId>
+        <version>3.2.0</version>
+    </parent>
+    
+    
+    <!-- .......................................................................
+    ... Informacion de quien desarrolla este artefacto
+    ........................................................................ -->
+    <developers>
+        <developer>
+            <id>adcastic</id>
+            <name>Alvaro Daniel Castillo Carrera</name>
+            <email>adcastic@sat.gob.gt</email>
+        </developer>
+        <developer>
+            <id>dealonzo</id>
+            <name>Douglas Enrique Alonzo Chun</name>
+            <email>dealonzo@sat.gob.gt</email>
+        </developer>
+    </developers>
+    
+    
+    <!-- .......................................................................
+    ... Declaracion de las dependencias del proyecto
+    ........................................................................ -->
+    <dependencies>
+        <dependency>
+            <groupId>gt.gob.sat.arquitectura</groupId>
+            <artifactId>fwk-java-config</artifactId>
+            <version>3.2.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>${version.com.fasterxml.jackson.core}</version>
+            <scope>provided</scope>
+        </dependency>        
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${version.commons.lang}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.ldap</groupId>
+            <artifactId>spring-ldap-core</artifactId>
+            <version>2.1.0.RELEASE</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>5.1.8.RELEASE</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,90 @@
+<web-app    version="3.0" 
+            metadata-complete="true"
+            xmlns="http://java.sun.com/xml/ns/javaee"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <display-name>Consulta 360 WEB</display-name>
+    
+    <!-- Faces Servlet -->
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    		
+    <!-- Faces Servlet Mapping -->
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.jsf</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.faces</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.xhtml</url-pattern>
+    </servlet-mapping>
+		  		 	     
+    <!-- Welcome files -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+                  
+    <!-- Listener para seguridad -->
+    <listener>
+        <listener-class>gt.gob.sat.arquitectura.seguridad.listener.LiberarRecursos</listener-class>
+    </listener>
+    <!-- Filtro para seguridad -->
+    <filter>
+        <filter-name>seguridadLocal</filter-name>
+        <filter-class>gt.gob.sat.arquitectura.seguridad.filtro.SeguridadLocalFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>seguridadLocal</filter-name>
+        <url-pattern>/private/*</url-pattern>
+    </filter-mapping>
+    
+    <!-- Filtro para perfiles -->
+    <filter>
+        <filter-name>requestFilter</filter-name>
+        <filter-class>
+            gt.gob.sat.fiscalizacion.consulta360.util.RequestFilter
+        </filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>requestFilter</filter-name>
+        <url-pattern>/private/*</url-pattern>
+    </filter-mapping>
+    
+    <!-- tiempo maximo de sesion -->
+    <session-config>
+        <session-timeout>-1</session-timeout>
+    </session-config>
+    
+    <!-- Listado de paginas de error -->
+    <error-page>
+        <error-code>401</error-code>
+        <location>/error/error401.jsf</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/error/error403.jsf</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/error404.jsf</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error/error500.jsf</location>
+    </error-page>
+    <error-page>
+        <exception-type>javax.servlet.ServletException</exception-type>
+        <location>/error/servletException.jsf</location>
+    </error-page>
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/error/errorSesion.jsf</location>
+    </error-page>
+</web-app>

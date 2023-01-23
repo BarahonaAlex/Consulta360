@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head> 
+    </h:head>
+    <h:body>
+        <ui:composition template="../template/common/layout.xhtml">
+            <ui:define name="data">
+                <center>
+                    <br/>
+                    <br/>
+                    <p:outputLabel value="SHOWCASE" styleClass="ui-header-text"/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="ui-line"/>
+                    <p:messages globalOnly="true" closable="false" autoUpdate="true"/>
+                    <br/>
+                    <br/>
+                    <p:steps readonly="false" activeIndex="#{showcaseUI.step}">
+                        <p:menuitem value="Personal" update="@parent">
+                            <f:setPropertyActionListener target="#{showcaseUI.step}" value="0"/>
+                        </p:menuitem>
+                        <p:menuitem value="Seat Selection" update="@parent">
+                            <f:setPropertyActionListener target="#{showcaseUI.step}" value="1"/>
+                        </p:menuitem>
+                        <p:menuitem value="Payment" update="@parent">
+                            <f:setPropertyActionListener target="#{showcaseUI.step}" value="2"/>
+                        </p:menuitem>
+                        <p:menuitem value="Confirmation" update="@parent">
+                            <f:setPropertyActionListener target="#{showcaseUI.step}" value="3"/>
+                        </p:menuitem>
+                    </p:steps>
+                    <br/>
+                    <p:fieldset legend="Par&aacute;metros"
+                                                                style="max-width: 565px">
+                        <br/>
+                                                <p:panelGrid    columns="1"
+                                                                                style="width: 100%"
+                                                                                styleClass="ui-noborder ui-form-effect">
+                                                        <h:panelGroup>
+                                                            <p:outputLabel value="Parametro 1"/>
+                                                            <p:selectOneMenu    value="#{showcaseUI.codigo}">
+                                                                        <f:selectItem itemValue="0" itemLabel="Select"/>
+                                                                        <f:selectItem itemValue="1" itemLabel="Item 1"/>
+                                                                        <f:selectItem itemValue="2" itemLabel="Item 2"/>
+                                                                </p:selectOneMenu>
+                                                        </h:panelGroup>
+                                                        <h:panelGroup>
+                                                            <p:outputLabel value="Parametro 2"/>
+                                                            <p:inputText title="Ingrese algo"/>
+                                                        </h:panelGroup>
+                                                    <h:panelGroup>
+                                                        <p:outputLabel value="Parametro 3"/>
+                                                        <p:calendar navigator="true"/>
+                                                    </h:panelGroup>
+                                                </p:panelGrid>
+                    </p:fieldset>
+                    <br/>
+                    <br/>
+                    <p:panelGrid    columns="2"
+                                    styleClass="ui-noborder">
+                        <p:commandButton    value="Input Effect"
+                                            onclick="mostrarModal('dlgInputEffect')"/>
+                        <p:commandButton    value="Mostrar Modal"
+                                            styleClass="ui-btn-primary"
+                                            onclick="mostrarModal('dlgFormulario')"/>
+                    </p:panelGrid>
+                    <br/>
+                    <br/>
+                    <p:dataTable    var="item"
+                                    paginator="true"
+                                    rows="5"
+                                    paginatorPosition="bottom"
+                                    emptyMessage="No Hay Datos"
+                                    value="#{showcaseUI.table}">
+                        <p:column   headerText="Descripción"
+                                    filterBy="#{item}"
+                                    filterMatchMode="contains">
+                            <h:outputText value="#{item}"/>
+                        </p:column>
+                        <p:column   headerText="Fecha Ingreso">
+                            <h:outputText value="#{item}"/>
+                        </p:column>
+                        <p:column   headerText="Estado">
+                            <h:outputText value="#{item}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <br/>
+                    <br/>
+                    <p:accordionPanel activeIndex="null">
+                        <p:tab title="Permisos Switch">
+                            <br/>
+                            <p:panelGrid columns="2" styleClass="ui-noborder">
+                                <p:inputSwitch value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Visualizar panel de navegacion"/>
+                                <p:inputSwitch value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Habilitar seccion de reportes para todos los usuarios"/>
+                                <p:inputSwitch value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Asignar permisos de actualizacion a usuarios"/>
+                                <p:inputSwitch value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Habilitar Dashboard para todos los usuarios"/>
+                                <p:inputSwitch value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Notificar eventos por correo"/>
+                            </p:panelGrid>
+                            <br/>
+                        </p:tab>
+                        <p:tab title="Permisos CheckBox">
+                            <br/>
+                            <p:panelGrid columns="2" styleClass="ui-noborder">
+                                <p:selectBooleanCheckbox value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Visualizar panel de navegacion"/>
+                                <p:selectBooleanCheckbox value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Habilitar seccion de reportes para todos los usuarios"/>
+                                <p:selectBooleanCheckbox value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Asignar permisos de actualizacion a usuarios"/>
+                                <p:selectBooleanCheckbox value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Habilitar Dashboard para todos los usuarios"/>
+                                <p:selectBooleanCheckbox value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Notificar eventos por correo"/>
+                            </p:panelGrid>
+                            <br/>
+                        </p:tab>
+                        <p:tab title="Puestos OneRadio">
+                            <br/>
+                            <p:panelGrid columns="2" styleClass="ui-noborder">
+                                <p:selectOneRadio value="#{showcaseUI.oneRadio}" layout="grid" columns="1">
+                                    <f:selectItem   itemLabel="Jefe de seccion" itemValue="JS"/>
+                                    <f:selectItem   itemLabel="Auditor tributario" itemValue="AT"/>
+                                    <f:selectItem   itemLabel="Supervisor tributario" itemValue="ST"/>
+                                    <f:selectItem   itemLabel="Administrador CRIS" itemValue="ACRIS"/>
+                                    <f:selectItem   itemLabel="Auditor programador" itemValue="AP"/>
+                                    <f:selectItem   itemLabel="Jefe unidad liquidadora" itemValue="JUL"/>
+                                </p:selectOneRadio>
+                            </p:panelGrid>
+                            <br/>
+                        </p:tab>
+                    </p:accordionPanel>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <p:tabView>
+                        <p:tab title="Permisos Switch">
+                            <br/>
+                            <p:panelGrid columns="2" styleClass="ui-noborder">
+                                <p:inputSwitch value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Visualizar panel de navegacion"/>
+                                <p:inputSwitch value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Habilitar seccion de reportes para todos los usuarios"/>
+                                <p:inputSwitch value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Asignar permisos de actualizacion a usuarios"/>
+                                <p:inputSwitch value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Habilitar Dashboard para todos los usuarios"/>
+                                <p:inputSwitch value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Notificar eventos por correo"/>
+                            </p:panelGrid>
+                            <br/>
+                        </p:tab>
+                        <p:tab title="Permisos CheckBox">
+                            <br/>
+                            <p:panelGrid columns="2" styleClass="ui-noborder">
+                                <p:selectBooleanCheckbox value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Visualizar panel de navegacion"/>
+                                <p:selectBooleanCheckbox value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Habilitar seccion de reportes para todos los usuarios"/>
+                                <p:selectBooleanCheckbox value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Asignar permisos de actualizacion a usuarios"/>
+                                <p:selectBooleanCheckbox value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Habilitar Dashboard para todos los usuarios"/>
+                                <p:selectBooleanCheckbox value="#{showcaseUI.activo}"/>
+                                <p:outputLabel value="Notificar eventos por correo"/>
+                            </p:panelGrid>
+                            <br/>
+                        </p:tab>
+                        <p:tab title="Puestos OneRadio">
+                            <br/>
+                            <p:panelGrid columns="2" styleClass="ui-noborder">
+                                <p:selectOneRadio value="#{showcaseUI.oneRadio}" layout="grid" columns="1">
+                                    <f:selectItem   itemLabel="Jefe de seccion" itemValue="JS"/>
+                                    <f:selectItem   itemLabel="Auditor tributario" itemValue="AT"/>
+                                    <f:selectItem   itemLabel="Supervisor tributario" itemValue="ST"/>
+                                    <f:selectItem   itemLabel="Administrador CRIS" itemValue="ACRIS"/>
+                                    <f:selectItem   itemLabel="Auditor programador" itemValue="AP"/>
+                                    <f:selectItem   itemLabel="Jefe unidad liquidadora" itemValue="JUL"/>
+                                </p:selectOneRadio>
+                            </p:panelGrid>
+                            <br/>
+                        </p:tab>
+                    </p:tabView>
+                    <br/>
+                    <br/>
+                    <p:fieldset legend="Archivos">
+                        <br/>
+                        <br/>
+                        <p:fileUpload   fileUploadListener="#{showcaseUI.handleFileUpload}"
+                                        mode="advanced"
+                                        dragDropSupport="false"
+                                        sizeLimit="100000"
+                                        fileLimit="3"
+                                        allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+                        <br/>
+                        <br/>
+                    </p:fieldset>
+                    <br/>
+                    <br/>
+                </center>
+                <div id="dlgFormulario" class="ui-dlg-hidden" style="max-width: 500px">
+                    <div class="ui-dlg">
+                        <div class="ui-dlg-header"><div>Formulario</div></div>
+                        <div class="ui-dlg-content">
+                            <center>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <p:panelGrid    columns="1"
+                                                                style="width: 100%"
+                                                                styleClass="ui-noborder ui-form-effect">
+                                        <h:panelGroup>
+                                            <p:outputLabel value="Parametro 2"/>
+                                                <p:inputText/>
+                                        </h:panelGroup>
+                                    <h:panelGroup>
+                                        <p:outputLabel value="Parametro 6"/>
+                                        <p:inputTextarea/>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <br/>
+                                <p:panelGrid    columns="2"
+                                                styleClass="ui-noborder">
+                                    <p:commandButton    value="Cancelar"
+                                                        onclick="ocultarModal('dlgFormulario')"/>
+                                    <p:commandButton    value="Registrar"
+                                                        styleClass="ui-btn-primary"
+                                                        action="#{showcaseUI.generarMensajes}"
+                                                        onclick="ocultarModal('dlgFormulario')"/>
+                                </p:panelGrid>
+                                <br/>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+                <div id="dlgInputEffect" class="ui-dlg-hidden" style="max-width: 500px">
+                    <div class="ui-dlg">
+                        <div class="ui-dlg-header"><div>InputEffect</div></div>
+                        <div class="ui-dlg-content">
+                            <center>
+                                <br/>
+                                <br/>
+                                <p:panelGrid    columns="1"
+                                                                style="width: 100%"
+                                                                styleClass="ui-noborder ui-inputfield-effect">
+                                        <h:panelGroup>
+                                            <p:inputText placeholder="-"/>
+                                            <p:outputLabel value="Parametro 1"/>
+                                        </h:panelGroup>
+                                    <h:panelGroup>
+                                            <p:inputText placeholder="-"/>
+                                            <p:outputLabel value="Parametro 2"/>
+                                        </h:panelGroup>
+                                </p:panelGrid>
+                                <br/>
+                                <br/>
+                                <p:panelGrid    columns="2"
+                                                styleClass="ui-noborder">
+                                    <p:commandButton    value="Cancelar"
+                                                        onclick="ocultarModal('dlgInputEffect')"/>
+                                    <p:commandButton    value="Registrar"
+                                                        styleClass="ui-btn-primary"
+                                                        action="#{showcaseUI.generarMensajes}"
+                                                        onclick="ocultarModal('dlgInputEffect')"/>
+                                </p:panelGrid>
+                                <br/>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+                <span class="ui-btn-floating"/>
+            </ui:define>           
+        </ui:composition>
+    </h:body>
+</html>

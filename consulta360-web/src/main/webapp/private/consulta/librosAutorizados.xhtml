@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head> 
+    </h:head>
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:fieldset id="fldsPrincipal" rendered="#{not empty librosAutorizadosUI.listLibrosAutorizados or empty librosAutorizadosUI.listLibrosAutorizados}">
+                    <p:outputLabel value="Otros libros autorizados" styleClass="tituloVista"/>
+                    <p:separator/>
+                    <center><p:messages><p:effect type="bounce" event="load"/></p:messages></center>
+                    <br/><br/><br/>
+                    <p:dataTable    var="registro"
+                                    value="#{librosAutorizadosUI.listLibrosAutorizados}"
+                                    filteredValue="#{librosAutorizadosUI.listLibrosAutorizadosTemp}"
+                                    paginator="true"
+                                    rows="10"
+                                    reflow="true"
+                                    paginatorPosition="bottom"
+                                    emptyMessage="No hay registros relacionados a la consulta"
+                                    rendered="#{not empty librosAutorizadosUI.listLibrosAutorizados}">
+                        <p:column   headerText="Fecha Autorizaci&oacute;n" style="text-align: center; width: 16%">
+                            <h:outputText value="#{registro.fechaAutorizacion}"/>
+                        </p:column>
+                        <p:column   headerText="N&uacute;mero Resoluci&oacute;n Autorizaci&oacute;n"
+                                    filterBy="#{registro.noResolucionAutorizacion}"
+                                    filterMatchMode="contains"
+                                    style="width: 20%; text-align: center">
+                            <h:outputText value="#{registro.noResolucionAutorizacion}"/>
+                        </p:column>
+                        <p:column   headerText="Descripci&oacute;n"
+                                    filterBy="#{registro.descripcion}"
+                                    filterMatchMode="contains"
+                                    style="width: 30%">
+                            <h:outputText value="#{registro.descripcion}"/>
+                        </p:column>
+                        <p:column   headerText="Tipo Libro" style="text-align: center; width: 12%">
+                            <h:outputText value="#{registro.tipoLibro}"/>
+                        </p:column>
+                        <p:column   headerText="N&uacute;mero Hojas" style="text-align: center; width: 10%">
+                            <h:outputText value="#{registro.numeroHojas}"/>
+                        </p:column>
+                        <p:column   headerText="Estado"
+                                    filterBy="#{registro.estado}"
+                                    filterMatchMode="contains"
+                                    style="text-align: center; width: 12%">
+                            <h:outputText value="#{registro.estado}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

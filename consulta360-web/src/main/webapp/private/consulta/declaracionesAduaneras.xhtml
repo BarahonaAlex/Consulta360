@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head> 
+    </h:head>
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:fieldset rendered="#{declaracionesAduanerasUI.fechaInicio eq null or declaracionesAduanerasUI.fechaInicio ne null}">
+                    <center>
+                        <div align="left"><p:outputLabel value="Declaraciones aduaneras presentadas" styleClass="tituloVista"/></div>
+                        <p:separator/>
+                        <p:messages><p:effect type="bounce" event="load"/></p:messages>
+                        <br/><br/><br/>
+                        <p:panelGrid columns="3" styleClass="ui-form-effect ui-noborder filtrosDeclaracionesAduaneras" style="text-align: left; max-width: 700px">
+                            <h:panelGroup>
+                                <p:outputLabel value="Tipo de operaci&oacute;n"/>
+                                <p:selectOneMenu    value="#{declaracionesAduanerasUI.tipoOperacion}"
+                                                    title="Haga m&aacute;s espec&iacute;fica su consulta indicando el tipo de operaci&oacute;n"
+                                                    disabled="#{declaracionesAduanerasUI.filtrosInactivos}">
+                                    <f:selectItem   itemLabel="Todas" itemValue="-"/>
+                                    <f:selectItems  value="#{declaracionesAduanerasUI.listTiposOperacion}" var="tipo" itemLabel="#{tipo.descripcion}" itemValue="#{tipo.id}"/>
+                                    <p:ajax listener="#{declaracionesAduanerasUI.consultarModalidadesPorTipoOperacion}" update="formContent" process="@all"/>
+                                </p:selectOneMenu>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <p:outputLabel value="Fecha inicio"/>
+                                <p:calendar pattern="dd/MM/yyyy"
+                                            navigator="true"
+                                            readonlyInput="true"
+                                            title="Haga m&aacute;s espec&iacute;fica su consulta indicando un per&iacute;odo"
+                                            value="#{declaracionesAduanerasUI.fechaInicio}"
+                                            disabled="#{declaracionesAduanerasUI.filtrosInactivos}">
+                                    <p:ajax event="dateSelect" update="formContent"/>
+                                </p:calendar>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <p:outputLabel value="Estado de la DUA"/>
+                                <p:selectOneMenu    value="#{declaracionesAduanerasUI.estadoDua}"
+                                                    title="Haga m&aacute;s espec&iacute;fica su consulta indicando el estado de la DUA"
+                                                    disabled="#{declaracionesAduanerasUI.filtrosInactivos}">
+                                    <f:selectItem   itemLabel="Todas" itemValue="-"/>
+                                    <f:selectItems  value="#{declaracionesAduanerasUI.listEstadosDua}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.id}"/>
+                                </p:selectOneMenu>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <p:outputLabel value="Modalidad"/>
+                                <p:selectCheckboxMenu   label="Ver modalidades"
+                                                        value="#{declaracionesAduanerasUI.modalidades}"
+                                                        title="Haga m&aacute;s espec&iacute;fica su consulta indicando la modalidad"
+                                                        disabled="#{declaracionesAduanerasUI.filtrosInactivos}">
+                                    <f:selectItems  value="#{declaracionesAduanerasUI.listModalidades}" var="modalidad" itemLabel="#{modalidad.descripcion}" itemValue="#{modalidad.id}"/>
+                                </p:selectCheckboxMenu>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <p:outputLabel value="Fecha fin"/>
+                                <p:calendar pattern="dd/MM/yyyy"
+                                            navigator="true"
+                                            readonlyInput="true"
+                                            title="Haga m&aacute;s espec&iacute;fica su consulta indicando un per&iacute;odo"
+                                            value="#{declaracionesAduanerasUI.fechaFin}"
+                                            disabled="#{declaracionesAduanerasUI.filtrosInactivos}">
+                                    <p:ajax event="dateSelect" update="formContent"/>
+                                </p:calendar>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <p:outputLabel value="Aduana"/>
+                                <p:selectOneMenu    value="#{declaracionesAduanerasUI.aduana}"
+                                                    title="Haga m&aacute;s espec&iacute;fica su consulta indicando la aduana de entrada"
+                                                    disabled="#{declaracionesAduanerasUI.filtrosInactivos}">
+                                    <f:selectItem   itemLabel="Todas" itemValue="-"/>
+                                    <f:selectItems  value="#{declaracionesAduanerasUI.listAduanas}" var="aduana" itemLabel="#{aduana.descripcion}" itemValue="#{aduana.id}"/>
+                                </p:selectOneMenu>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <br/>
+                        <p:commandButton    value="#{declaracionesAduanerasUI.filtrosInactivos ? 'Nueva Consulta' : 'Consultar Declaraciones Aduaneras'}"
+                                            action="#{declaracionesAduanerasUI.consultar}"
+                                            update="formContent"
+                                            styleClass="ui-btn-primary"
+                                            disabled="#{declaracionesAduanerasUI.fechaInicio eq null or declaracionesAduanerasUI.fechaFin eq null}"
+                                            title="Click para consultar las declaraciones aduaneras asociadas"/>
+                        <br/>
+                        <br/>
+                        <font style="color: red !important; float: right; #{not empty declaracionesAduanerasUI.listDeclaraciones ? 'display: block' : 'display: none'}">Cifras expresadas en quetzales</font>
+                        <br/>
+                        <br/>
+                        <p:dataTable    var="registro"
+                                        value="#{declaracionesAduanerasUI.listDeclaraciones}"
+                                        filteredValue="#{declaracionesAduanerasUI.listDeclaracionesTemp}"
+                                        paginator="true"
+                                        rows="10"
+                                        reflow="true"
+                                        paginatorPosition="bottom"
+                                        emptyMessage="No existen declaraciones que coincidan con los filtros indicados"
+                                        rendered="#{not empty declaracionesAduanerasUI.listDeclaraciones}">
+                            <p:column   headerText="Declaraci&oacute;n"
+                                        filterBy="#{registro.declaracion}"
+                                        filterMatchMode="contains"
+                                        style="text-align: center">
+                                <h:outputText value="#{registro.declaracion}"/>
+                            </p:column>
+                            <p:column   headerText="Fecha" style="text-align: center">
+                                <h:outputText value="#{registro.fechaDeclaracion}"/>
+                            </p:column>
+                            <p:column   headerText="Declaraci&oacute;n Original" style="text-align: center">
+                                <h:outputText value="#{registro.declaracionOriginal eq registro.declaracion ? '' : registro.declaracionOriginal}"/>
+                            </p:column>
+                            <p:column   headerText="Valor FOB" style="text-align: right">
+                                <h:outputText value="#{registro.montoFob}"/>
+                            </p:column>
+                            <p:column   headerText="Valor Seguro" style="text-align: right">
+                                <h:outputText value="#{registro.montoSeguro}"/>
+                            </p:column>
+                            <p:column   headerText="Valor Flete" style="text-align: right">
+                                <h:outputText value="#{registro.montoFlete}"/>
+                            </p:column>
+                            <p:column   headerText="Valor Otros" style="text-align: right">
+                                <h:outputText value="#{registro.montoOtros}"/>
+                            </p:column>
+                            <p:column   headerText="Valor CIF" style="text-align: right">
+                                <h:outputText value="#{registro.montoCif}"/>
+                            </p:column>
+                            <p:column   headerText="Valor DAI" style="text-align: right">
+                                <h:outputText value="#{registro.montoDai}"/>
+                            </p:column>
+                            <p:column   headerText="Valor IVA" style="text-align: right">
+                                <h:outputText value="#{registro.montoIva}"/>
+                            </p:column>
+                            <p:column   headerText="Detalle" style="text-align: center">
+                                <p:commandLink update="formContent" ajax="false">
+                                    <f:setPropertyActionListener target="#{declaracionesAduanerasUI.declaracionSeleccionada}" value="#{registro}"/>
+                                    <p:graphicImage library="images" name="page_down.png" title="Descargar DUA en formato PDF"/> 
+                                    <p:fileDownload value="#{declaracionesAduanerasUI.duaPdf}"/>
+                                </p:commandLink>
+                            </p:column>
+                            <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column colspan="3"/>
+                                    <p:column footerText="#{declaracionesAduanerasUI.totalFob}" style="text-align: right; font-weight: bold"/>
+                                    <p:column footerText="#{declaracionesAduanerasUI.totalSeguro}" style="text-align: right; font-weight: bold"/>
+                                    <p:column colspan="2"/>
+                                    <p:column footerText="#{declaracionesAduanerasUI.totalCif}" style="text-align: right; font-weight: bold"/>
+                                    <p:column footerText="#{declaracionesAduanerasUI.totalDai}" style="text-align: right; font-weight: bold"/>
+                                    <p:column footerText="#{declaracionesAduanerasUI.totalIva}" style="text-align: right; font-weight: bold"/>
+                                    <p:column/>
+                                </p:row>
+                            </p:columnGroup>
+                        </p:dataTable>
+                    </center>
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

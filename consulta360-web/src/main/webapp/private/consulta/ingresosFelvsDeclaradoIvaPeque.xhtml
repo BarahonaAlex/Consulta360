@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:outputLabel value="INGRESOS FEL vs DECLARADO IVA PEQUEÑO CONTRIBUYENTE" styleClass="tituloVista"/> 
+
+
+                <p:fieldset id="fldsPrincipal" rendered="#{SAT_SEGURIDAD_MB.pagina.ingresosFelvsDeclaradoIvaPeque.controles.cmdlnkIngresosFelvsDeclaradoIvaPeque.rendered}">
+
+
+                    <script src="../../public/decPre.js" type="text/javascript"></script>
+                    <!--                <style type="text/css">
+                                        .ui-panelgrid.showcase-text-align-center .ui-grid-responsive .ui-panelgrid-cell {
+                                            text-align: center;
+                                        }
+                    
+                                        .customPanelGrid .ui-panelgrid-content {
+                                            align-items: center;
+                                        }
+                                        td{
+                                            border: 0px;
+                                        }
+                                        .ui-panel{
+                                            border: 0px !important;
+                                        }
+                                        .tbl-grl table{
+                                            border: 1px solid #90a6d8;
+                                            border-collapse: collapse !important;
+                                            border-spacing: 0px !important;
+                                            font-family: Verdana,Arial,sans-serif !important;
+                                        }
+                                        .tbl-grl td{
+                                            border: 0.5px solid #90a6d8 !important;
+                                        }
+                                        .tbl-grl th{
+                                            border: 1px solid black !important;
+                                            background-color: #0093a9;
+                                            color: white;
+                                            text-align: center !important;
+                                        }
+                                        .tbl-grl tr:nth-child(1) {
+                                            color: white !important;
+                                            background-color: #4c6dc0;
+                                            text-align: center;
+                                            font-weight: bold !important;
+                                            font-size: 30px !important;
+                                        }
+                                        .sizes {
+                                            max-width: 700px !important;
+                                            min-width: 200px !important;
+                                            white-space: nowrap !important;
+                                            overflow: hidden !important;
+                                        }
+                                        
+                                        
+                                    </style>-->
+
+                    <script>
+
+                        function mostrar() {
+                            document.getElementById('formContent:fldsEditar').setAttribute("style", "display:block");
+                        }
+                        function detalleInd() {
+                            document.getElementById('formContent:mostrarInfo').setAttribute("style", "display:block");
+                        }
+
+                        function showTableInd() {
+                            document.getElementById('formContent:flsTableDeclaraciones').setAttribute("style", "display:block");
+
+                        }
+
+                    </script>
+
+
+                    <div align="right" style="display:#{not empty ingresosFelvsDeclaradoIvaPequeUI.listDatosPeqCont ? 'block !important' : 'none !important'}">
+                        <h:commandLink action="#{ingresosFelvsDeclaradoIvaPequeUI.exportare()}">  
+                            <p:graphicImage value="../../resources/images/exportar_excel.png" width="80px"/>  
+                        </h:commandLink> 
+                    </div>
+                    <p:dataGrid columns="4" id="encabezado" var="items" value="#{ingresosFelvsDeclaradoIvaPequeUI.listaDatosEncabezado}">
+                        <table style="border:none; width:80%">
+                            <tr>
+                                <td>
+                                    <!--tabla 1 -->
+                                    <table style="border-collapse: collapse; width:100%">
+                                        <tr>
+                                            <td class="celdaBorde"><p:outputLabel value="Periodo desde" styleClass="80%"/></td>
+                                            <td class="celdaAncho"><p:inputText value="#{ingresosFelvsDeclaradoIvaPequeUI.fecha_ini}-01" readonly="true" /></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="celdaBorde"><p:outputLabel value="Periodo hasta" /></td>
+                                            <td class="celdaAncho"><p:inputText value="#{ingresosFelvsDeclaradoIvaPequeUI.fecha_fin}-12" readonly="true" /></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="celdaBorde"><p:outputLabel value="NIT contribuyente" /></td>
+                                            <td class="celdaAncho"><p:inputText value="#{items.nit}" readonly="true" /></td>
+                                        </tr>
+
+
+                                        <tr>
+                                            <td class="celdaBorde"><p:outputLabel value="Nombre contribuyente" /></td>
+                                            <td class="celdaAncho"><p:inputText value="#{items.nombreOrdenado}" readonly="true" /></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="celdaBorde"><p:outputLabel value="Dirección" /></td>
+                                            <td class="celdaAncho"><p:inputText value="#{items.direccion}" readonly="true" /></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="celdaBorde"><p:outputLabel value="Clasificación" /></td>
+                                            <td class="celdaAncho"><p:inputText value="#{items.clasificacion}" readonly="true" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class=""><p:outputLabel value="" /></td>
+                                            <td class="celdaAncho"><p:inputText value="" readonly="true" /></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <!--tabla 2 -->
+                                    <table style="border-collapse: collapse; width:130%" >
+                                        <tr>
+                                            <td class="celdaBorde"><p:outputLabel value="Gerencia" /></td>
+                                            <td><p:inputText value="#{items.gerencia}" readonly="true" /></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="celdaBorde"><p:outputLabel value="Región" /></td>
+                                            <td><p:inputText value="#{items.region}" readonly="true" /></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="celdaBorde"><p:outputLabel value="Nombre actividad" style="width:300px !important;" /></td>
+                                            <td><p:inputText value="#{items.actividadEconomica}" readonly="true" /></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="celdaBorde" ><p:outputLabel value="Dirección invalida" /></td>
+                                            <td><p:inputText value="#{items.direccionInvalida}" readonly="true" /></td>
+                                        </tr>
+
+
+                                        <tr>
+                                            <td class="celdaBorde" ><p:outputLabel value="Nombre regimen" /></td>
+                                            <td><p:inputText value="#{items.nombreRegimen}" readonly="true" /></td>
+                                        </tr>
+
+
+                                        <tr>
+                                            <td class="celdaBorde"><p:outputLabel value="Status" /></td>
+                                            <td><p:inputText value="#{items.status}" readonly="true" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="celdaBorde" ><p:outputLabel value="Fecha cambio regimen" /></td>
+                                            <td><p:inputText value="#{items.fechaCambioRegimen}" readonly="true" /></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:dataGrid> 
+                    <br/><br/>
+
+
+                    <p:panel>
+
+                        <div align="center" style="overflow: auto; width: 100%; height: 100%">
+
+                            <p:dataTable id="tblDatos" style=" width: 200% "
+                                         paginator="true"
+                                         rendered="#{ingresosFelvsDeclaradoIvaPequeUI.listDatosPeqCont.size()>0}"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink}
+                                         {PreviousPageLink} {PageLinks} {NextPageLink}
+                                         {LastPageLink}"
+                                         currentPageReportTemplate="Pág. ({currentPage} de {totalPages})"
+                                         rows="15" 
+                                         paginatorPosition="bottom"
+                                         ariaRowLabel="true"        
+                                         var="datos"                                           
+                                         value="#{ingresosFelvsDeclaradoIvaPequeUI.listDatosPeqCont}">
+
+                                <p:column  headerText="Año Fiscal" style="text-align: center">
+                                    <h:outputText  value="#{datos.anio}"></h:outputText>
+                                </p:column>
+                                <p:column headerText="Mes Fiscal" style="text-align: center">
+                                    <h:outputText  value="#{datos.mes}"></h:outputText>
+                                </p:column>
+                                <p:column  headerText="Cantidad Receptores" style="text-align: center">
+                                    <h:outputText  value="#{datos.cantidad_receptores}"></h:outputText>
+                                </p:column>
+                                <p:column  headerText="Cantidad Facturas" style="text-align: center">
+                                    <h:outputText  value="#{datos.cantidad_facturas}"></h:outputText>
+                                </p:column>
+                                <p:column  headerText="Base Imponible" style="text-align: center">
+                                    <h:outputText  value="#{datos.base_imponible}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column  headerText="Monto FEL" style="text-align: center">
+                                    <h:outputText  value="#{datos.monto_fel}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column  headerText="Ingresos Afectos 2046" style="text-align: center">
+                                    <h:outputText  value="#{datos.ingresos_afectos_2046}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column  headerText="Omiso" style="text-align: center">
+                                    <h:outputText  value="#{datos.omiso}"></h:outputText>
+                                </p:column>
+                                <p:column  headerText="Diferencia" style="text-align: center">
+                                    <h:outputText  value="#{datos.diferencia}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column  headerText="IVA No Declarado" style="text-align: center">
+                                    <h:outputText  value="#{datos.iva_no_declarado}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+                                 </p:dataTable>
+                        </div>
+                    </p:panel>
+                </p:fieldset>
+                <p:messages id="msgs" globalOnly="true" autoUpdate="true" closable="true" style="text-align: center">
+                    <p:effect type="pulsate" event="load" delay="20" speed="2000"/>
+                </p:messages>
+
+            </ui:define> 
+        </ui:composition>
+    </h:body>
+</html>
+

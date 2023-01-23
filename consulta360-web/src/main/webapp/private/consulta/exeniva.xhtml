@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:outputLabel value="IVA por Constancias de Exención Vs. ExenIVA" styleClass="tituloVista"/> 
+
+
+                <p:fieldset id="fldsPrincipal" rendered="#{SAT_SEGURIDAD_MB.pagina.exeniva.controles.cmdlnkExeniva.rendered}">
+
+
+                    <script src="../../public/decPre.js" type="text/javascript"></script>
+                    <!--                <style type="text/css">
+                                        .ui-panelgrid.showcase-text-align-center .ui-grid-responsive .ui-panelgrid-cell {
+                                            text-align: center;
+                                        }
+                    
+                                        .customPanelGrid .ui-panelgrid-content {
+                                            align-items: center;
+                                        }
+                                        td{
+                                            border: 0px;
+                                        }
+                                        .ui-panel{
+                                            border: 0px !important;
+                                        }
+                                        .tbl-grl table{
+                                            border: 1px solid #90a6d8;
+                                            border-collapse: collapse !important;
+                                            border-spacing: 0px !important;
+                                            font-family: Verdana,Arial,sans-serif !important;
+                                        }
+                                        .tbl-grl td{
+                                            border: 0.5px solid #90a6d8 !important;
+                                        }
+                                        .tbl-grl th{
+                                            border: 1px solid black !important;
+                                            background-color: #0093a9;
+                                            color: white;
+                                            text-align: center !important;
+                                        }
+                                        .tbl-grl tr:nth-child(1) {
+                                            color: white !important;
+                                            background-color: #4c6dc0;
+                                            text-align: center;
+                                            font-weight: bold !important;
+                                            font-size: 30px !important;
+                                        }
+                                        .sizes {
+                                            max-width: 700px !important;
+                                            min-width: 200px !important;
+                                            white-space: nowrap !important;
+                                            overflow: hidden !important;
+                                        }
+                                        
+                                        
+                                    </style>-->
+
+                    <script>
+
+                        function mostrar() {
+                            document.getElementById('formContent:fldsEditar').setAttribute("style", "display:block");
+                        }
+                        function detalleInd() {
+                            document.getElementById('formContent:mostrarInfo').setAttribute("style", "display:block");
+                        }
+
+                        function showTableInd() {
+                            document.getElementById('formContent:flsTableDeclaraciones').setAttribute("style", "display:block");
+
+                        }
+
+                    </script>
+
+
+                    <div align="right" style="display:#{not empty exenivaUI.listDatosExniva ? 'block !important' : 'none !important'}">
+                        <h:commandLink action="#{exenivaUI.exportare()}">  
+                            <p:graphicImage value="../../resources/images/exportar_excel.png" width="80px"/>  
+                        </h:commandLink     > 
+                    </div>
+                    <p:dataGrid columns="4" id="encabezado" var="items" value="#{exenivaUI.listaDatosEncabezado}">
+                        <p:dataGrid  id="encabezadoUno" var="itemsUno" value="#{exenivaUI.listaIvaGeneral}">
+                            <table style="border:none; width:100%">
+                                <tr>
+                                    <td>
+                                        <!--tabla 1 -->
+                                        <table style="border-collapse: collapse; width:100%">
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="NIT del contribuyente" /></td>
+                                                <td class="celdaAncho"><p:inputText  value="#{items.nit}" readonly="true" /></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Nombre del Contribuyente" /></td>
+                                                <td class="celdaAncho"><p:inputText value="#{items.nombreOrdenado}" readonly="true" /></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Gerencia" /></td>
+                                                <td class="celdaAncho"><p:inputText value="#{items.gerencia}" readonly="true" /></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Región" /></td>
+                                                <td class="celdaAncho"><p:inputText value="#{items.region}" readonly="true" /></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Actividad económica" /></td>
+                                                <td class="celdaAncho"><p:inputText value="#{items.actividadEconomica}" readonly="true" /></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Personeria" /></td>
+                                                <td class="celdaAncho"><p:inputText value="#{items.personeria}" readonly="true" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Nombre tipo" /></td>
+                                                <td class="celdaAncho"><p:inputText value="#{items.tipoPersona}" readonly="true" /></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class=""><p:outputLabel value="" /></td>
+                                                <td class="celdaAncho"><p:inputText value="" readonly="true" /></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <!--tabla 2 -->
+                                        <table style="border-collapse: collapse; width:100%" >
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Marcas de no localizado" /></td>
+                                                <td><p:inputText value="#{items.marcaNoLocalizado}" readonly="true" /></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Marca Omiso" /></td>
+                                                <td><p:inputText value="" readonly="true" /></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Color Plan Operativo" /></td>
+                                                <td><p:inputText value="#{items.nombreColor}" readonly="true" /></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="celdaBorde" ><p:outputLabel value="Dirección" /></td>
+                                                <td><p:inputText value="#{items.direccion}" readonly="true" /></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="celdaBorde" ><p:outputLabel value="Status" /></td>
+                                                <td><p:inputText value="#{items.status}" readonly="true" /></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Afiliacion a IVA" /></td>
+                                                <td><p:inputText value="#{itemsUno.nombreRegimen}" readonly="true" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="celdaBorde" ><p:outputLabel value="Fecha afilicacion a IVA" /></td>
+                                                <td><p:inputText value="#{itemsUno.fechaAdicionAfiliacionIVA}" readonly="true" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="celdaBorde" ><p:outputLabel value="Marca establecimiento" /></td>
+                                                <td><p:inputText value="#{items.marcaEstablecimiento}" readonly="true" /></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </p:dataGrid> 
+                    </p:dataGrid> 
+                    <br/><br/>
+                    <p:panel>
+
+                        <div align="center" style="overflow: auto; width: 100%; height: 100%">
+
+                            <p:dataTable id="tblDatos" style=" width: 200% "
+                                         paginator="true"
+                                         rendered="#{exenivaUI.listDatosExniva.size()>0}"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink}
+                                         {PreviousPageLink} {PageLinks} {NextPageLink}
+                                         {LastPageLink}"
+                                         currentPageReportTemplate="Pág. ({currentPage} de {totalPages})"
+                                         rows="15" 
+                                         paginatorPosition="bottom"
+                                         ariaRowLabel="true"        
+                                         var="datos"                                           
+                                         value="#{exenivaUI.listDatosExniva}">
+
+                                <p:column  headerText="Periodo Desde" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.periodoDesde}"></h:outputText>
+                                </p:column>
+                                <p:column headerText="Periodo hasta" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.periodoHasta}"></h:outputText>
+                                </p:column>
+                                <p:column  headerText="Fecha de Recaudo" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.fechaRecaudo}"></h:outputText>
+                                </p:column>
+                                <p:column  headerText="Mes" style="width:30px !important; text-align: center  " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.fechaRecaudo}"></h:outputText>
+                                </p:column>
+                                <p:column  headerText="Codigo formulario" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.codigoFormulario}">
+                                    </h:outputText>
+                                </p:column>
+                                <p:column  headerText="Número de formulario" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.numeroFormulario}">
+                                    </h:outputText>
+                                </p:column>
+                                <p:column  headerText="Estatus del formulario" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.statusFormulario}">
+                                    </h:outputText>
+                                </p:column>
+                                <p:column  headerText="Ventas exentas" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.ventasExentas}"></h:outputText>
+                                </p:column>
+                                <p:column  headerText="Suma Base debitos base" style="width:30px !important; text-align: center" styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.sumaBaseDebitosBase}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column  headerText="Suma Base debitos debitos" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.sumaBaseDebitosDebitos}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column  headerText="IVA conforme Constancias de Exencion Recibidas" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.ivaConformeConstaciasDeExencionRecibidas}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Renamente de Credito Fiscal del periodo anterior" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.renamenteDeCreditoFiscalDelPeriodoAnterior}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column  headerText="Credito Fiscal para el Siguiente Periodo credito mayor que debitos operaciones locales" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.creFiSiguientePeriodoCreMayorDebiOpeLocales}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Renamente de Retenciones de IVA del periodo anterior" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.renamenteDeRetencionesDeIvaDelPeriodoAnterior}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Renamente de Retenciones de IVA recibidas del periodo" style="width:30px !important;text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.renamenteDeRetencionesDeIVaRecibidasDelPeriodo}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+
+
+                                <p:column  headerText="Constancias de Retenciones del IVA Recibidas en el periodo a declarar" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.constaciasDeRetencionesDelIvaRecibidasEnElPeriodoDeclarar}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Cantidad de constancias de Exencion emitidas " style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.cantidadDeConstanciasDeExencionEmitidas}">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Cantidad de constancias de Exencion recibidas " style="width:30px !important; text-align: center" styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.cantidadDeConstanciasDeExencionRecibidas}">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Año herramienta exeniva " style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.anioHerramientaExeniva}">
+                                    </h:outputText>
+
+                                </p:column>-
+
+                                <p:column  headerText="Mes herramienta exeniva" style="width:30px !important; text-align: center " styleClass="colorBackground" >
+                                    <h:outputText  value="#{datos.mesHerramientaExeniva}">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Monto Neto Factura herramienta exeniva" style="width:30px !important; text-align: center " styleClass="colorBackground" >
+                                    <h:outputText  value="#{datos.montoNetoFacturaHerramientaExeniva}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Monto IVA EXENTO herramienta exeniva" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.montoIvaExentoHerramientaExeniva}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column  headerText="Año Factura herramienta reteniva" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.anioFacturaHerramientaReteniva}">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Mes Factura herramienta reteniva" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.mesFacturaHerramientaReteIva}">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Importe neto del bien o servicio " style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.importeNetoDelBienOServicio}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="IMPUESTO RETENIDO " style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.impuestoRetenido}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="DIF EXENIVA " style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.difExeniva}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="DIF DEB EX " style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.dibDebEx}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>
+
+
+                                <p:column  headerText="RECAUDO POTENCIAL CRUCE" style="width:30px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.recaudoPotencial}">
+                                        <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                                    </h:outputText>
+                                </p:column>                    
+                            </p:dataTable>
+                        </div>
+                    </p:panel>
+                </p:fieldset>
+
+                <p:messages id="msgs" globalOnly="true" autoUpdate="true" closable="true" style="text-align: center">
+                    <p:effect type="pulsate" event="load" delay="20" speed="2000"/>
+                </p:messages>
+
+            </ui:define> 
+        </ui:composition>
+    </h:body>
+</html>
+

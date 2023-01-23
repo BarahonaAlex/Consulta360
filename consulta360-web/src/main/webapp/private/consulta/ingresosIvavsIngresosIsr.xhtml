@@ -1,0 +1,941 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:outputLabel value="Ingresos IVA vs Ingresos ISR Mensual" styleClass="tituloVista"/> 
+
+
+                <p:fieldset id="fldsPrincipal" >
+
+
+                    <!--                    <style>
+                                           tbody{
+                                            text-align: left !important;
+                                        }
+                                        
+                                          .celdaBorde td  {
+                                            border-bottom: 1px solid black !important;
+                                            border-left: 1px solid black !important;
+                                            border-right: 1px solid black !important;
+                                            border-top: 1px solid black !important;
+                                            width: 150px !important;
+                                        } 
+                    
+                                         .celdaAncho td{
+                                            /*width: 100% !important;*/
+                                            border-bottom: 0px solid black !important;
+                                            border-left: 0px solid black !important;
+                                            border-right: 0px solid black !important;
+                                            border-top: 0px solid black !important; 
+                    
+                                        }
+                    
+                                         .celdaNoBorde td{
+                                            border-bottom: 0px solid black !important;
+                                            border-left: 0px solid black !important;
+                                            border-right: 0px solid black !important;
+                                            border-top: 0px solid black !important; 
+                                        }
+                    
+                                        .ui-inputfield{
+                                            border-bottom: none !important;
+                                        }
+                    
+                                      
+                    
+                                        .ui-column-title{
+                                            color: black !important;
+                                            font-weight: normal !important;
+                                            font-size: 12px !important;
+                                        }
+                                        
+                                          .tblStyle th{
+                                            background-color: #51d9f5 !important;
+                                            
+                                            
+                                        }
+                                        
+                                         .ui-datatable table{
+                                                overflow-x: auto !important;
+                                            }
+                                            
+                                          th.colorBackground {
+                                            background-color: #699e62 !important;
+                                             }
+                                             
+                                        </style>-->
+                    <div align="right" style="display:#{not empty ingresosIvavsIngresosIsrUI.listaIngresosIsr ? 'block !important' : 'none !important'}">
+                        <h:commandLink action="#{ingresosIvavsIngresosIsrUI.exportare()}">  
+                            <p:graphicImage value="../../resources/images/exportar_excel.png" width="80px"/>  
+                        </h:commandLink> 
+                    </div>
+                    <p:dataGrid columns="4" id="encabezado" var="items" value="#{ingresosIvavsIngresosIsrUI.listaDatosEncabezadoGenerico}">
+                      
+                            <table style="border:none; width:100% !important;">
+                                <tr>
+                                    <td>
+                                        <!--tabla 1 -->
+                                        <table style="border-collapse: collapse; width:80%; padding: 100px;">
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="NIT del contribuyente" /></td>
+                                                <td class="celdaAncho"><p:inputText value="#{items.nit}" readonly="true" /></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Nombre del contribuyente" /></td>
+                                                <td class="celdaAncho"><p:inputText value="#{items.nombreOrdenado}" readonly="true" /></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Gerencia" /></td>
+                                                <td class="celdaAncho"><p:inputText value="#{items.gerencia}" readonly="true" /></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Clasificación" /></td>
+                                                <td class="celdaAncho"><p:inputText value="#{items.clasificacion}" readonly="true" /></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Región" /></td>
+                                                <td class="celdaAncho"><p:inputText value="#{items.region}" readonly="true" /></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Actividad Económica" /></td>
+                                                <td class="celdaAncho"><p:inputText value="#{items.actividadEconomica}" readonly="true" /></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Personeria" /></td>
+                                                <td class="celdaAncho"><p:inputText value="#{items.personeria}" readonly="true" /></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Nombre tipo" /></td>
+                                                <td class="celdaAncho"><p:inputText value="#{items.tipoPersona}" readonly="true" /></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Marca no localizado" /></td>
+                                                <td class="celdaAncho"><p:inputText value="#{items.marcaNoLocalizado}" readonly="true" /></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class=""><p:outputLabel value="" /></td>
+                                                <td class="celdaAncho"><p:inputText value="" readonly="true" /></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <!--tabla 2 -->
+                                        <table style="border-collapse: collapse; width:100%" >
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Omiso IVA" /></td>
+                                                <td><p:inputText value="" readonly="true" /></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Omiso ISR" /></td>
+                                                <td><p:inputText value="" readonly="true" /></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Color plan operativo " /></td>
+                                                <td><p:inputText value="#{items.nombreColor}" readonly="true" /></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="celdaBorde" ><p:outputLabel value="Dirección invalida" /></td>
+                                                <td><p:inputText value="" readonly="true" /></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="celdaBorde" ><p:outputLabel value="Dirección" /></td>
+                                                <td><p:inputText value="#{items.direccion}" readonly="true" /></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="celdaBorde"><p:outputLabel value="Status contribuyente" /></td>
+                                                <td><p:inputText value="#{items.status}" readonly="true" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="celdaBorde" ><p:outputLabel value="Nombre regimen ISR" /></td>
+                                                <td><p:inputText value="#{items.nombreRegimenISR}" readonly="true" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="celdaBorde" ><p:outputLabel value="Fecha afiliación ISR" /></td>
+                                                <td><p:inputText value="#{items.fechaAdicionAfiliacionISR}" readonly="true" /></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="celdaBorde" ><p:outputLabel value="Nombre regiemen IVA" /></td>
+                                                <td><p:inputText value="#{items.nombreRegimenIVA}" readonly="true" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="celdaBorde" ><p:outputLabel value="Fecha afiliación IVA" /></td>
+                                                <td><p:inputText value="#{items.fechaAdicionAfiliacionIVA}" readonly="true" /></td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </p:dataGrid>
+                    <br/><br/>
+                    <p:dataTable
+                        id="tblDatos"
+                        rendered="#{ingresosIvavsIngresosIsrUI.listaIngresosIsr.size()>0}"
+                        value="#{ingresosIvavsIngresosIsrUI.listaIngresosIsr}"
+                        var="datos"
+                        scrollable="true"
+                        scrollWidth="1900"
+                        paginatorPosition="bottom"
+                        emptyMessage="NO EXISTEN DATOS PARA MOSTRAR">
+
+                        <p:column  headerText="Periodo Desde" style="width:150px !important; text-align: center " styleClass="colorBackground">
+                            <h:outputText  value="#{datos.periodoDesde}" style="width:150px !important;"></h:outputText>
+                        </p:column>
+
+
+                        <p:column headerText="Periodo Hasta" style="width:150px !important; text-align: center " styleClass="colorBackground">
+                            <h:outputText  value="#{datos.periodoHasta}" style="width:150px !important;"></h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Fecha Recaudo IVA" style="width:150px !important; text-align: center" styleClass="colorBackground">
+                            <h:outputText  value="#{datos.fechaRecaudoIva}" style="width:150px !important;"></h:outputText>
+
+                        </p:column>
+
+                        <p:column  headerText="Codigo Formulario IVA" style="width:150px !important; text-align: center" styleClass="colorBackground">
+                            <h:outputText  value="#{datos.codigoFormularioIva}" style="width:150px !important;" ></h:outputText>
+
+                        </p:column>
+                        <p:column  headerText="Número Formulario IVA" style="width:150px !important; text-align: center " styleClass="colorBackground">
+                            <h:outputText  value="#{datos.numeroFormularioIva}" style="width:150px !important;">
+
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Status Del Formulario IVA" style="width:150px !important; text-align: center " styleClass="colorBackground">
+                            <h:outputText  value="#{datos.statusDelFormularioIva}" style="width:150px !important;">
+
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Ventas Exentas" style="width:150px !important; text-align: center" styleClass="colorBackground">
+                            <h:outputText  value="#{datos.ventasExentas}" style="width:150px !important;">
+
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Ventas Medicamentos Genericos Alternativos Y Antirretrovirales" style="width:150px !important; text-align: center" styleClass="colorBackground">
+                            <h:outputText  value="#{datos.ventasMedicamentosGenericosAlternantivosYAntirretrovirales}" style="width:150px !important;"></h:outputText>
+
+                        </p:column>
+
+                        <p:column  headerText="Ventas No Afectadas Realizadas A Contribuyente Calificados Con El Decreto 29 89 Y Sus Reformas" style="width:150px !important; text-align: center " styleClass="colorBackground">
+                            <h:outputText  value="#{datos.ventasNoAfectadasRealizadasAContribuyentesCalificadosConElDecreto29_28_y_SusReformas}" style="width:150px !important;"> </h:outputText>
+                        </p:column>
+                        <p:column  headerText="Ventas Gravadas" style="width:150px !important; text-align: center" styleClass="colorBackground">
+                            <h:outputText  value="#{datos.ventasGravadas}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Servicios Gravados" style="width:150px !important; text-align: center " styleClass="colorBackground">
+                            <h:outputText  value="#{datos.serviciosGravados}" style="width:150px !important;"></h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Exportaciones A Centro América" style="width:150px !important; text-align: center " styleClass="colorBackground">
+                            <h:outputText  value="#{datos.exportacionesACentroAmerica}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column headerText="Exportaciones Al Resto Del Mundo" style="width:150px !important; text-align: center " styleClass="colorBackground">
+                            <h:outputText  value="#{datos.exportacionesAlRestoDelMundo}" style="width:150px !important;"></h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Transferencias Con Fyduca" style="width:150px !important; text-align: center " styleClass="colorBackground">
+                            <h:outputText  value="#{datos.transferenciasConFyduca}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo De Dos Años o Mas Anteriores Al Del Año En Curso Casilla 10" style="width:150px !important; text-align: center " styleClass="colorBackground">
+                            <h:outputText  value="#{datos.ventasdeVehículosTerrestresEnCursoCasilla10}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo Del Año En Curso Del Año Siguiente o Anterior Al Del Año En Curso" style="width:150px !important; text-align: center " styleClass="colorBackground">
+                            <h:outputText  value="#{datos.ventasDeVehículosTerrestresDelAñoEnCursoDelAñoSiguienteAlDelAñoEnCurso}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo De Dos Años o Más Anteriores Al Del Año Curso" style="width:150px !important; text-align: center " styleClass="colorBackground">
+                            <h:outputText  value="#{datos.ventasDeVehiculosTerrestreSiguienteoAnteriorAlDelAñoEnCurso}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo Del Año En Curso Del Año Siguiente o Anterior Al Del Año En Curso Casilla 23 " style="width:150px !important; text-align: center" styleClass="colorBackground">
+                            <h:outputText  value="#{datos.ventasDeVehículosTerrestresAñoSiguienteAñoAnteriorAñoCursoCas23}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Suma Base Debitos" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.sumaBaseDebitos}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText=" Suma Base Debitos Expo" style=" width:150px !important; text-align: center" styleClass=" colorBackground">
+                            <h:outputText  value="#{datos.sumaBaseDebitosExpo}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Fecha Recaudo ISR" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.fechaRecaudoIsr}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Código Formulario ISR" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.codigoFormularioIsr}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Número Formulario ISR" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.numeroFormularioIsr}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Status Del Formulario ISR" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.statusDelFormularioIsr}" style="width:150px !important;">
+
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Renta de Actividades Lucrativas" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.rentaDeActividadesLucrativas}" style="width:150px !important;">
+
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Monto Total De Rentas Exentas" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.montoTotalDeRentasExentas}" style="width:150px !important;">
+
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="RentaImponible" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.rentaImponible}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Total IVA" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.totalIva}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Total ISR" style=" width:150px !important;" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.totalIsr}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Diferencia ISR IVA" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.diferenciaIsrIva}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Recaudo Potencial ISR" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.recaudoPotencialIsr}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Diferencia IVA ISR" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.diferenciaIvaIsr}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Recaudo Potencial IVA" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.recaudoPotencialIva}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Total Ventas Exentas IVA" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.totalVentasExentasIva}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Potencial Recaudo IVA e ISR" style=" width:150px !important;" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.potencialRecaudoIvaEIsr}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Segmentación" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.segmentacion}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column>
+                        <p:column  headerText="Periodo Desde" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.periodoDesde}" style="width:150px !important;"></h:outputText>
+                        </p:column>
+
+
+                        <p:column headerText="Periodo Hasta" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.periodoHasta}" style="width:150px !important;"></h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Fecha Recaudo IVA" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.fechaRecaudoIva}" style="width:150px !important;"></h:outputText>
+
+                        </p:column>
+
+                        <p:column  headerText="Codigo Formulario IVA" style=" width:150px !important;" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.codigoFormularioIva}" style="width:150px !important;"></h:outputText>
+
+                        </p:column>
+                        <p:column  headerText="Número Formulario IVA" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.numeroFormularioIva}" style="width:150px !important;" >
+
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Status Del Formulario IVA" style=" width:150px !important;" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.statusDelFormularioIva}" style="width:150px !important;">
+
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Ventas Exentas" style=" width:150px !important; text-align: center" styleClass=" colorBackground " >
+                            <h:outputText  value="#{datos.ventasExentas}" style="width:150px !important;">
+
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Ventas Medicamentos Genericos Alternativos Y Antirretroviralesstyle=" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasMedicamentosGenericosAlternantivosYAntirretrovirales}"  style="width:150px !important;" ></h:outputText>
+
+                        </p:column>
+
+                        <p:column  headerText="Ventas No Afectadas Realizadas A Contribuyente Calificados Con El Decreto 29 89 Y Sus Reformas" style=" width:150px !important; text-align: center" styleClass=" colorBackground " >
+                            <h:outputText  value="#{datos.ventasNoAfectadasRealizadasAContribuyentesCalificadosConElDecreto29_28_y_SusReformas}" style="width:150px !important;"> </h:outputText>
+                        </p:column>
+                        <p:column  headerText="Ventas Gravadas" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasGravadas}" style="width:150px !important;">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Servicios Gravados" style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.serviciosGravados}"></h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Exportaciones A Centro América " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.exportacionesACentroAmerica}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column headerText="Exportaciones Al Resto Del Mundo " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.exportacionesAlRestoDelMundo}"></h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Transferencias Con Fyduca " style=" width:150px !important; text-align: center" styleClass=" colorBackground " >
+                            <h:outputText  value="#{datos.transferenciasConFyduca}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo De Dos Años o Mas Anteriores Al Del Año En Curso Casilla 10 " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasdeVehículosTerrestresEnCursoCasilla10}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo Del Año En Curso Del Año Siguiente o Anterior Al Del Año En Curso " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasDeVehículosTerrestresDelAñoEnCursoDelAñoSiguienteAlDelAñoEnCurso}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo De Dos Años o Más Anteriores Al Del Año Curso " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasDeVehiculosTerrestreSiguienteoAnteriorAlDelAñoEnCurso}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo Del Año En Curso Del Año Siguiente o Anterior Al Del Año En Curso Casilla 23 " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasDeVehículosTerrestresAñoSiguienteAñoAnteriorAñoCursoCas23}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Suma Base Debitos " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.sumaBaseDebitos}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Suma Base Debitos Expo " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.sumaBaseDebitosExpo}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Fecha Recaudo ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.fechaRecaudoIsr}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Código Formulario ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.codigoFormularioIsr}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Número Formulario ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.numeroFormularioIsr}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Status Del Formulario ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.statusDelFormularioIsr}">
+
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Renta de Actividades Lucrativas " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.rentaDeActividadesLucrativas}">
+
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Monto Total De Rentas Exentas " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.montoTotalDeRentasExentas}">
+
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="RentaImponible " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.rentaImponible}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Total IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.totalIva}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Total ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.totalIsr}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Diferencia ISR IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.diferenciaIsrIva}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Recaudo Potencial ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.recaudoPotencialIsr}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Diferencia IVA ISR " style=" width:150px !important;" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.diferenciaIvaIsr}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Recaudo Potencial IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.recaudoPotencialIva}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Total Ventas Exentas IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.totalVentasExentasIva}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Potencial Recaudo IVA e ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.potencialRecaudoIvaEIsr}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Segmentación " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.segmentacion}">
+                            </h:outputText>
+                        </p:column>
+                        <p:column  headerText="Periodo Desde " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.periodoDesde}"></h:outputText>
+                        </p:column>
+
+
+                        <p:column headerText="Periodo Hasta " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.periodoHasta}"></h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Fecha Recaudo IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.fechaRecaudoIva}"></h:outputText>
+
+                        </p:column>
+
+                        <p:column  headerText="Codigo Formulario IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.codigoFormularioIva}"></h:outputText>
+
+                        </p:column>
+                        <p:column  headerText="Número Formulario IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.numeroFormularioIva}" >
+
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Status Del Formulario IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.statusDelFormularioIva}">
+
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Ventas Exentas " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasExentas}">
+
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Ventas Medicamentos Genericos Alternativos Y Antirretrovirales " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasMedicamentosGenericosAlternantivosYAntirretrovirales}"></h:outputText>
+
+                        </p:column>
+
+                        <p:column  headerText="Ventas No Afectadas Realizadas A Contribuyente Calificados Con El Decreto 29 89 Y Sus Reformas " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasNoAfectadasRealizadasAContribuyentesCalificadosConElDecreto29_28_y_SusReformas}" > </h:outputText>
+                        </p:column>
+                        <p:column  headerText="Ventas Gravadas " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasGravadas}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Servicios Gravados " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.serviciosGravados}"></h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Exportaciones A Centro América " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.exportacionesACentroAmerica}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column headerText="Exportaciones Al Resto Del Mundo " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.exportacionesAlRestoDelMundo}"></h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Transferencias Con Fyduca " style=" width:150px !important; text-align: center" styleClass=" colorBackground " >
+                            <h:outputText  value="#{datos.transferenciasConFyduca}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo De Dos Años o Mas Anteriores Al Del Año En Curso Casilla 10 " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasdeVehículosTerrestresEnCursoCasilla10}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo Del Año En Curso Del Año Siguiente o Anterior Al Del Año En Curso " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasDeVehículosTerrestresDelAñoEnCursoDelAñoSiguienteAlDelAñoEnCurso}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo De Dos Años o Más Anteriores Al Del Año Curso " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasDeVehiculosTerrestreSiguienteoAnteriorAlDelAñoEnCurso}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo Del Año En Curso Del Año Siguiente o Anterior Al Del Año En Curso Casilla 23 " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasDeVehículosTerrestresAñoSiguienteAñoAnteriorAñoCursoCas23}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Suma Base Debitos " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.sumaBaseDebitos}" >
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Suma Base Debitos Expo " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.sumaBaseDebitosExpo}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Fecha Recaudo ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground " >
+                            <h:outputText  value="#{datos.fechaRecaudoIsr}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Código Formulario ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.codigoFormularioIsr}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Número Formulario ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.numeroFormularioIsr}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Status Del Formulario ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.statusDelFormularioIsr}">
+
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Renta de Actividades Lucrativas " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.rentaDeActividadesLucrativas}">
+
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Monto Total De Rentas Exentas " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.montoTotalDeRentasExentas}">
+
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="RentaImponible " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.rentaImponible}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Total IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.totalIva}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Total ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.totalIsr}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Diferencia ISR IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.diferenciaIsrIva}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Recaudo Potencial ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground " >
+                            <h:outputText  value="#{datos.recaudoPotencialIsr}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Diferencia IVA ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.diferenciaIvaIsr}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Recaudo Potencial IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.recaudoPotencialIva}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Total Ventas Exentas IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.totalVentasExentasIva}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Potencial Recaudo IVA e ISR " style=" width:150px !important;" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.potencialRecaudoIvaEIsr}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Segmentación " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.segmentacion}">
+                            </h:outputText>
+                        </p:column>
+                        <p:column  headerText="Periodo Desde " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.periodoDesde}"></h:outputText>
+                        </p:column>
+
+
+                        <p:column headerText="Periodo Hasta " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.periodoHasta}"></h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Fecha Recaudo IVA " style=" width:150px !important;" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.fechaRecaudoIva}"></h:outputText>
+
+                        </p:column>
+
+                        <p:column  headerText="Codigo Formulario IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground " >
+                            <h:outputText  value="#{datos.codigoFormularioIva}"></h:outputText>
+
+                        </p:column>
+                        <p:column  headerText="Número Formulario IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.numeroFormularioIva}">
+
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Status Del Formulario IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.statusDelFormularioIva}">
+
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Ventas Exentas " style=" width:150px !important; text-align: center" styleClass=" colorBackground " >
+                            <h:outputText  value="#{datos.ventasExentas}">
+
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Ventas Medicamentos Genericos Alternativos Y Antirretrovirales "  style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasMedicamentosGenericosAlternantivosYAntirretrovirales}"></h:outputText>
+
+                        </p:column>
+
+                        <p:column  headerText="Ventas No Afectadas Realizadas A Contribuyente Calificados Con El Decreto 29 89 Y Sus Reformas " style=" width:150px !important; text-align: center" styleClass=" colorBackground " >
+                            <h:outputText  value="#{datos.ventasNoAfectadasRealizadasAContribuyentesCalificadosConElDecreto29_28_y_SusReformas}"> </h:outputText>
+                        </p:column>
+                        <p:column  headerText="Ventas Gravadas " style=" width:150px !important;" styleClass=" colorBackground " >
+                            <h:outputText  value="#{datos.ventasGravadas}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Servicios Gravados " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.serviciosGravados}"></h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Exportaciones A Centro América " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.exportacionesACentroAmerica}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column headerText="Exportaciones Al Resto Del Mundo " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.exportacionesAlRestoDelMundo}"></h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Transferencias Con Fyduca " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.transferenciasConFyduca}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo De Dos Años o Mas Anteriores Al Del Año En Curso Casilla 10 " style=" width:150px !important; text-align: center" styleClass=" colorBackground " >
+                            <h:outputText  value="#{datos.ventasdeVehículosTerrestresEnCursoCasilla10}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo Del Año En Curso Del Año Siguiente o Anterior Al Del Año En Curso " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasDeVehículosTerrestresDelAñoEnCursoDelAñoSiguienteAlDelAñoEnCurso}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo De Dos Años o Más Anteriores Al Del Año Curso " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasDeVehiculosTerrestreSiguienteoAnteriorAlDelAñoEnCurso}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Ventas De Vehículos Terrestres Del Modelo Del Año En Curso Del Año Siguiente o Anterior Al Del Año En Curso Casilla 23 " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.ventasDeVehículosTerrestresAñoSiguienteAñoAnteriorAñoCursoCas23}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Suma Base Debitos " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.sumaBaseDebitos}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Suma Base Debitos Expo " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.sumaBaseDebitosExpo}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Fecha Recaudo ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.fechaRecaudoIsr}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Código Formulario ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.codigoFormularioIsr}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Número Formulario ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.numeroFormularioIsr}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Status Del Formulario ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.statusDelFormularioIsr}">
+
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Renta de Actividades Lucrativas " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.rentaDeActividadesLucrativas}">
+
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Monto Total De Rentas Exentas " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.montoTotalDeRentasExentas}">
+
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="RentaImponible " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.rentaImponible}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Total IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.totalIva}">
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="Total ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.totalIsr}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Diferencia ISR IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.diferenciaIsrIva}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Recaudo Potencial ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.recaudoPotencialIsr}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Diferencia IVA ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.diferenciaIvaIsr}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Recaudo Potencial IVA " style=" width:150px !important;" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.recaudoPotencialIva}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Total Ventas Exentas IVA " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.totalVentasExentasIva}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Potencial Recaudo IVA e ISR " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.potencialRecaudoIvaEIsr}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="Segmentación " style=" width:150px !important; text-align: center" styleClass=" colorBackground ">
+                            <h:outputText  value="#{datos.segmentacion}">
+                            </h:outputText>
+                        </p:column>
+
+                    </p:dataTable>
+                </p:fieldset>
+                <p:messages id="msgs" globalOnly="true" autoUpdate="true" closable="true" style="text-align: center">
+                    <p:effect type="pulsate" event="load" delay="20" speed="2000"/>
+                </p:messages>
+
+            </ui:define> 
+        </ui:composition>
+    </h:body>
+</html>
+
+

@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head> 
+    </h:head>
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:fieldset rendered="#{comportamientoTributarioUI.anioInicio eq null or comportamientoTributarioUI.anioInicio ne null}">
+                    <center>
+                        <div align="left"><p:outputLabel value="Comportamiento tributario" styleClass="tituloVista"/></div>
+                        <p:separator/>
+                        <p:messages><p:effect type="bounce" event="load"/></p:messages>
+                        <br/><br/><br/>
+                        <p:fieldset style="max-width: 300px">
+                            <br/><br/>
+                            <p:panelGrid columns="1" styleClass="ui-form-effect ui-noborder" style="width: 100%">
+                                <h:panelGroup>
+                                    <p:outputLabel value="A&ntilde;o inicio"/>
+                                    <p:inputMask mask="9999" value="#{comportamientoTributarioUI.anioInicio}"/>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:outputLabel value="A&ntilde;o fin"/>
+                                    <p:inputMask mask="9999" value="#{comportamientoTributarioUI.anioFin}"/>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                            <br/>
+                            <p:commandButton    value="Consultar"
+                                                action="#{comportamientoTributarioUI.consultar}"
+                                                update="formContent"
+                                                styleClass="ui-btn-primary"
+                                                style="float: right"/>
+                            <br/><br/><br/>
+                        </p:fieldset>
+                    </center>
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head> 
+    </h:head>
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:fieldset id="fldsPrincipal" rendered="#{not empty expedientesUI.listExpedientes or empty expedientesUI.listExpedientes}">
+                    <p:commandLink action="#{expedientesUI.setSeccionActiva(1)}" update="formContent">
+                        <p:outputLabel value="Expedientes" styleClass="tituloVista"/>
+                    </p:commandLink>
+                    <p:outputLabel  value=" - Documentos asociados"
+                                    rendered="#{expedientesUI.seccionActiva ne 1}"
+                                    styleClass="tituloVista"/>
+                    <p:separator/>
+                    <center><p:messages><p:effect type="bounce" event="load"/></p:messages></center>
+                    <br/><br/><br/>
+                    <div style="display: #{expedientesUI.seccionActiva ne 1 ? 'block' : 'none'}">
+                        <p:outputLabel value="Expediente #{expedientesUI.registroSeleccionado.numeroExpediente}" styleClass="tituloVista"/>
+                        <br/><br/><br/>
+                    </div>
+                    <p:dataTable    id="dtExpedientes"
+                                    widgetVar="dtExpedientes"
+                                    var="registro"
+                                    value="#{expedientesUI.listExpedientes}"
+                                    filteredValue="#{expedientesUI.listExpedientesTemp}"
+                                    paginator="true"
+                                    rows="10"
+                                    reflow="true"
+                                    paginatorPosition="bottom"
+                                    emptyMessage="No hay expedientes asociados"
+                                    rendered="#{expedientesUI.seccionActiva eq 1 and not empty expedientesUI.listExpedientes}">
+                        <p:column   headerText="Expediente"
+                                    filterBy="#{registro.numeroExpediente}"
+                                    filterMatchMode="contains"
+                                    style="text-align: center">
+                            <h:outputText value="#{registro.numeroExpediente}"/>
+                        </p:column>
+                        <p:column   headerText="Responsable">
+                            <h:outputText value="#{registro.nombreResponsable}"/>
+                        </p:column>
+                        <p:column   headerText="Etapa">
+                            <h:outputText value="#{registro.nombreEtapa}"/>
+                        </p:column>
+                        <p:column   headerText="Fecha Ingreso" style="text-align: center">
+                            <h:outputText value="#{registro.fechaIngreso}"/>
+                        </p:column>
+                        <p:column   headerText="Per&iacute;odo Inicial" style="text-align: center">
+                            <h:outputText value="#{registro.periodoInicial}"/>
+                        </p:column>
+                        <p:column   headerText="Per&iacute;odo Final" style="text-align: center">
+                            <h:outputText value="#{registro.periodoFinal}"/>
+                        </p:column>
+                        <p:column   headerText="Documentos" style="text-align: center">
+                            <p:commandLink action="#{expedientesUI.verDocumentos}"
+                                           update="formContent:fldsPrincipal">
+                                <p:graphicImage library="images" name="page_search.png" title="Ver documentos"/>
+                                <f:setPropertyActionListener value="#{registro}" target="#{expedientesUI.registroSeleccionado}"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                    <p:dataTable    var="row"
+                                    value="#{expedientesUI.listDocumentos}"
+                                    paginator="true"
+                                    rows="10"
+                                    reflow="true"
+                                    paginatorPosition="bottom"
+                                    emptyMessage="No hay documentos asociados"
+                                    rendered="#{expedientesUI.seccionActiva eq 2}">
+                        <p:column   headerText="Documento" style="text-align: center">
+                            <h:outputText value="#{row.documento}"/>
+                        </p:column>
+                        <p:column   headerText="Tipo" style="text-align: center">
+                            <h:outputText value="#{row.tipoDocumento}"/>
+                        </p:column>
+                        <p:column   headerText="Fecha de solicitud" style="text-align: center">
+                            <h:outputText value="#{row.fechaSolicito}"/>
+                        </p:column>
+                        <p:column   headerText="Fecha de documento" style="text-align: center">
+                            <h:outputText value="#{row.fechaDocumento}"/>
+                        </p:column>
+                        <p:column   headerText="Fecha de notificaci&oacute;n" style="text-align: center">
+                            <h:outputText value="#{row.fechaNotifico}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

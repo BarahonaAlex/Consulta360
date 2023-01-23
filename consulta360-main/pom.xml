@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    
+    <groupId>gt.gob.sat.fiscalizacion</groupId>
+    <artifactId>consulta360-main</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    
+    <name>consulta360-main</name>
+    <inceptionYear>2017</inceptionYear>
+    
+    
+    <!-- .......................................................................
+    ... Modulos del sistema
+    ........................................................................ -->
+    <modules>
+        <module>../consulta360-comun</module>
+        <module>../consulta360-core</module>
+        <module>../consulta360-web</module>
+    </modules>
+    
+    
+    <!-- .......................................................................
+    ... Informacion de quien desarrolla este artefacto
+    ........................................................................ -->
+    <organization>
+        <name>Superintendencia de Administracion Tributaria</name>
+        <url>http://www.sat.gob.gt</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>adcastic</id>
+            <name>Alvaro Daniel Castillo Carrera</name>
+            <email>adcastic@sat.gob.gt</email>
+        </developer>
+    </developers>
+</project>

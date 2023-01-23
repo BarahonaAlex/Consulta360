@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head> 
+    </h:head>
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:fieldset id="fldsPrincipal" rendered="#{declaracionesUI.fechaInicio eq null or declaracionesUI.fechaInicio ne null}">
+                    <center>
+                        <div align="left"><p:outputLabel value="Declaraciones presentadas" styleClass="tituloVista"/></div>
+                        <p:separator/>
+                        <p:messages><p:effect type="bounce" event="load"/></p:messages>
+                        <br/><br/><br/>
+                        <p:panelGrid columns="3" styleClass="ui-form-effect ui-noborder" style="text-align: left; max-width: 700px">
+                            <h:panelGroup>
+                                <p:outputLabel value="Fecha inicio"/>
+                                <p:calendar pattern="dd/MM/yyyy"
+                                            navigator="true"
+                                            readonlyInput="true"
+                                            title="Seleccione la fecha de inicio para la consulta"
+                                            maxdate="#{declaracionesUI.fechaActual}"
+                                            value="#{declaracionesUI.fechaInicio}">
+                                    <p:ajax event="dateSelect" update="fldsPrincipal"/>
+                                </p:calendar>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <p:outputLabel value="Fecha fin"/>
+                                <p:calendar pattern="dd/MM/yyyy"
+                                            navigator="true"
+                                            readonlyInput="true"
+                                            title="Seleccione la fecha de fin para la consulta"
+                                            maxdate="#{declaracionesUI.fechaActual}"
+                                            value="#{declaracionesUI.fechaFin}">
+                                    <p:ajax event="dateSelect" update="fldsPrincipal"/>
+                                </p:calendar>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <p:outputLabel value="C&oacute;digo formulario"/>
+                                <p:inputMask    mask="9?9999"
+                                                title="Ingrese el c&oacute;digo de formulario para la consulta"
+                                                value="#{declaracionesUI.codigoFormulario}"/>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <br/>
+                        <p:commandButton    value="Consultar Declaraciones"
+                                            action="#{declaracionesUI.consultarDeclaraciones}"
+                                            styleClass="ui-btn-primary"
+                                            title="Consultar las declaraciones presentadas"
+                                            update="fldsPrincipal"
+                                            disabled="#{declaracionesUI.fechaInicio eq null or declaracionesUI.fechaFin eq null}"/>
+                        <br/><br/><br/>
+                        <p:dataTable    var="registro"
+                                        value="#{declaracionesUI.listDeclaraciones}"
+                                        filteredValue="#{declaracionesUI.listDeclaracionesTemp}"
+                                        paginator="true"
+                                        rows="5"
+                                        reflow="true"
+                                        paginatorPosition="bottom"
+                                        emptyMessage="No hay registros relacionados a la consulta"
+                                        rendered="#{not empty declaracionesUI.listDeclaraciones}">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column   headerText="N&uacute;mero Formulario"
+                                                filterBy="#{registro.numeroFormulario}"
+                                                filterMatchMode="contains"
+                                                rowspan="2"/>
+                                    <p:column   headerText="Concepto"
+                                                filterBy="#{registro.nombreFormulario}"
+                                                filterMatchMode="contains"
+                                                rowspan="2"/>
+                                    <p:column   headerText="Origen"
+                                                filterBy="#{registro.origen}"
+                                                filterMatchMode="contains"
+                                                rowspan="2"/>
+                                    <p:column   headerText="Fecha Recaudo"
+                                                rowspan="2"/>
+                                    <p:column   headerText="Per&iacute;odo Impositivo"
+                                                colspan="2"/>
+                                    <p:column   headerText="Monto (Q)"
+                                                rowspan="2"/>
+                                    <p:column   headerText="Visualizar"
+                                                rowspan="2"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column   headerText="Inicio"/>
+                                    <p:column   headerText="Fin"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column style="text-align: center">
+                                <h:outputText value="#{registro.numeroFormulario}"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{registro.nombreFormulario}"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{registro.origen}"/>
+                            </p:column>
+                            <p:column style="text-align: center">
+                                <h:outputText value="#{registro.fechaRecaudo}"/>
+                            </p:column>
+                            <p:column style="text-align: center">
+                                <h:outputText value="#{registro.fechaDel}"/>
+                            </p:column>
+                            <p:column style="text-align: center">
+                                <h:outputText value="#{registro.fechaAl}"/>
+                            </p:column>
+                            <p:column style="text-align: right">
+                                <h:outputText value="#{registro.monto}"/>
+                            </p:column>
+                            <p:column style="text-align: center">
+                                <p:commandLink action="#{declaracionesUI.verFormulario}" update="formContent">
+                                    <p:graphicImage library="images" name="computer.png" title="Visualizar formulario"/> 
+                                    <f:setPropertyActionListener target="#{declaracionesUI.declaracionSeleccionada}" value="#{registro}"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </center>
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head> 
+    </h:head>
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+
+
+
+                <p:fieldset id="fldsPrincipal" rendered="#{SAT_SEGURIDAD_MB.pagina.tipologiasEvasion.controles.cmdlnkTipologiasEvasion.rendered}">
+                    <style type="text/css">
+                        .colorRow {
+                            background-color: #a1b8e1 !important;
+                        }
+                        .hBottom th{
+                            border-bottom-color: #ed7c31 !important; 
+                            border-bottom-width: 5px !important; 
+                        }
+                        .hBorder th{
+                            border-top: none !important;
+                            border-left: none !important;
+                            border-right: none !important;
+                            border-bottom-width: 5px !important;
+                            border-bottom-color: #5b9cd8 !important;
+                        }
+                        .hColor {
+                            background-color: #d6e6f4 !important;
+                            text-align: center;
+                        }
+                    </style>
+                   
+
+                    <p:dataTable value="" var="" styleClass="hBorder" rowStyleClass="hColor" rendered="#{tipologiasEvasionUI.listTipologiasAnual.size()>0}">
+                        <p:column  headerText="">
+                            <h:outputText  value="Total tipologias identificadas" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                        </p:column>
+                        <p:columns value="#{tipologiasEvasionUI.listTipologiasAnual}" var="column">
+                            <f:facet name="header">
+                                <h:outputText value="#{column.nombreAnio}" />
+                            </f:facet>
+                            <h:outputText value="#{column.cantidadAnios}" />				       
+                        </p:columns>
+                    </p:dataTable>
+                    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+                    <div align="right" style="display:#{not empty tipologiasEvasionUI.listTipologias ? 'block !important' : 'none !important'}">
+                        <h:commandLink action="#{tipologiasEvasionUI.exportare()}">  
+                            <p:graphicImage value="../../resources/images/excel_1.png"/>  
+                        </h:commandLink> 
+                    </div>  
+
+                    <p:outputLabel  value="TIPOLOGIAS DE EVASIÓN DETALLE" styleClass="tituloVista" rendered="#{tipologiasEvasionUI.listTipologias.size()>0}"/>
+                    <p:dataTable    id="lstTipologias"
+                                    value="#{tipologiasEvasionUI.listTipologias}"
+                                    var="data"
+                                    paginator="true"
+                                    rows="10"
+                                    rowIndexVar="index"
+                                    reflow="true"
+                                    paginatorPosition="bottom"
+                                    rowStyleClass="#{(index %2 == 0) ? 'colorRow' : null}"
+                                    styleClass="#{'hBottom'}"
+                                    rendered="#{tipologiasEvasionUI.listTipologias.size()>0}">
+
+                        <p:column   headerText="Tipologia" style="background-color:#264378">
+                            <h:outputText style="color: #fdfdfd !important" value="#{data.tipologia}"/>
+                        </p:column>
+                        <p:column   headerText="ID Tipologia">
+                            <h:outputText value="#{data.idTipologia}"/>
+                        </p:column>
+                        <p:column   headerText="Referencia">
+                            <h:outputText value="#{data.referencia}"/>
+                        </p:column>
+                        <p:column   headerText="Fecha de Registro" style="text-align: center">
+                            <h:outputText value="#{data.fechaRegistro}">
+                                <f:convertDateTime type="date" pattern="dd-MM-yy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column   headerText="Descripción Tipologia" style="text-align: center">
+                            <h:outputText value="#{data.descripcionTipologia}"/>
+                        </p:column>
+                        <p:column   headerText="Año Informaci&oacute;n Base" style="text-align: center">
+                            <h:outputText value="#{data.anioInformacion}"/>
+                        </p:column>
+                        <p:column   headerText="Indicador" style="text-align: center">
+                            <h:outputText value="#{data.indicador}"/>
+                        </p:column>
+                        <p:column   headerText="Color Indicador" style="text-align: center">
+                            <h:outputText value="#{data.colorIndicador}"/>
+                        </p:column>
+                        <p:column   headerText="Monto Discrepancia" style="text-align: center">
+                            <h:outputText value="#{data.montoDiscrepancia}">
+                                <f:convertNumber currencySymbol="Q " groupingUsed="true" maxFractionDigits="2" type="currency" locale="es_GT" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column   headerText="Dependencia" style="text-align: center" >
+                            <h:outputText value="#{data.dependencia}"/>
+                        </p:column>
+                        <p:column   headerText="Estado" style="text-align: center">
+                            <h:outputText value="#{data.estado}"/>
+                        </p:column>
+                        <p:column   headerText="Fecha Estado" style="text-align: center">
+                            <h:outputText value="#{data.fechaEstado}">
+                                <f:convertDateTime pattern="dd-MM-yyyy"/>
+                            </h:outputText>    
+                        </p:column>
+                        <p:column   headerText="Observaci&oacute;n Estado" style="text-align: center">
+                            <h:outputText value="#{data.observacionesEstado}"/>
+                        </p:column>                        
+                    </p:dataTable>
+
+                </p:fieldset>
+
+                <p:messages id="msgs" globalOnly="true" autoUpdate="true" closable="true" style="text-align: center">
+                    <p:effect type="pulsate" event="load" delay="20" speed="2000"/>
+                </p:messages>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head> 
+    </h:head>
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:fieldset id="fldsPrincipal" rendered="#{not empty afiliacionesUI.listAfiliaciones or empty afiliacionesUI.listAfiliaciones}">
+                    <p:commandLink action="#{afiliacionesUI.setSeccionActiva(1)}" update="formContent">
+                        <p:outputLabel value="Afiliaciones" styleClass="tituloVista"/>
+                    </p:commandLink>
+                    <p:outputLabel  value=" - Obligaciones (#{afiliacionesUI.registroSeleccionado.nombreImpuesto})"
+                                    rendered="#{afiliacionesUI.seccionActiva ne 1}"
+                                    styleClass="tituloVista"/>
+                    <p:separator/>
+                    <center><p:messages><p:effect type="bounce" event="load"/></p:messages></center>
+                    <br/><br/><br/>
+                    <p:dataTable    id="dtAfiliaciones"
+                                    widgetVar="dtAfiliaciones"
+                                    var="registro"
+                                    value="#{afiliacionesUI.listAfiliaciones}"
+                                    filteredValue="#{afiliacionesUI.listAfiliacionesTemp}"
+                                    paginator="true"
+                                    rows="10"
+                                    reflow="true"
+                                    paginatorPosition="bottom"
+                                    emptyMessage="No se tienen afiliaciones registradas"
+                                    rendered="#{afiliacionesUI.seccionActiva eq 1 and not empty afiliacionesUI.listAfiliaciones}">
+                        <p:column   headerText="Impuesto"
+                                    filterBy="#{registro.nombreImpuesto}"
+                                    filterMatchMode="contains">
+                            <h:outputText value="#{registro.nombreImpuesto}"/>
+                        </p:column>
+                        <p:column   headerText="R&eacute;gimen"
+                                    filterBy="#{registro.nombreRegimen}"
+                                    filterMatchMode="contains">
+                            <h:outputText value="#{registro.nombreRegimen}"/>
+                        </p:column>
+                        <p:column   headerText="Per&iacute;odo"
+                                    filterBy="#{registro.nombrePeriodo}"
+                                    filterMatchMode="contains">
+                            <h:outputText value="#{registro.nombrePeriodo}"/>
+                        </p:column>
+                        <p:column   headerText="Fecha de Afiliaci&oacute;n" style="text-align: center">
+                            <h:outputText value="#{registro.fechaAfiliacion}"/>
+                        </p:column>
+                        <p:column   headerText="Detalle" style="text-align: center">
+                            <p:commandLink action="#{afiliacionesUI.verDetalle}"
+                                           update="formContent:fldsPrincipal">
+                                <p:graphicImage library="images" name="page_search.png" title="Ver obligaciones"/>
+                                <f:setPropertyActionListener value="#{registro}" target="#{afiliacionesUI.registroSeleccionado}"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                    <p:dataTable    var="row"
+                                    value="#{afiliacionesUI.listObligaciones}"
+                                    paginator="true"
+                                    rows="10"
+                                    reflow="true"
+                                    paginatorPosition="bottom"
+                                    emptyMessage="No se tienen obligaciones registradas"
+                                    rendered="#{afiliacionesUI.seccionActiva ne 1 and not empty afiliacionesUI.listObligaciones}">
+                        <p:column   headerText="Obligaciones">
+                            <h:outputText value="#{row.nombreObligacion}"/>
+                        </p:column>
+                        <p:column   headerText="Frecuencia de Pago">
+                            <h:outputText value="#{row.frecuenciaPago}"/>
+                        </p:column>
+                        <p:column   headerText="N&uacute;mero de Formulario">
+                            <h:outputText value="#{row.numeroFormulario}"/>
+                        </p:column>
+                        <p:column   headerText="Forma de C&aacute;lculo">
+                            <h:outputText value="#{row.formaCalculo}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <br/>
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head> 
+    </h:head>
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:fieldset id="fldsPrincipal" rendered="#{not empty proveedoresUI.listProveedores || empty proveedoresUI.listProveedores}">
+                    <p:commandLink onclick="window.location.href='nombramientos.jsf?pNit=#{proveedoresUI.nit}'">
+                        <p:outputLabel value="Nombramientos" styleClass="tituloVista"/>
+                    </p:commandLink>
+                    <p:commandLink action="#{proveedoresUI.setSeccionActiva(1)}" update="fldsPrincipal">
+                        <p:outputLabel value=" - Proveedores asociados" styleClass="tituloVista"/>
+                    </p:commandLink>
+                    <p:outputLabel value=" - Detalle " styleClass="tituloVista" rendered="#{proveedoresUI.seccionActiva eq 2}"/>
+                    <p:outputLabel value=" - Ingreso de resultados " styleClass="tituloVista" rendered="#{proveedoresUI.seccionActiva eq 3}"/>
+                    <p:outputLabel value="(#{proveedoresUI.registroSeleccionado.nitProveedor})" styleClass="tituloVista" rendered="#{proveedoresUI.seccionActiva ne 1}"/>
+                    <p:separator/>
+                    <center><p:messages><p:effect type="bounce" event="load"/></p:messages></center>
+                    <br/><br/><br/>
+                    <p:dataTable    var="proveedor"
+                                    value="#{proveedoresUI.listProveedores}"
+                                    paginator="true"
+                                    rows="10"
+                                    reflow="true"
+                                    paginatorPosition="bottom"
+                                    emptyMessage="No hay proveedores asociados"
+                                    rendered="#{proveedoresUI.seccionActiva eq 1 and not empty proveedoresUI.listProveedores}">
+                        <p:column   headerText="NIT" style="width: 12%">
+                            <h:outputText value="#{proveedor.nitProveedor}"/>
+                        </p:column>
+                        <p:column   headerText="Nombre" style="width: 40%">
+                            <h:outputText value="#{proveedor.nombreProveedor}"/>
+                        </p:column>
+                        <p:column   headerText="IVA" style="width: 12%; text-align: right">
+                            <h:outputText value="#{proveedor.monto}"/>
+                        </p:column>
+                        <p:column   headerText="Mes" style="width: 12%; text-align: center">
+                            <h:outputText value="#{proveedor.mesPeriodo}"/>
+                        </p:column>
+                        <p:column   headerText="A&ntilde;o" style="width: 12%; text-align: center">
+                            <h:outputText value="#{proveedor.anioPeriodo}"/>
+                        </p:column>
+                        <p:column   headerText="Perfil" style="width: 12%; text-align: center">
+                            <p:graphicImage library="images"
+                                            name="#{proveedor.semaforoPerfil eq 'V' ? 'verde.png' : proveedor.semaforoPerfil eq 'R' ? 'rojo.png' : proveedor.semaforoPerfil eq 'A' ? 'amarillo.png' : ''}"
+                                            title="Perfil"/>
+                        </p:column>
+                        <p:column   headerText="D&eacute;bitos Declarados Vrs. Cr&eacute;ditos Reportados" style="width: 12%; text-align: center">
+                            <p:graphicImage library="images"
+                                            name="#{proveedor.semaforoDeclaracionIVA eq 'V' ? 'verde.png' : proveedor.semaforoDeclaracionIVA eq 'R' ? 'rojo.png' : proveedor.semaforoDeclaracionIVA eq 'A' ? 'amarillo.png' : ''}"
+                                            title="D&eacute;bitos Declarados Vrs. Cr&eacute;ditos Reportados"/>
+                        </p:column>
+                        <p:column   headerText="Opciones" style="width: 12%; text-align: center">
+                            <p:commandLink action="#{proveedoresUI.verDetalle}" update="formContent:fldsPrincipal">
+                                <p:graphicImage library="images" name="page_search.png" title="Ver detalle de proveedor"/>
+                                <f:setPropertyActionListener value="#{proveedor}" target="#{proveedoresUI.registroSeleccionado}"/>
+                            </p:commandLink>
+                            <p:commandLink action="#{proveedoresUI.listarVerificaciones}" update="formContent:fldsPrincipal">
+                                <p:graphicImage library="images" name="blog_post_accept.png" title="Consultar el resultado de cruces a proveedor"/>
+                                <f:setPropertyActionListener value="#{proveedor}" target="#{proveedoresUI.registroSeleccionado}"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                    <div style="display: #{proveedoresUI.seccionActiva eq 2 ? 'block' : 'none'}">
+                        <p:dataTable    var="detalle"
+                                        value="#{proveedoresUI.listDetalleProveedor}"
+                                        paginator="true"
+                                        rows="10"
+                                        reflow="true"
+                                        paginatorPosition="bottom"
+                                        emptyMessage="No hay detalle para este proveedor">
+                            <p:column   headerText="Nombramiento" style="text-align: center">
+                                <h:outputText value="#{detalle.nombramiento}"/>
+                            </p:column>
+                            <p:column   headerText="Expediente" style="text-align: center">
+                                <h:outputText value="#{detalle.expediente}"/>
+                            </p:column>
+                            <p:column   headerText="Valor del C.F. Consultado" style="text-align: right">
+                                <h:outputText value="#{detalle.monto}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <br/><br/>
+                        <p:panelGrid columns="2" styleClass="datosIdentificacion ui-noborder">
+                            <p:outputLabel value="C.F. Total Consultado"/>
+                            <h:outputText value="#{proveedoresUI.cfTotal}"/>
+                            <p:outputLabel value="C.F. Declarado"/>
+                            <h:outputText value="#{proveedoresUI.cfTotalDeclarado}"/>
+                        </p:panelGrid>
+                    </div>
+                    <div style="display: #{proveedoresUI.seccionActiva eq 3 ? 'block' : 'none'}">
+                        <p:outputLabel value="Contribuyente que origin&oacute; el cruce de informaci&oacute;n" styleClass="tituloVista"/>
+                        <br/><br/>
+                        <p:panelGrid columns="2" styleClass="datosIdentificacion ui-noborder">
+                            <p:outputLabel value="NIT"/>
+                            <h:outputLabel value="#{mainUI.datos.nitContribuyente}"/>
+                            <p:outputLabel value="Nombre"/>
+                            <h:outputLabel value="#{mainUI.datos.nombreContribuyente}"/>
+                        </p:panelGrid>
+                        <br/><br/><br/>
+                        <p:outputLabel value="Informaci&oacute;n de proveedor y nivel de relaci&oacute;n" styleClass="tituloVista"/>
+                        <br/><br/>
+                        <p:dataTable    var="row"
+                                        value="#{proveedoresUI.listDatos}"
+                                        reflow="true"
+                                        emptyMessage="No hay datos para mostrar">
+                            <p:column headerText="Nivel">
+                                <h:outputText value="#{row.nivel}"/>
+                            </p:column>
+                            <p:column headerText="Nit proveedor">
+                                <h:outputText value="#{row.nitProveedor}"/>
+                            </p:column>
+                            <p:column headerText="Nombre proveedor">
+                                <h:outputText value="#{row.nombreProveedor}"/>
+                            </p:column>
+                            <p:column headerText="Nombramiento">
+                                <h:outputText value="#{row.nombramiento}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <br/><br/><br/>
+                        <p:outputLabel value="#{proveedoresUI.registroSeleccionado.mesPeriodo} - #{proveedoresUI.registroSeleccionado.anioPeriodo}" styleClass="tituloVista"/>
+                        <br/><br/>
+                        <p:dataTable    var="verificacion"
+                                        value="#{proveedoresUI.listVerificacionesProveedor}"
+                                        paginator="true"
+                                        rows="10"
+                                        reflow="true"
+                                        paginatorPosition="bottom"
+                                        emptyMessage="No existen verificaciones registradas">
+                            <p:column   headerText="Inconsistencia">
+                                <h:outputText value="#{verificacion.inconsistencia}"/>
+                            </p:column>
+                            <p:column   headerText="Tipo documento">
+                                <h:outputText value="#{verificacion.tipoDocumento}"/>
+                            </p:column>
+                            <p:column   headerText="Serie documento" style="text-align: center">
+                                <h:outputText value="#{verificacion.serie}"/>
+                            </p:column>
+                            <p:column   headerText="N&uacute;mero documento" style="text-align: center">
+                                <h:outputText value="#{verificacion.documento}"/>
+                            </p:column>
+                            <p:column   headerText="Fecha documento" style="text-align: center">
+                                <h:outputText value="#{verificacion.fechaDocumento}"/>
+                            </p:column>
+                            <p:column   headerText="Monto documento" style="text-align: right">
+                                <h:outputText value="#{verificacion.total}"/>
+                            </p:column>
+                            <p:column   headerText="Monto documento de contribuyente" style="text-align: right">
+                                <h:outputText value="#{verificacion.totalCruce}"/>
+                            </p:column>
+                            <p:column   headerText="Fecha captura" style="text-align: center">
+                                <h:outputText value="#{verificacion.fechaCaptura}"/>
+                            </p:column>
+                            <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column colspan="5" footerText="Totales" style="text-align: right; font-weight: bold"/>
+                                    <p:column footerText="#{proveedoresUI.totalDocumentos}" style="text-align: right; font-weight: bold"/>
+                                    <p:column footerText="#{proveedoresUI.totalDocumentosContribuyente}" style="text-align: right; font-weight: bold"/>
+                                    <p:column/>
+                                </p:row>
+                            </p:columnGroup>
+                        </p:dataTable>
+                    </div>
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:outputLabel value="Verificaciones en Campo" styleClass="tituloVista"/> 
+                <p:fieldset id="fldsPrincipal"  rendered="#{SAT_SEGURIDAD_MB.pagina.verificacionesEnCampo.controles.cmdlnkVerificacionesEnCampo.rendered}">
+                    <link rel="stylesheet" href="https://js.arcgis.com/4.20/esri/themes/light/main.css"/>
+                    <script src="https://js.arcgis.com/4.20/"></script>
+
+                    <style type="text/css">
+                        .hBottom th{
+                            border-bottom-color: #ed7c31 !important; 
+                            border-bottom-width: 5px !important; 
+                        }
+                        .hBorder table {
+                            border-top: none !important;
+                            border-left: none !important;
+                            border-right: none !important;
+                            border-bottom: none !important;
+                            width: 100% !important;
+                        }
+                        .hBorder th{
+                            display: none !important;
+                        }
+                        .tcustom table{
+                            table-layout: fixed !important;
+                            border-collapse: collapse !important;
+                            width: 100% !important;
+                            table-layout: fixed !important;
+                            font-size: 13px !important;
+                            font-family: sans-serif !important;
+                            font-weight: normal;
+                        }
+                        
+                        td .td-custom-a{
+                            background-color:#32889b !important;
+                        }
+                        
+                        td .td-custom-b{
+                            background-color: #8080800a !important;
+                        }
+                        
+                        th,td{
+                            width: 50% !important;
+                            word-wrap: break-word !important;
+                        }
+                    </style>
+                    <div align="right" style="display:#{not empty verificacionesEnCampoUI.listVerificaciones ? 'block !important' : 'none !important'}">
+                        <h:commandLink action="#{verificacionesEnCampoUI.exportare()}">  
+                            <p:graphicImage value="../../resources/images/excel_1.png"/>  
+                        </h:commandLink> 
+                    </div>
+                    <table style="display:#{not empty verificacionesEnCampoUI.listVerificaciones ? 'block !important' : 'none !important'}"> 
+                        <tr>
+                            <td width="50%">
+                                <p:panelGrid style=" width: 100% !important">
+                                    <p:column style="text-align: left !important">
+                                        <p:outputLabel value="CANTIDAD DIRECCIONES VERIFICADAS " 
+                                                       styleClass="tituloVista"/>
+                                    </p:column>
+                                    <p:column style="text-align: center !important">
+                                        <p:outputLabel value="#{verificacionesEnCampoUI.listVerificacionesConteo[0].cantidadRegistros + verificacionesEnCampoUI.listVerificacionesConteo[1].cantidadRegistros}"
+                                                       styleClass="tituloVista"/>                        
+                                    </p:column>
+                                </p:panelGrid>
+                            </td>
+                            <td rowspan="3">
+                                <div id="viewDiv" style="width: 100%; height: 460px; border: solid 1px #1369A0"></div>
+                            </td>                            
+                            <td>
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="50%">
+                                <p:dataTable value="#{verificacionesEnCampoUI.listVerificacionesConteo}" 
+                                             var="columns" 
+                                             styleClass="hBorder" 
+                                             rendered="#{verificacionesEnCampoUI.listVerificacionesConteo.size()>0}">
+                                    <p:column style="text-align: center !important">
+                                        <h:outputText value="#{columns.estados}"/>
+                                    </p:column>
+
+                                    <p:column style="#{columns.estados == 'Localizado' ? 'background-color:green' : 'background-color:red'}; text-align:center">
+                                        <h:outputText value="#{columns.cantidadRegistros}" style=" color:white !important"/>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </td>
+                        </tr>    
+                        <tr>    
+                            <td  width="50%">
+                                <p:dataGrid columns="1" 
+                                            id="detalle"
+                                            value="#{verificacionesEnCampoUI.listVerificaciones}"
+                                            var="data"
+                                            pageLinks="1"
+                                            paginator="true"
+                                            rows="1"
+                                            paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                            paginatorPosition="bottom">
+                                    #{verificacionesEnCampoUI.setCenter_map(data.longitud.toString().concat(', ').concat(data.latitud.toString()))}
+
+                                    <table class="tcustom" style=" width: 100%; text-align: center">
+                                        <input type="hidden" id="idlong" value="#{data.longitud}"/>
+                                        <input type="hidden" id="idlat" value="#{data.latitud}"/>    
+                                        <tr>
+                                            <td class="td-custom-a"><p:outputLabel value="DIRECCION VERIFICADA" style=" color: white !important" /></td>
+                                            <td class="td-custom-b"><h:outputText value="#{data.direccionVerificada}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-custom-a"><p:outputLabel value="DEPARTAMENTO" style=" color: white !important" /></td>
+                                            <td class="td-custom-b"><h:outputText value="#{data.departamento}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-custom-a"><p:outputLabel value="MUNICIPIO" style=" color: white !important" /></td>
+                                            <td class="td-custom-b"><h:outputText value="#{data.municipio}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-custom-a"><p:outputLabel value="LATITUD" style=" color: white !important" /></td>
+                                            <td class="td-custom-b"><h:outputText value="#{data.latitud}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-custom-a"><p:outputLabel value="LONGITUD" style=" color: white !important" /></td>
+                                            <td class="td-custom-b"><h:outputText value="#{data.longitud}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-custom-a"><p:outputLabel value="TIPO DE DIRECCION" style=" color: white !important" /></td>
+                                            <td class="td-custom-b"><h:outputText value="#{data.tipoDireccion}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-custom-a">
+                                                <p:outputLabel value="ESTADO DIRECCION" style=" color: white !important" />
+                                            </td>
+                                            <td style="#{data.estadoDireccion == 'Localizado' ? 'background-color:green' : 'background-color:red'}">
+                                                <h:outputText value="#{data.estadoDireccion}"  />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-custom-a"><p:outputLabel value="FUENTE ORIGEN" style=" color: white !important" /></td>
+                                            <td class="td-custom-b"><h:outputText value="#{data.fuenteDeInformacion}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-custom-a"><p:outputLabel value="ESTIMACION CAPACIDAD INSTALADA" style=" color: white !important" /></td>
+                                            <td class="td-custom-b"><h:outputText value="#{data.estimacionCapacidadInstalada}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-custom-a"><p:outputLabel value="NÚMERO DE CONTADOR ENERGIA ELÉCTRICA" style=" color: white !important" /></td>
+                                            <td class="td-custom-b"><h:outputText value="#{data.contadorEnergiaElectrica}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-custom-a"><p:outputLabel value="REFERENCIA VERIFICACIÓN" style=" color: white !important" /></td>
+                                            <td class="td-custom-b"><h:outputText value="#{data.referenciaVerificacion}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-custom-a"><p:outputLabel value="FECHA REFERENCIA/VERIFICACIÓN" style=" color: white !important" /></td>
+                                            <td class="td-custom-b"><h:outputText value="#{data.fechaCreacion}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-custom-a"><p:outputLabel value="RESPONSABLE DE LA VERIFICACIÓN" style=" color: white !important" /></td>
+                                            <td class="td-custom-b"><h:outputText value="#{data.responsableDeLaVerificacion}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-custom-a"><p:outputLabel value="ESTADO REGISTRO" style=" color: white !important" /></td>
+                                            <td class="td-custom-b"><h:outputText value="#{data.estadoRegistro}"/></td>
+                                        </tr>
+                                    </table>
+                                    <p:ajax event="page" oncomplete="mapear()" />
+                                </p:dataGrid>  
+                            </td>
+                        </tr>    
+                    </table>
+                </p:fieldset>
+                <script language = "javascript" type = "text/javascript">
+                    window.onload = function () {
+                        mapear();
+                    }
+
+                    function mapear() {
+                        var longitud = document.getElementById('idlong').value;
+                        var latitud = document.getElementById('idlat').value;
+
+
+                        require([
+                            "esri/config",
+                            "esri/Map",
+                            "esri/views/MapView",
+
+                            "esri/Graphic",
+                            "esri/layers/GraphicsLayer"
+                        ], function (esriConfig, Map, MapView, Graphic, GraphicsLayer) {
+
+                            esriConfig.apiKey = "AAPK8e8c52bce90b434993b3ac7dc8de8513H4PmWUKucKEWrkI8o5PfdilQmFYLrOsPdAn8kELRGG30BXcSUg5Lje1D2ZGqTUl6";
+
+                            const map = new Map({
+                                basemap: "arcgis-navigation",
+                            });
+
+                            const view = new MapView({
+                                container: "viewDiv",
+                                map: map,
+                                center: [longitud, latitud], //Longitude, latitude
+                                zoom: 17
+                            });
+
+                            const graphicsLayer = new GraphicsLayer();
+                            map.add(graphicsLayer);
+
+                            const point = {//Create a point
+                                type: "point",
+                                longitude: longitud,
+                                latitude: latitud
+                            };
+                            const simpleMarkerSymbol = {
+                                type: "simple-marker",
+                                style: "circle",
+                                color: "red",
+                                size: "18px",
+                                outline: {
+                                    color: [255, 255, 255],
+                                    width: 1
+                                }
+                            };
+
+                            const pointGraphic = new Graphic({
+                                geometry: point,
+                                symbol: simpleMarkerSymbol
+                            });
+                            graphicsLayer.add(pointGraphic);
+
+                        });
+                    }
+                </script>
+
+                <p:messages id="msgs" globalOnly="true" autoUpdate="true" closable="true" style="text-align: center">
+                    <p:effect type="pulsate" event="load" delay="20" speed="2000"/>
+                </p:messages>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    
+    <groupId>gt.gob.sat.fiscalizacion</groupId>
+    <artifactId>consulta360-core</artifactId>
+    <version>1.7.2</version>
+    <packaging>jar</packaging>
+    
+    <name>consulta360-core</name>
+    <description>Nucleo del proyecto</description>
+    <inceptionYear>2017</inceptionYear>
+    
+    <!-- .......................................................................
+    ... Proyecto principal
+    ........................................................................ -->
+    <parent>
+        <groupId>gt.gob.sat.arquitectura</groupId>
+        <artifactId>sat-jar</artifactId>
+        <version>3.2.0</version>
+    </parent>
+    
+    
+    <!-- .......................................................................
+    ... Informacion de quien desarrolla este artefacto
+    ........................................................................ -->
+    <developers>
+        <developer>
+            <id>adcastic</id>
+            <name>Alvaro Daniel Castillo Carrera</name>
+            <email>adcastic@sat.gob.gt</email>
+        </developer>
+        <developer>
+            <id>dealonzo</id>
+            <name>Douglas Enrique Alonzo Chun</name>
+            <email>dealonzo@sat.gob.gt</email>
+        </developer>
+    </developers>
+    
+    
+    <!-- .......................................................................
+    ... Declaracion de las dependencias del proyecto
+    ........................................................................ -->
+    <repositories>
+        <repository>
+            <id>unknown-jars-temp-repo</id>
+            <name>A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository.</name>
+            <url>file:${project.basedir}/lib</url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>gt.gob.sat.arquitectura</groupId>
+            <artifactId>fwk-java-config</artifactId>
+            <version>3.2.0</version>
+            <scope>compile</scope>
+        </dependency>
+        
+        <!-- ...................................................................
+        ... driver JDBC de oracle, el scope compile solo se debe de colocar cuando
+        ... se van a crear los POJO, despues de esto se debe de cambiar a test.
+        .................................................................... -->
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>${version.ojdbc6}</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- ...................................................................
+        ... Dependencias para las librerias de acceso a datos
+        .................................................................... -->
+        <dependency>
+            <groupId>gt.gob.sat.arquitectura</groupId>
+            <artifactId>fwk-persistencia</artifactId>
+            <version>3.1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        
+        <!-- ...................................................................
+        ... Dependencias de los otros modulos del proyecto
+        .................................................................... -->
+        <dependency>
+            <groupId>gt.gob.sat.fiscalizacion</groupId>
+            <artifactId>consulta360-comun</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.ldap</groupId>
+            <artifactId>spring-ldap-core</artifactId>
+            <version>2.1.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>gt.gob.sat.config.properties</groupId>
+            <artifactId>properties-loader</artifactId>
+            <version>1.0.0</version>
+            <type>jar</type>
+        </dependency>
+        </dependencies>
+</project>

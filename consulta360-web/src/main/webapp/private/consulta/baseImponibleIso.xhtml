@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+
+
+                <p:outputLabel value="Base Imponible ISO" styleClass="tituloVista"/> 
+                <p:fieldset id="fldsPrincipal" rendered="#{SAT_SEGURIDAD_MB.pagina.baseImponibleIso.controles.cmdlnkBaseImponibleIso.rendered}">
+
+                    <script src="../../public/decPre.js" type="text/javascript"></script>
+                    <!--                <style type="text/css">
+                                        .ui-panelgrid.showcase-text-align-center .ui-grid-responsive .ui-panelgrid-cell {
+                                            text-align: center;
+                                        }
+                    
+                                        .customPanelGrid .ui-panelgrid-content {
+                                            align-items: center;
+                                        }
+                                        td{
+                                            border: 0px;
+                                        }
+                                        .ui-panel{
+                                            border: 0px !important;
+                                        }
+                                        .tbl-grl table{
+                                            border: 1px solid #90a6d8;
+                                            border-collapse: collapse !important;
+                                            border-spacing: 0px !important;
+                                            font-family: Verdana,Arial,sans-serif !important;
+                                        }
+                                        .tbl-grl td{
+                                            border: 0.5px solid #90a6d8 !important;
+                                        }
+                                        .tbl-grl th{
+                                            border: 1px solid black !important;
+                                            background-color: #0093a9;
+                                            color: white;
+                                            text-align: center !important;
+                                        }
+                                        .tbl-grl tr:nth-child(1) {
+                                            color: white !important;
+                                            background-color: #4c6dc0;
+                                            text-align: center;
+                                            font-weight: bold !important;
+                                            font-size: 30px !important;
+                                        }
+                                        .sizes {
+                                            max-width: 700px !important;
+                                            min-width: 200px !important;
+                                            white-space: nowrap !important;
+                                            overflow: hidden !important;
+                                        }
+                                        
+                                        
+                                    </style>-->
+
+                    <script>
+
+                        function mostrar() {
+                            document.getElementById('formContent:fldsEditar').setAttribute("style", "display:block");
+                        }
+                        function detalleInd() {
+                            document.getElementById('formContent:mostrarInfo').setAttribute("style", "display:block");
+                        }
+
+                        function showTableInd() {
+                            document.getElementById('formContent:flsTableDeclaraciones').setAttribute("style", "display:block");
+
+                        }
+
+                    </script>
+
+
+                    <div align="left" style="display:#{not empty baseImponibleIsoUI.listDatosBaseImponible ? 'block !important' : 'none !important'}">
+
+                        <h:commandLink action="#{baseImponibleIsoUI.exportare()}">  
+                            <p:graphicImage value="../../resources/images/exportar_excel.png" width="80px"/>  
+                        </h:commandLink> 
+                    </div>
+                    <p:dataGrid columns="4" id="encabezado" var="items" value="#{baseImponibleIsoUI.listDatosEncabezado}" >
+                        <p:dataGrid id="itemUno" var="isr" value="#{baseImponibleIsoUI.listaRegimenIsr}">
+                            <p:dataGrid id="itemDos" var="iso" value="#{baseImponibleIsoUI.listaRegimenIso}">   
+
+
+
+                                <table style="border:none; width:100% !important;">
+                                    <tr>
+                                        <td>
+                                        
+                                            <table style="border-collapse: collapse; width:100%; padding: 100px;">
+                                                <tr>
+                                                    <td class="celdaBorde"><p:outputLabel value="Periodo desde" /></td>
+                                                    <td class="celdaAncho"><p:inputText value="#{baseImponibleIsoUI.fecha_ini}-01" readonly="true" /></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="celdaBorde"><p:outputLabel value="Periodo hasta" /></td>
+                                                    <td class="celdaAncho"><p:inputText value="#{baseImponibleIsoUI.fecha_fin}-12" readonly="true" /></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="celdaBorde"><p:outputLabel value="NIT del contribuyente" /></td>
+                                                    <td class="celdaAncho"><p:inputText value="#{items.nit}" readonly="true" /></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="celdaBorde"><p:outputLabel value="Nombre contribuyente" /></td>
+                                                    <td class="celdaAncho"><p:inputText value="#{items.nombreOrdenado}" readonly="true" /></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="celdaBorde"><p:outputLabel value="Gerencia" /></td>
+                                                    <td class="celdaAncho"><p:inputText value="#{items.gerencia}" readonly="true" /></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="celdaBorde"><p:outputLabel value="Clasificación" /></td>
+                                                    <td class="celdaAncho"><p:inputText value="#{items.clasificacion}" readonly="true" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="celdaBorde"><p:outputLabel value="Región" /></td>
+                                                    <td class="celdaAncho"><p:inputText value="#{items.region}" readonly="true" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="celdaBorde"><p:outputLabel value="Nombre Actividad" /></td>
+                                                    <td class="celdaAncho"><p:inputText value="#{items.actividadEconomica}" readonly="true" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="celdaBorde"><p:outputLabel value="Personería" /></td>
+                                                    <td class="celdaAncho"><p:inputText value="#{items.personeria}" readonly="true" /></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="celdaBorde"><p:outputLabel value="Marca de no localizado" /></td>
+                                                    <td class="celdaAncho"><p:inputText value="#{items.marcaNoLocalizado}" readonly="true" /></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class=""><p:outputLabel value="" /></td>
+                                                    <td class="celdaAncho"><p:inputText value="" readonly="true" /></td>
+                                                </tr>
+
+                                            </table>
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                        
+                                            <table style="border-collapse: collapse; width:90%; padding: 100px;" >
+                                                <tr>
+                                                    <td class="celdaBorde"><p:outputLabel value="Marca Omiso" /></td>
+                                                    <td><p:inputText value="#{items.omiso}" readonly="true" /></td>
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td class="celdaBorde"><p:outputLabel value="Marca Establecimiento" /></td>
+                                                    <td><p:inputText value="#{items.marcaEstablecimiento}" readonly="true" /></td>
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td class="celdaBorde"><p:outputLabel value="Color Plan" /></td>
+                                                    <td><p:inputText value="#{items.nombreColor}" readonly="true" /></td>
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td class="celdaBorde" ><p:outputLabel value="Dirección" /></td>
+                                                    <td><p:inputText value="#{items.direccion}" readonly="true" /></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="celdaBorde" ><p:outputLabel value="Inicio de operaciones negocio 1" /></td>
+                                                    <td><p:inputText value="" readonly="true" /></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="celdaBorde"><p:outputLabel value="Status" /></td>
+                                                    <td><p:inputText value="#{items.status}" readonly="true" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="celdaBorde" ><p:outputLabel value="Afiliación a ISR" /></td>
+                                                    <td><p:inputText value="#{isr.nombreRegimenISR}" readonly="true" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="celdaBorde" ><p:outputLabel value="Afiliación a ISO" /></td>
+                                                    <td><p:inputText value="#{iso.nombreRegimenISO}" readonly="true" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="celdaBorde" ><p:outputLabel value="Fecha afiliación a ISO" /></td>
+                                                    <td><p:inputText value="#{iso.fechaAdicionAfiliacionISO}" readonly="true" /></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="celdaBorde" ><p:outputLabel value="Pérdida consecutiva" /></td>
+                                                    <td><p:inputText value="" readonly="true" /></td>
+                                                </tr> 
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </p:dataGrid> 
+                        </p:dataGrid> 
+                    </p:dataGrid> 
+
+                    <br/><br/>
+
+                    <p:panel>
+
+                        <div align="center" style="overflow: auto; width: 90%; height: 100%">
+
+                            <p:dataTable id="tblDatos" style=" width: 260% "
+                                         paginator="true"
+                                         rendered="#{baseImponibleIsoUI.listDatosBaseImponible.size()>0}"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink}
+                                         {PreviousPageLink} {PageLinks} {NextPageLink}
+                                         {LastPageLink}"
+                                         currentPageReportTemplate="Pág. ({currentPage} de {totalPages})"
+                                         rows="10" 
+                                         paginatorPosition="bottom"
+                                         ariaRowLabel="true"        
+                                         var="datos"                                           
+                                         value="#{baseImponibleIsoUI.listDatosBaseImponible}">
+                                <p:column  headerText="Periodo desde ISR" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.periodo_desde_isr}" style="width:150px !important;"></h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Periodo hasta ISR" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.periodo_hasta_isr}" style="width:150px !important;" >
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Fecha recaudo ISR" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.fecha_recaudo_isr}" style="width:150px !important;"></h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Año impositivo ISR" style="width:10px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.anio_impositivo_isr}" style="width:150px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Codigo Formulario ISR" style="width:15px !important; text-align: center" styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.codigo_formulario_isr}" style="width:150px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Numero Formulario ISR" style="width:30px !important; font-size: 6.5px" styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.numero_formulario_isr}" style="width:150px !important;" >
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Status Formulario ISR" style="width:15px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.status_formulario_isr}" style="width:150px !important;" ></h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Periodo Desde ISO" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.periodo_desde_iso}" style="width:150px !important;"></h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Periodo Hasta ISO" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.periodo_hasta_iso}" style="width:150px !important;"></h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Fecha recaudo ISO" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.fecha_recaudo_iso}" style="width:150px !important; "></h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Año Impositivo ISO" style="width:15px !important; text-align: center" styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.anio_impositivo_iso}" style="width:150px !important;" ></h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Codigo formulario ISO" style="width:15px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.codigo_formulario_iso}" style="width:150px !important;" >
+                                    </h:outputText>
+                                </p:column> 
+
+                                <p:column headerText="Numero Formulario ISO" style="width:35px !important; font-size: 6.5px" styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.numero_formulario_iso}" style="width:150px !important;"></h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Trimestre" style="width:15px !important; text-align: center" styleClass="colorBackground ">
+                                    <h:outputText  value="#{datos.trimestre}" style="width:150px !important; "></h:outputText>
+                                </p:column> 
+
+                                <p:column  headerText="Total ingresos brutos por Servicios prestados" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText value="#{datos.total_ingresos_brutos_por_servicios_prestados}" style="width:150px !important;">
+                                    </h:outputText>
+                                </p:column> 
+
+                                <p:column  headerText="Total ingresos brutos por ventas" style="width:15px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.total_ingresos_brutos_por_ventas}" style="width:150px !important;"></h:outputText>
+                                </p:column> 
+
+                                <p:column  headerText="Costo de ventas" style="width:15px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.costo_de_ventas}" style="width:150px !important;"></h:outputText>
+                                </p:column> 
+
+                                <p:column  headerText="Total ingresos brutos (-) costo de ventas" style="width:30px !important; font-size: 6.5px; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.total_ingresos_brutos_costo_de_ventas}" style="width:150px !important;"></h:outputText>
+                                </p:column> 
+
+                                <p:column  headerText="% Margen Bruto" style="width:15px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.porcentaje_margen_bruto}" style="width:150px !important;"></h:outputText>
+                                </p:column> 
+
+                                <p:column  headerText="%Margen bruto según contribuyente" style="width:15px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.porcentaje_margen_bruto_segun_contribuyente}" style="width:150px !important;"></h:outputText>
+                                </p:column> 
+
+                                <p:column  headerText="Diferencia % margen bruto" style="width:15px !important; text-align: center " styleClass="colorGreen">
+                                    <h:outputText  value="#{datos.diferencia_porcentaje_margen_bruto}" style="width:150px !important;"></h:outputText>
+                                </p:column> 
+
+                                <p:column  headerText="Total Activo" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.total_activo}" style="width:150px !important;"></h:outputText>
+                                </p:column> 
+
+                                <p:column  headerText="Depr.Amor.Creditos L. y reserva" style="width:30px !important; font-size: 6.5px" styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.depr_amor_creditos_l_y_reserva}" style="width:150px !important;"></h:outputText>
+                                </p:column> 
+
+                                <p:column  headerText="Activo neto según SAT" style="width:20px !important; font-size: 6.5px" styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.activo_neto_segun_sat}" style="width:150px !important;"></h:outputText>
+                                </p:column> 
+
+                                <p:column  headerText="Activo neto según Contribuyente" style="width:30px !important; font-size: 6.5px" styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.activo_neto_segun_contribuyente}" style="width:150px !important;"></h:outputText>
+                                </p:column> 
+
+                                <p:column  headerText="Diferencia activo neto" style="width:30px !important; font-size: 6.5px" styleClass="colorGreen">
+                                    <h:outputText  value="#{datos.diferencia_activo_neto}" style="width:150px !important;"></h:outputText>
+                                </p:column> 
+
+                                <p:column  headerText="Base imponible según activo neto según SAT" style="width:30px !important; font-size: 6.5px" styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.base_imponible_segun_activo_neto_segun_sat}" style="width:150px !important;"></h:outputText>
+                                </p:column> 
+
+                                <p:column  headerText="Impuesto determinada según activo neto" style="width:35px !important; font-size: 6.5px" styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.impuesto_determinado_segun_activo_neto}" style="width:150px !important;">
+                                    </h:outputText>
+                                </p:column> 
+
+                                <p:column  headerText="Renta bruta" style="width:35px !important; font-size: 6.5px; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.renta_bruta}" style="width:15px !important;"></h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Rentas no afectadas" style="width:15px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.rentas_no_afectas}" style="width:150px !important;"></h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Total de ingresos otras categorias de rentas" style="width:15px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.total_ingresos_otras_categorias_de_renta}" style="width:150px !important;"></h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Ingresos por negociación de bienes y/o derechos que no sean del giro habitual" style="width:15px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.ingresos_por_negociacion_de_bienes_derechos_y_o_derechos_que_no_sean_del_giro_habitual}" style="width:150px !important;"></h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Total ingresos brutos" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.total_ingresos_brutos}" style="width:15px !important;"></h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Ingresos por resarcimientos provenientes de contratos de seguro" style="width:15px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.ingresos_por_resarcimientos_provenientes_de_contratos_de_seguro}" style="width:150px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Ingresos por resarcimientos provenientes de contrato de reaseguro" style="width:15px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.ingresos_por_resarcimientos_provenientes_de_contratos_de_reaseguro}" style="width:150px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Ingresos por resarcimiento provenientes de contratos de reafianzamiento" style="width:15px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.ingresos_por_resarcimientos_provenientes_de_contratos_de_reafianzamiento}" style="width:150px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Primas cedidas de seguro y de reafianzamiento" style="width:15px !important; text-align: center" styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.primas_cedidas_de_seguro_y_reafianzamiento}" style="width:15px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Ingresos brutos menos exclusiones según SAT" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.ingresos_brutos_menos_exclusiones_segun_sat}" style="width:15px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Ingresos brutos menos exclusiones según contribuyente" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.ingresos_brutos_menos_exclusiones_segun_contribuyente}" style="width:15px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+
+
+                                <p:column  headerText="Diferencia en ingresos brutos menos exclusiones" style="width:30px !important; font-size: 6.5px " styleClass="colorGreen">
+                                    <h:outputText  value="#{datos.diferencia_en_ingresos_brutos_menos_exclusiones}" style="width:150px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Base imponible (segun ingreso brutos)" style="width:30px !important; font-size: 6.5px" styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.diferencia_en_ingresos_brutos_menos_exclusiones}" style="width:15px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Impuesto (según ingresos brutos)" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.impuesto_segun_ingresos_brutos}" style="width:15px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Impuesto(según Activo Neto)" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.impuesto_determinado_segun_activo_neto}" style="width:15px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Impuesto determinado" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.impuesto_determinado}" style="width:15px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Impuesto determinado según contribuyente" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.impuesto_determinado_segun_contribuyente}" style="width:150px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="IUSI" style="width:5px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.iusi}" style="width:150px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+
+                                <p:column  headerText="Potencial Impuesto de solidaridad" style="width:15px !important; " styleClass="colorYellow">
+                                    <h:outputText  value="#{datos.potencial_de_impuesto_de_solidaridad}" style="width:150px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Saldo no acreditado" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.saldo_no_acreditado}" style="width:150px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Valor de ISR a acreditar en este periodo" style="width:15px !important; " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.valor_de_isr_a_acreditar_en_este_periodo}" style="width:150px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Impuesto" style="width:15px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.impuesto}">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Impuesto sobre la renta" style="width:35px !important; font-size: 6.5px; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.impuesto_sobre_la_renta}" style="width:150px !important;">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  headerText="Potencial impuesto de solidaridad 4to Trimestre" style="width:15px !important; text-align: center " styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.potencial_impuesto_de_solidaridad_4to_trimestre}" style="width:150px !important;">
+                                    </h:outputText>
+                                </p:column>
+                                <p:column  headerText="Potencial de Recaudo" style="width:35px !important; font-size: 6.5px" styleClass="colorBackground">
+                                    <h:outputText  value="#{datos.potencial_de_recaudo}" style="width:150px !important;">
+                                    </h:outputText> 
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </p:panel>
+                    <br /><br />
+                </p:fieldset>
+
+                <p:messages id="msgs" globalOnly="true" autoUpdate="true" closable="true" style="text-align: center">
+                    <p:effect type="pulsate" event="load" delay="20" speed="2000"/>
+                </p:messages>
+            </ui:define> 
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+   
+    <!-- <table-filter match-schema="SAT_FISCALIZACION" match-name="CONSULTA360_BITACORA"/>
+    <table-filter match-schema="SAT_FISCALIZACION" match-name="CIF_VERIFICACIONES_EN_CAMPO"/>
+    <table-filter match-schema="SAT_FISCALIZACION" match-name="CIF_CLASES_DECLARACIONES"/>
+    <table-filter match-schema="SAT_FISCALIZACION" match-name="CIF_DECLARACIONES_PRESENTADAS"/>
+    <table-filter match-schema="SAT_FISCALIZACION" match-name="CIF_HISTORIAL_CARGAS"/> 
+    <table-filter match-schema="SAT_FISCALIZACION" match-name="CIF_DETALLE_ARCHIVO_TIPOLOGIA"/>
+    <table-filter match-schema="SAT_FISCALIZACION" match-name="CIF_TIPOLOGIAS_DE_EVASION"/>
+    <table-filter match-schema="SAT_FISCALIZACION" match-name="CIF_CLASES_TIPOLOGIAS"/>
+    <table-filter match-schema="SAT_FISCALIZACION" match-name="CIF_CARGA_TEMPORAL_TIPOLOGIAS"/>
+    <table-filter match-schema="SAT_FISCALIZACION" match-name="CIF_CARGA_VERIFICACIONES_CAMPO"/>-->
+    <table-filter match-schema="SAT_FISCALIZACION" match-name="CIF_CARGA_TEMP_VERIFICACIONES"/>
+</hibernate-reverse-engineering>

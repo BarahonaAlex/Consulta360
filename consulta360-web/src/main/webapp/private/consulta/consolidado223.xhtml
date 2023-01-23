@@ -1,0 +1,986 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <f:view contentType="text/html" locale="en">
+        <body>
+            <ui:composition template="../../template/common/layout.xhtml"> 
+                <ui:define name="data" >    
+                    <p:messages globalOnly="true" autoUpdate="false" closable="true"/>
+                    <p:fieldset class="oculto" style="background: #E9F3F5; background-image: url(../../resources/images/cintillo.jpg); background-position: right; background-repeat: no-repeat; height: 110px" />
+                    <center>
+                        <p:panel id="panelInicial" style="background: rgb(140,160,201); width: 100%; height:100%;" >
+                            <div class="celdaNula text-center"> <p class="text-center celdaNula"></p></div>
+                            <p:panelGrid columns="3" 
+                                         columnClasses="title2, title1, title2" 
+                                         class="cell2">
+                                <p:column>
+                                    <p:outputLabel value="#{msgs['consolidado.sat']}" class="titulos"/>
+                                    <br/>
+                                    <p:outputLabel value="#{msgs['consolidado.superIntendencia']}" styleClass="textoAzul" style=" padding: 2px !important"/>      
+                                </p:column>     
+                                <p:outputLabel value="#{msgs['consolidado.ivaGeneral']}" styleClass="textoAzul" class="titulos"/>
+                                <p:outputLabel value="SAT-223" styleClass="textoAzul" class="titulos"/>
+                                <p:outputLabel value="" />
+                                <p:outputLabel value="#{msgs['consolidado.impuestoValor']}" styleClass="textoAzul"/>
+                                <p:outputLabel value="" />
+                            </p:panelGrid>
+                            <div> <p class="text-center celdaNula"></p></div>
+                            <p:panelGrid columns="1" style="text-align: center !important; padding: 1px 10px!important"
+                                         class="cell2 " >
+                                <p:outputLabel value="1. #{msgs['consolidado.contribuyente']}" />
+                                <p:outputLabel value="#{consolidado223UI.nit}" />
+                                <p:outputLabel value="#{consolidado223UI.nombreContribuyente}" />
+                            </p:panelGrid>
+                            <div> <p class="text-center celdaNula"></p></div>
+                            <p:panelGrid columns="1" style="text-align: center !important"
+                                         class="cell2" >
+                                <p:outputLabel value="#{msgs['consolidado.msjPeriodo']}"/>
+                                <p:outputLabel value="#{msgs['consolidado.consolidado']}" />
+                                <p:outputLabel value="#{consolidado223UI.periodo}" style="font-weight: bold !important"/> 
+                                <p:outputLabel value="AÑO: #{consolidado223UI.anio}"  class="textoConsolidado"/>
+                            </p:panelGrid>
+                            <div> <p class="text-center celdaNula"></p></div>
+                            <!--3. DÉBITO FISCAL POR OPERACIONES LOCALES-->
+                            <p:panelGrid class="cell2" >       
+                                <p:row>
+                                    <p:column class="columna1 title1 encabezado">#{msgs['consolidado.msjDebitoFiscalLocal']}</p:column>
+                                    <p:column class="columna2 title2 encabezado">#{msgs['consolidado.msjBase']}</p:column>
+                                    <p:column class="columna2 title2 encabezado">#{msgs['consolidado.msjDebitos']}</p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjVentasServiciosExentos']}</p:column>
+                                    <p:column class="columna2" >                                   
+                                        <h:outputText value="#{consolidado223UI.consolidado.ventaExenta}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>  
+                                        </h:outputText>
+                                    </p:column>  
+                                    <p:column class="columna2 celdaNula"></p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjVentasMedicamentos']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.ventaMedicamentos}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>  
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 celdaNula"></p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1" >#{msgs['consolidado.msjVentasNoAfectas']}</p:column>
+                                    <p:column class="columna2"><h:outputText value="#{consolidado223UI.consolidado.ventasNoAfectas}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>  
+                                        </h:outputText></p:column>
+                                    <p:column class="columna2 celdaNula"></p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjVentasVehiculosAniosAnteriores']}</p:column>
+                                    <p:column class="columna2"><h:outputText value="#{consolidado223UI.consolidado.ventasVehiculos}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>    
+                                        </h:outputText></p:column>
+                                    <p:column class="columna2 celdaNula"></p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjVentasVehiculosAnioActual']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.ventaVehiculosAct}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.ventaVehiculoActDeb}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjVentasGravadas']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.baseVentasGrabadas}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.debitoVentasGrabadas}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+
+                                    </p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjServiciosGravados']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.baseServiciosPrestados}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.debidoServiciosPrestados}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjSumatoriaBaseDebitos']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.sumaBaseDebitos}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.sumatoriaDebLocales}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:row>
+                            </p:panelGrid>
+                            <!--3. FIN DÉBITO FISCAL POR OPERACIONES LOCALES-->
+                            <div><p class="text-center celdaNula"></p></div>
+                            <!-- INICIO DE CUERPO DE 4. OPERACIONES DE EXPORTACIÓN-->
+                            <p:panelGrid class="cell2" >   
+                                <p:row>
+                                    <p:column class="columna3 title1 encabezado">#{msgs['consolidado.msjOperacionesExportacion']}</p:column>
+                                    <p:column class="columna2 encabezado"></p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3">#{msgs['consolidado.msjExpotacionesCentroAmerica']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.exportacionCa}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3">#{msgs['consolidado.msjExportacionesMundo']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.exportacionMundo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3">#{msgs['consolidado.msjVentasMedicamentos']}</p:column>
+                                    <p:column class="columna2"> 
+                                        <h:outputText value="#{consolidado223UI.consolidado.ventasMedicamentosExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText></p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3">#{msgs['consolidado.msjVentasVehiculosAniosAnteriores']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.ventasVehiculosExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3">#{msgs['consolidado.msjVentasVehiculosAnioActual']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.ventasVehiculoActExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3">#{msgs['consolidado.msjSumatoriaExpotaciones']}</p:column>
+                                    <p:column class="columna2" style="font-weight: bold !important">
+                                        <h:outputText value="#{consolidado223UI.consolidado.sumaBaseDebitosExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3">#{msgs['consolidado.msjCreditoFiscalRecibicdo']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.creditoRecibidoExportadores}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3">#{msgs['consolidado.msjDebitoFacturasEspeciales']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.debitoFactExportadores}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                            <div><p class="text-center celdaNula"></p></div>
+                            <p:panelGrid class="cell2" >          
+                                <p:row>
+                                    <p:column class="columna3">#{msgs['consolidado.msjTotalDetDebitoFiscal']}</p:column>
+                                    <p:column class="columna2" style="font-weight: bold !important">
+                                        <h:outputText value="#{consolidado223UI.consolidado.sumatoriaDebitosExp}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>        
+                                </p:row>
+                            </p:panelGrid>
+                            <!-- FIN DE CUERPO DE 4. OPERACIONES DE EXPORTACIÓN-->
+
+                            <div><p class="text-center celdaNula"></p></div>
+                            <!-- INICIO DE CUERPO DE 5. CRÉDITO FISCAL POR OPERACIONES LOCALES-->
+                            <p:panelGrid class="cell2" >       
+                                <p:row>
+                                    <p:column class="columna1 title1 encabezado">#{msgs['consolidado.msjCreditoFiscalLocal']}</p:column>
+                                    <p:column class="columna2 title2 encabezado">#{msgs['consolidado.msjBase']}</p:column>
+                                    <p:column class="columna2 title2 encabezado">#{msgs['consolidado.msjCreditos']}</p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjComprasMedicamentos']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.compraMedicamentos}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 celdaNula"></p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjComprasServiciosPeqContibuyente']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.comprasPeqContribuyentes}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 celdaNula"></p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjComprasNoAfectas']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.comprasNoAfectas}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 celdaNula"></p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjComprasVehiculosAniosAnteriores']}</p:column>
+                                    <p:column class="columna2 celdaNula"></p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.comprasVehiculos}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:row>
+
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjComprasVehiculosAnioActual']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.comprasVehiculosAct}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.comprasVehiculosActCred}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:row>
+
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjComprasCompustibles']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.comprasCombustibles}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.creditosComprasCombustible}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:row>
+
+
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjOtrasCompras']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.otrasComprasBase}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.otrasComprasCreditos}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjServiciosAdquiridos']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.baseServAdquiridos}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.creditosServAdquiridos}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:row>       
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjImportacionesCentroAmerica']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.importacionesCaBase}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.importacionesCaCreditos}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjImportacionesMundo']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.importacionesMundoBase}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.importacionesMundoCreditos}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjComprasActivosFijos']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.comprasActivosFijosBase}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.comprasActivosFijosCreditos}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjImportacionesActivosFijos']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.importacionesActivosFijosBase}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.importacionesActivosFijosCred}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:row>
+
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjIVAConstanciasExencion']}</p:column>
+                                    <p:column class="columna2 celdaNula"></p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.ivaExencionRecibida}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjRemaneneteCreditoFical']}</p:column>
+                                    <p:column class="columna2 celdaNula"></p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.remanenteConsolidado.remanente5}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjSumatoriaBaseCreditos']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.sumatoriaColBaseCreditosBase}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.sumatoriaCredLocal}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:row>
+                            </p:panelGrid>
+                            <div class="table" style="page-break-before: always"/> 
+                            <div><p class="text-center celdaNula"></p></div>
+                            <!-- FIN DE CUERPO DE 5. CRÉDITO FISCAL POR OPERACIONES LOCALES-->
+
+                            <!-- INICIO DE CUERPO DE 6. CRÉDITO FISCAL POR OPERACIONES DE EXPORTACIÓN-->
+                            <p:panelGrid class="cell2" >          
+                                <p:row>
+                                    <p:column class="columna1 title1 encabezado">#{msgs['consolidado.msjCreditoFiscalExportaciones']}</p:column>
+                                    <p:column class="columna2 title2 encabezado">#{msgs['consolidado.msjBase']}</p:column>
+                                    <p:column class="columna2 title2 encabezado">#{msgs['consolidado.msjCreditos']}</p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjComprasServiciosPeqContibuyente']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.comprasServiciosAdquiridosPeq}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 celdaNula"></p:column> 
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjComprasCompustibles']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.comprasCombustiblesBaseExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.comprasCombustiblesCredExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>                                    
+                                    </p:column> 
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjOtrasCompras']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.otrasComprasBaseExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.otrasComprasCreditosExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column> 
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjServiciosAdquiridos']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.serviciosADquiridosBase}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.serviciosAdquiridosCreditos}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column> 
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjImportacionesCentroAmerica']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.importacionesCaBaseExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.importaciones}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column> 
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjImportacionesMundo']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.importacionesMundoBaseExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.importacionesMundoCreditoExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column> 
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjComprasActivosFijos']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.comprasActivosVincBaseExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.comprasActivosVincCrediosExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column> 
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjImportacionesActivosFijos']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.importacionesFijosVincBaseExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.importacionesFijosVincCredExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column> 
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjRemaneneteCreditoFical']}</p:column>
+                                    <p:column class="columna2 celdaNula"></p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.remanenteConsolidado.remanente6}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column> 
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjCreditoFacturasEspeciales']}</p:column>
+                                    <p:column class="columna2 celdaNula"></p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.creditoFacturasEmitidasExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column> 
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjRetencionesExportadores']}</p:column>
+                                    <p:column class="columna2 celdaNula">                                   
+                                    </p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.retencionPracticadasExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column> 
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1">#{msgs['consolidado.msjSumatoriaBaseCreditos']}</p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.consolidado.sumatoriaColBaseCredBaseExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2">
+                                        <h:outputText value="#{consolidado223UI.sumatoriaCredExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column> 
+                                </p:row>
+                            </p:panelGrid>
+                            <div><p class="text-center celdaNula"></p></div>
+                            <p:panelGrid class="cell2" >
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjTotalDetCreditoFiscal']}</p:column>
+                                    <p:column class="columna2 " style="font-weight: bold !important">
+                                        <h:outputText value="#{consolidado223UI.totalDeterminacion}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                
+                                </p:row>
+                            </p:panelGrid>
+                            <div><p class="text-center celdaNula"></p></div>
+                            <!-- FIN DE CUERPO DE 6. CRÉDITO FISCAL POR OPERACIONES DE EXPORTACIÓN-->
+                            <!-- INICIO DE CUERPO DE 7. DETERMINACIÓN DEL CRÉDITO FISCAL O IMPUESTO A PAGAR-->
+                            <p:panelGrid class="cell2" >
+                                <p:row>                                
+                                    <p:column class="columna4 title1 encabezado">#{msgs['consolidado.msjCreditoFiscalImpuestoXPagar']}</p:column>
+                                    <p:column class="columna5 encabezado"></p:column>                                                                   
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna4 ">#{msgs['consolidado.msjCreditoFiscalLocalxPagar']}</p:column>
+                                    <p:column class="columna5 ">
+                                        <h:outputText value="#{consolidado223UI.creditoFiscalConsolidado.credFiscalLocal}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                                                   
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna4 ">#{msgs['consolidado.msjCreditoFiscalExportacionxPagar']}</p:column>
+                                    <p:column class="columna5 ">
+                                        <h:outputText value="#{consolidado223UI.creditoFiscalExp}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                                                   
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna4 ">#{msgs['consolidado.msjImpuestoTotalLocal']}</p:column>
+                                    <p:column class="columna5 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.impuestoTotalDeterminadoLocal}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                                                   
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna4 ">#{msgs['consolidado.msjImpuestoTotalExportacion']}</p:column>
+                                    <p:column class="columna5 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.impuestoTotalDeterminadoExpo}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                                                   
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna4 ">#{msgs['consolidado.msjCreditoFiscalPeriodoSiguiente']}</p:column>
+                                    <p:column class="columna5 ">
+                                        <h:outputText value="#{consolidado223UI.creditoFiscalConsolidado.crediFiscalExp}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                                                   
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna4" style="font-weight: bold !important">#{msgs['consolidado.msjSaldoImpuestos']}</p:column>
+                                    <p:column class="columna5 ">                                   
+                                        <h:outputText value="#{consolidado223UI.saldoImpuesto}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+
+                                    </p:column>                                                                   
+                                </p:row>
+
+                            </p:panelGrid>
+                            <p:panelGrid class="cell2" >                           
+                                <p:row>
+                                    <p:column class="columna1" style="width:49.9% !important">#{msgs['consolidado.msjRemanenteIVAPeriodoAnterior']}</p:column>
+                                    <p:column class="columna5">
+                                        <h:outputText value="#{consolidado223UI.remanenteConsolidado.remanente7}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna5 celdaNula"></p:column>                                                                   
+                                </p:row>
+                            </p:panelGrid>
+                            <p:panelGrid class="cell2" >                           
+                                <p:row>
+                                    <p:column style="width: 20%">#{msgs['consolidado.msjAcreditamientoCuentaBancaria']}</p:column>
+                                    <p:column class="columna5">#{msgs['consolidado.msjNoResolucion']}</p:column>
+                                    <p:column class="columna5">0                                      </p:column>
+                                    <p:column class="columna5">#{msgs['consolidado.msjMontoAcreditado']}</p:column>
+                                    <p:column class="columna5 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.montoAcreditado}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna5 celdaNula"></p:column>      
+                                </p:row>
+                            </p:panelGrid>
+                            <p:panelGrid class="cell2" >                                                      
+                                <p:row>
+                                    <p:column class="columna4">#{msgs['consolidado.msjRemanenteIVAPeriodoActual']}</p:column>
+                                    <p:column class="columna5">
+                                        <h:outputText value="#{consolidado223UI.remanenteRetencionIVA}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                                                   
+                                </p:row>   
+                                <p:row>
+                                    <p:column class="columna4">#{msgs['consolidado.msjRetencionesIVAPeriodoActual']}</p:column>
+                                    <p:column class="columna5">
+                                        <h:outputText value="#{consolidado223UI.consolidado.constanciasRetencionIvaRecPer}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                                                   
+                                </p:row>   
+                                <p:row>
+                                    <p:column class="columna4">#{msgs['consolidado.msjSaldoRetencionesIVA']}</p:column>
+                                    <p:column class="columna5">
+                                        <h:outputText value="#{consolidado223UI.saldoRetenciones}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                                                   
+                                </p:row>   
+                                <p:row>
+                                    <p:column class="columna4" style="font-weight: bold !important">#{msgs['consolidado.msjSubTotalImpuesto']}</p:column>
+                                    <p:column class="columna5" style="font-weight: bold !important">
+                                        <h:outputText value="#{consolidado223UI.subTotalImpuesto}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                                                   
+                                </p:row>   
+                            </p:panelGrid>
+                            <p:panelGrid class="cell2" >                           
+                                <p:row>
+                                    <p:column style="width: 20%">#{msgs['consolidado.msjResolucionCompensacion']}</p:column>
+                                    <p:column class="columna5">0</p:column>
+                                    <p:column class="columna5">#{msgs['consolidado.msjNoCompensado']}</p:column>
+                                    <p:column class="columna5">
+                                        <h:outputText value="#{consolidado223UI.consolidado.saldoNoCompensado}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna5 ">#{msgs['consolidado.msjValorCompensar']}</p:column>
+                                    <p:column class="columna5 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.valorCompensarPeriodoActual}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>      
+                                </p:row>
+                            </p:panelGrid>
+                            <p:panelGrid class="cell2" >                                                      
+                                <p:row>
+                                    <p:column class="columna4" style="font-weight: bold !important">#{msgs['consolidado.msjImpuestoaPagar']}</p:column>
+                                    <p:column class="columna5" style="font-weight: bold !important">
+                                        <h:outputText value="#{consolidado223UI.impuestoPagar}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                                                   
+                                </p:row>                           
+                            </p:panelGrid>
+
+                            <div><p class="text-center celdaNula"></p></div>
+                            <!-- FIN DE CUERPO DE 7. DETERMINACIÓN DEL CRÉDITO FISCAL O IMPUESTO A PAGAR-->
+                            <!-- INICIO DE CUERPO DE INDICADORES COMERCIALES 8.-->
+                            <p:panelGrid class="cell2" >
+                                <p:row>                                
+                                    <p:column class="title1 encabezado">#{msgs['consolidado.msjIndicadoresComerciales']}</p:column>                               
+                                </p:row>
+                            </p:panelGrid>
+                            <p:panelGrid class="cell2" >
+
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjIndicadoresDebitosCreditos']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.indicadoresComerciales}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.patNormal']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjReazonDebitosCreditos']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.razonVenta}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                
+                                </p:row>
+                            </p:panelGrid>
+                            <!-- FIN DE CUERPO DE INDICADORES COMERCIALES 8.-->
+                            <!-- INICIO DE CUERPO DE 9. CANTIDAD DE OPERACIONES REALIZADAS-->
+                            <div><p class="text-center celdaNula"></p></div>
+                            <p:panelGrid class="cell2" >
+                                <p:row>                                
+                                    <p:column class="columna1 title1 encabezado">#{msgs['consolidado.msjOperacionesRealizadas']}</p:column>
+                                    <p:column class="columna2 encabezado">#{msgs['consolidado.msjEmitidas']}</p:column>
+                                    <p:column class="columna2 encabezado">#{msgs['consolidado.msjRecibidas']}</p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1 ">#{msgs['consolidado.msjTotalFacturas']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.cantidadFacturasEmitidas}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.patNormal']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.cantidadFacturasRecibidas}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.patNormal']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1 ">#{msgs['consolidado.msjConstanciasExencion']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.cantidadConstanciasExencionEm}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.patNormal']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.cantidadConstanciasExencionRec}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.patNormal']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1 ">#{msgs['consolidado.msjConstaciaInsumos']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.cantConstanciasAdqInsumosEm}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.patNormal']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.cantConstanciasAdqInsumosRec}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.patNormal']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1 ">#{msgs['consolidado.msjConstancasRetencionIVA']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.cantConstanciasRetencionIvaEm}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.patNormal']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.cantConstanciasRetencionIvaRec}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.patNormal']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna1 ">#{msgs['consolidado.msjFacturasEspeciales']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.cantidadFacturasEspecialesEm}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.patNormal']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.cantidadFacturasEspecialesRec}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.patNormal']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                
+                                </p:row>
+                            </p:panelGrid>
+                            <!-- FIN DE CUERPO DE 9. CANTIDAD DE OPERACIONES REALIZADAS-->
+                            <!-- INICIO DE CUERPO DE 10. RECTIFICACION-->
+
+                            <div><p class="text-center celdaNula"></p></div>
+                            <p:panelGrid class="cell2" >
+                                <p:row>                                
+                                    <p:column class="title1 encabezado">#{msgs['consolidado.msjRectifiacion']}</p:column>                               
+                                </p:row>
+                            </p:panelGrid>
+                            <p:panelGrid class="cell2" >                            
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjNoFormRectificacion']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="0" ><!-- numeo rectificacion-->
+                                            <f:convertNumber  pattern="#{msgs['consolidado.patNormal']}"/>   
+                                        </h:outputText>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjImpuestoAnterior']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.impuestoIngresadoFormularioRec}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjImpuestoaPagar']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.impuestoPagarRect}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjImpuestoaFavor']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.impuestoFavorContribuyente}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                              
+                                </p:row>                           
+                            </p:panelGrid>
+                            <!-- FIN DE CUERPO DE 10. RECTIFICACION-->
+
+                            <!-- INICIO DE CUERPO DE 11. ACCESORIOS-->
+                            <div><p class="text-center celdaNula"></p></div>
+
+                            <p:panelGrid class="cell2" >
+                                <p:row>                                
+                                    <p:column class="title1 encabezado">#{msgs['consolidado.msjAccesorios']}</p:column>                               
+                                </p:row>
+                            </p:panelGrid>
+                            <p:panelGrid class="cell2" >                            
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjMultaFormal']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.multaFormal}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>   
+
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjMultaOmision']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.multaOmision}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjMultaRectificacion']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.multaRectificacion}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjInteresAccesorios']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.intereses}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                              
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjMoraAccesorios']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.mora}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                              
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjAccesoriosaPagar']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.accesoriosPagar}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                              
+                                </p:row>
+                            </p:panelGrid>
+                            <div><p class="text-center celdaNula"></p></div>                        
+                            <p:panelGrid class="cell2" >                                                      
+                                <p:row>
+                                    <p:column class="columna3" style="font-weight: bold !important">#{msgs['consolidado.msjTotalaPagar']}</p:column>
+                                    <p:column class="columna2 ">
+                                        <h:outputText value="#{consolidado223UI.consolidado.totalPagar}" >
+                                            <f:convertNumber  pattern="#{msgs['consolidado.pattern']}"/>   
+                                        </h:outputText>
+                                    </p:column>                                                                   
+                                </p:row>                           
+                            </p:panelGrid>
+                            <!-- FIN DE CUERPO DE 11. ACCESORIOS-->
+                            <div class="table" style="page-break-before: always"/> 
+                            <!-- INICIO DE CUERPO DE 12. CONTADOR-->
+                            <div><p class="text-center celdaNula"></p></div>
+                            <p:panelGrid class="cell2" >
+                                <p:row>                                
+                                    <p:column class="title1 encabezado">#{msgs['consolidado.msjContador']}</p:column>                               
+                                </p:row>
+                            </p:panelGrid>
+                            <p:panelGrid class="cell2" >
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjNITContador']}</p:column>
+                                    <p:column class="columna2 ">0</p:column>                                
+                                </p:row>                            
+                            </p:panelGrid>
+                            <!-- FIN DE CUERPO DE 12. CONTADOR-->
+                            <!-- INICIO DE CUERPO DE 13. CODIGOS-->
+                            <div><p class="text-center celdaNula"></p></div>
+                            <p:panelGrid class="cell2" >
+                                <p:row>                                
+                                    <p:column class="title1 encabezado">#{msgs['consolidado.msjCodigos']}</p:column>                               
+                                </p:row>
+                            </p:panelGrid>
+                            <p:panelGrid class="cell2" >                            
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjCodFacturasEspeciales']}</p:column>
+                                    <p:column class="columna2 ">0</p:column>                                
+                                </p:row>
+                                <p:row>
+                                    <p:column class="columna3 ">#{msgs['consolidado.msjCodResumenFacturacion']}</p:column>
+                                    <p:column class="columna2 ">0</p:column>                                
+                                </p:row>
+
+                            </p:panelGrid>
+                            <div><p class="text-center celdaNula"></p></div>
+                            <center>
+                                <a href="javascript:window.print()"><img src="#{request.getContextPath()}/resources/images/icon-printer2.jpg" class="oculto" width="50" height="50" alt="Imprimir" title="Imprimir"/></a>
+                            </center>                       
+                        </p:panel>
+                    </center>
+                </ui:define>   
+            </ui:composition>
+        </body>
+    </f:view>
+</html>

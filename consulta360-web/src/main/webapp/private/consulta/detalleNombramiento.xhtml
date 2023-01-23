@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head> 
+    </h:head>
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:fieldset id="fldsPrincipal" rendered="#{not empty detalleNombramientoUI.trayectoriaNombramiento or empty detalleNombramientoUI.trayectoriaNombramiento}">
+                    <p:commandLink onclick="window.location.href='nombramientos.jsf?pNit=#{detalleNombramientoUI.encabezadoNombramiento.nit}'">
+                        <p:outputLabel value="Auditor&iacute;as" styleClass="tituloVista"/>
+                    </p:commandLink>
+                    <p:commandLink action="#{detalleNombramientoUI.setSeccionActiva(1)}" update="fldsPrincipal">
+                        <p:outputLabel value=" - Trayectoria (#{detalleNombramientoUI.encabezadoNombramiento.nombramiento})" styleClass="tituloVista"/>
+                    </p:commandLink>
+                    <p:outputLabel value=" - Informes (Fin de Auditor&iacute;a)" styleClass="tituloVista" rendered="#{detalleNombramientoUI.seccionActiva eq 2}"/>
+                    <p:separator/>
+                    <center><p:messages><p:effect type="bounce" event="load"/></p:messages></center>
+                    <div style="display: #{detalleNombramientoUI.seccionActiva eq 1 ? 'block' : 'none'}">
+                        <div align="right">
+                            <p:commandLink  action="#{detalleNombramientoUI.generarHojaPreliminar}" update="fldsPrincipal">
+                                <p:graphicImage library="images" name="page_process.png" title="Generar hoja preliminar"/>
+                            </p:commandLink>
+                            <p:commandLink  action="#{detalleNombramientoUI.reimprimirNombramiento}" update="fldsPrincipal">
+                                <p:graphicImage library="images" name="printer.png" title="Reimprimir nombramiento"/>
+                            </p:commandLink>
+                            <p:commandLink  action="#{detalleNombramientoUI.reimprimirRequerimientosInformacion}" update="fldsPrincipal">
+                                <p:graphicImage library="images" name="printer_search.png" title="Reimprimir requerimientos de informaci&oacute;n"/>
+                            </p:commandLink>
+                            <p:commandLink  action="#{detalleNombramientoUI.generarResumenImpuestosMultas}" update="fldsPrincipal">
+                                <p:graphicImage library="images" name="page_search.png" title="Resumen de impuestos y multas"/>
+                            </p:commandLink>
+                            <p:commandLink  action="#{detalleNombramientoUI.generarResumenMultas}" update="fldsPrincipal">
+                                <p:graphicImage library="images" name="blog_post_edit.png" title="Resumen de multas"/>
+                            </p:commandLink>
+                            <p:commandLink  action="#{detalleNombramientoUI.generarInformeBanguat}" update="fldsPrincipal">
+                                <p:graphicImage library="images" name="excel_1.png" title="Informe Banguat"/>
+                            </p:commandLink>
+                            <p:commandLink  action="#{detalleNombramientoUI.generarResolucionDevolucion}" update="fldsPrincipal">
+                                <p:graphicImage library="images" name="notes_edit.png" title="Resoluci&oacute;n de devoluci&oacute;n"/>
+                            </p:commandLink>
+                            <p:commandLink  action="#{detalleNombramientoUI.reimprimirAudiencia}" update="fldsPrincipal">
+                                <p:graphicImage library="images" name="community_users.png" title="Reimprimir audiencia"/>
+                            </p:commandLink>
+                            <p:commandLink  action="#{detalleNombramientoUI.generarInforme}" update="fldsPrincipal">
+                                <p:graphicImage library="images" name="blog_post.png" title="Informes"/>
+                            </p:commandLink>
+                            <p:commandLink action="#{detalleNombramientoUI.listarInformesFinAuditoria}" update="fldsPrincipal">
+                                <p:graphicImage library="images" name="blog_post_accept.png" title="Informes (Fin de Auditor&iacute;a)"/>
+                            </p:commandLink>
+                            <p:commandLink  action="#{detalleNombramientoUI.generarSeguimientoHallazgosInconsistencias}" update="fldsPrincipal">
+                                <p:graphicImage library="images" name="database_lock.png" title="Seguimiento de hallazgos e inconsistencias"/>
+                            </p:commandLink>
+                        </div>
+                        <br/><br/><br/>
+                        <p:panelGrid columns="2" styleClass="datosIdentificacion ui-noborder">
+                            <p:outputLabel  value="Nombramiento"/>
+                            <h:outputText   value="#{detalleNombramientoUI.encabezadoNombramiento.nombramiento}"/>
+                            <p:outputLabel  value="Programa"/>
+                            <h:outputText   value="#{detalleNombramientoUI.encabezadoNombramiento.numeroPrograma}"/>
+                            <p:outputLabel  value="Nombre de programa"/>
+                            <h:outputText   value="#{detalleNombramientoUI.encabezadoNombramiento.nombrePrograma}"/>
+                            <p:outputLabel  value="Responsable actual"/>
+                            <h:outputText   value="#{detalleNombramientoUI.encabezadoNombramiento.nombreResponsable}"/>
+                            <p:outputLabel  value="Expediente"/>
+                            <h:outputText   value="#{detalleNombramientoUI.encabezadoNombramiento.expediente}"/>
+                            <p:outputLabel  value="NIT"/>
+                            <h:outputText   value="#{detalleNombramientoUI.encabezadoNombramiento.nit}"/>
+                            <p:outputLabel  value="Contribuyente"/>
+                            <h:outputText   value="#{detalleNombramientoUI.encabezadoNombramiento.nombreLegal}"/>
+                            <p:outputLabel  value="Jefe de secci&oacute;n"/>
+                            <h:outputText   value="#{detalleNombramientoUI.encabezadoNombramiento.jefeSeccion}"/>
+                            <p:outputLabel  value="Supervisor y auditores"/>
+                            <p:dataList value="#{detalleNombramientoUI.listSupervisoresAuditores}"
+                                        var="item"
+                                        styleClass="ui-datalist-no-border"
+                                        type="definition">
+                                #{item.nombreAuditorSupervisor}
+                            </p:dataList>
+                            <p:outputLabel  value="Estado actual del nombramiento"/>
+                            <h:outputText   value="#{detalleNombramientoUI.encabezadoNombramiento.estadoNombramiento}"/>
+                            <p:outputLabel  value="D&iacute;as asignados"
+                                            rendered="#{detalleNombramientoUI.encabezadoNombramiento.diasAsignados ne '0'}"/>
+                            <h:outputText   value="#{detalleNombramientoUI.encabezadoNombramiento.diasAsignados}"
+                                            rendered="#{detalleNombramientoUI.encabezadoNombramiento.diasAsignados ne '0'}"/>
+                        </p:panelGrid>
+                        <br/><br/><br/>
+                        <p:dataTable    id="dtTrayectoria"
+                                        var="registro"
+                                        value="#{detalleNombramientoUI.trayectoriaNombramiento}"
+                                        paginator="true"
+                                        rows="5"
+                                        reflow="true"
+                                        paginatorPosition="bottom"
+                                        emptyMessage="Nombramiento sin trayectoria">
+                            <p:column style="width:20%" headerText="Fecha de grabaci&oacute;n">
+                                <h:outputText value="#{registro.fecha}"/>
+                            </p:column>
+                            <p:column style="width:20%" headerText="Etapa">
+                                <h:outputText value="#{registro.etapa}"/>
+                            </p:column>
+                            <p:column style="width:20%" headerText="Fecha de realizaci&oacute;n">
+                                <h:outputText value="#{registro.fechaReal}"/>
+                            </p:column>
+                            <p:column style="width:40%" headerText="Informaci&oacute;n de la etapa">
+                                <h:outputText value="#{registro.informacionEtapa}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                    <div style="display: #{detalleNombramientoUI.seccionActiva eq 2 ? 'block' : 'none'}">
+                        <br/><br/><br/>
+                        <p:dataTable    var="informe"
+                                        value="#{detalleNombramientoUI.listInformesAuditoria}"
+                                        paginator="true"
+                                        rows="5"
+                                        reflow="true"
+                                        paginatorPosition="bottom"
+                                        emptyMessage="No existen informes asociados">
+                            <p:column headerText="No." style="text-align: center">
+                                <h:outputText value="#{informe.correlativo}"/>
+                            </p:column>
+                            <p:column headerText="Fecha" style="text-align: center">
+                                <h:outputText value="#{informe.fechaCarga}"/>
+                            </p:column>
+                            <p:column headerText="Descargar" style="text-align: center">
+                                <p:commandLink update="fldsPrincipal" ajax="false">
+                                    <f:setPropertyActionListener target="#{detalleNombramientoUI.informeSeleccionado}" value="#{informe}"/>
+                                    <p:graphicImage library="images" name="page_down.png" title="Descargar informe"/>
+                                    <p:fileDownload value="#{detalleNombramientoUI.informe}"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

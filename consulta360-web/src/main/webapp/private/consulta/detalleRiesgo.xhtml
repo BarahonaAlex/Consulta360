@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head> 
+    </h:head>
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:fieldset id="fldsPrincipal" rendered="#{detalleRiesgoUI.seccionActiva eq 1}">
+                    <p:outputLabel value="Detalle de Riesgo" styleClass="tituloVista"/>
+                    <p:separator/>
+                    <p:outputLabel value="NIT = #{detalleRiesgoUI.historialRiesgoSeleccionado.nitContribuyente}" styleClass="tituloVista"/>
+                    <p:separator/>
+                    <p:outputLabel value="Periodo = #{detalleRiesgoUI.historialRiesgoSeleccionado.anioInformacionBase}" styleClass="tituloVista"/>                    
+                    <p:separator/>
+                    <p:outputLabel value="Nivel de Riesgo = #{detalleRiesgoUI.historialRiesgoSeleccionado.riesgo}" styleClass="tituloVista"/>
+
+
+                    <p:separator/>
+                    <center><p:messages><p:effect type="bounce" event="load"/></p:messages></center>
+                    <br/><br/><br/>
+                    <p:dataTable    id="dtDetalleRiesgo"
+                                    widgetVar="dtDetalleRiesgo"
+                                    var="registro"
+                                    value="#{detalleRiesgoUI.listaVariableRiesgo}"
+                                    
+                                    paginator="true"
+                                    rows="10"
+                                    reflow="true"
+                                    paginatorPosition="bottom"
+                                    styleClass="DataTable"
+                                    emptyMessage="NIT no tiene variables de riesgo con valoraci&oacute;n"
+                                    >
+
+                        <p:column   headerText="No."
+                                    >
+                            <h:outputText value="#{registro.indice}"/>
+                        </p:column>
+                        <p:column   headerText="Significado"
+                                    >
+                            <h:outputText value="#{registro.significado}"/>
+                        </p:column>
+                        <p:column   headerText="Explicaci&oacute;n Coloquial"
+                                    >
+                            <h:outputText value="#{registro.explicacionColoquial}"/>
+                        </p:column>
+                   </p:dataTable>
+                    <br/>
+                </p:fieldset>
+                
+                
+                <script language="javascript">
+                    function mostrarModal(id){
+                        var element=document.getElementById(id);
+                        element.setAttribute("class","ui-dlg-visible");
+
+                        var childs=element.childNodes[1].childNodes;
+                        childs[1].style.maxWidth=element.style.maxWidth;
+                        childs[3].style.maxWidth=element.style.maxWidth;
+                    }
+                    function ocultarModal(id){
+                        document.getElementById(id).setAttribute("class","ui-dlg-hidden");
+                    }
+                    function personalizarFrame(frame){
+                        if(frame.src!==''){
+                            frame.contentDocument.body.setAttribute("class","paginaEmbebida");
+                            ocultarModal('dlgStatus');
+                        }
+                    }
+                    function cargarFrame(pUrl){
+                        document.getElementById('paginaEmbebida').src=pUrl;
+                    }
+                    $(document).ready(function(){
+                        $('.ui-btn-floating').click(function(){
+                            $('body, html').animate({
+                                scrollTop: '0px'
+                            }, 300);
+                        });
+
+                        $(window).scroll(function(){
+                            if( $(this).scrollTop() > 0 ){
+                                $('.ui-btn-floating').slideDown(300);
+                            } else {
+                                $('.ui-btn-floating').slideUp(300);
+                            }
+                        });
+                    });
+                </script>
+                <iframe id="paginaEmbebida"
+                        frameborder="0"
+                        scrolling="no"
+                        onload="personalizarFrame(this)"
+                        style="width: 100%; height: 8000px"/>
+                <span class="ui-btn-floating"/>
+                <script>jQuery(document).ready(function(){mostrarModal('dlgInicio');});</script>
+                
+                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

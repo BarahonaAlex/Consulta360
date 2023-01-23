@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head> 
+    </h:head>
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:fieldset id="fldsPrincipal" rendered="#{not empty establecimientosUI.listEstablecimientos or empty establecimientosUI.listEstablecimientos}">
+                    <p:commandLink action="#{establecimientosUI.setSeccionActiva(1)}" update="formContent">
+                        <p:outputLabel value="Establecimientos" styleClass="tituloVista"/>
+                    </p:commandLink>
+                    <p:outputLabel value=" - Documentos autorizados" rendered="#{establecimientosUI.seccionActiva eq 2}" styleClass="tituloVista"/>
+                    <p:outputLabel value=" - M&aacute;quinas autorizadas" rendered="#{establecimientosUI.seccionActiva eq 3}" styleClass="tituloVista"/>
+                    <p:outputLabel value=" - Libros autorizados" rendered="#{establecimientosUI.seccionActiva eq 4}" styleClass="tituloVista"/>
+                    <p:outputLabel value=" - L&iacute;neas a&eacute;reas autorizadas" rendered="#{establecimientosUI.seccionActiva eq 5}" styleClass="tituloVista"/>
+                    <p:separator/>
+                    <center><p:messages><p:effect type="bounce" event="load"/></p:messages></center>
+                    <br/><br/><br/>
+                    <div style="display: #{establecimientosUI.seccionActiva ne 1 ? 'block' : 'none'}">
+                        <p:outputLabel  value="Establecimiento #{establecimientosUI.registroSeleccionado.numeroEstablecimiento} - #{establecimientosUI.registroSeleccionado.nombreEstablecimiento}"
+                                        styleClass="tituloVista"/>
+                        <br/><br/><br/>
+                    </div>
+                    <p:dataTable    id="dtEstablecimientos"
+                                    widgetVar="dtEstablecimientos"
+                                    var="establecimiento"
+                                    value="#{establecimientosUI.listEstablecimientos}"
+                                    filteredValue="#{establecimientosUI.listEstablecimientosTemp}"
+                                    paginator="true"
+                                    rows="10"
+                                    reflow="true"
+                                    paginatorPosition="bottom"
+                                    emptyMessage="No hay establecimientos asociados"
+                                    rendered="#{establecimientosUI.seccionActiva eq 1 and not empty establecimientosUI.listEstablecimientos}">
+                        <p:column   headerText="Establecimiento"
+                                    filterBy="#{establecimiento.numeroEstablecimiento} - #{establecimiento.nombreEstablecimiento}"
+                                    filterMatchMode="contains"
+                                    style="width: 30%">
+                            <h:outputText value="#{establecimiento.numeroEstablecimiento} - #{establecimiento.nombreEstablecimiento}"/>
+                        </p:column>
+                        <p:column   headerText="Domicilio Comercial"
+                                    filterBy="#{establecimiento.direccion}"
+                                    filterMatchMode="contains"
+                                    style="width: 30%">
+                            <h:outputText value="#{establecimiento.direccion}"/>
+                        </p:column>
+                        <p:column   headerText="Estado"
+                                    filterBy="#{establecimiento.estado}"
+                                    filterMatchMode="contains"
+                                    style="width: 20%; text-align: center">
+                            <h:outputText value="#{establecimiento.estado}"/>
+                        </p:column>
+                        <p:column   headerText="Detalle" style="width: 20% !important; text-align: center">
+                            <p:commandLink action="#{establecimientosUI.verDocumentos}"
+                                           update="formContent:fldsPrincipal">
+                                <p:graphicImage library="images" name="blog_post.png" title="Ver documentos"/>
+                                <f:setPropertyActionListener value="#{establecimiento}" target="#{establecimientosUI.registroSeleccionado}"/>
+                            </p:commandLink>
+                            <p:commandLink action="#{establecimientosUI.verMaquinas}"
+                                           update="formContent:fldsPrincipal">
+                                <p:graphicImage library="images" name="computer.png" title="Ver m&aacute;quinas"/>
+                                <f:setPropertyActionListener value="#{establecimiento}" target="#{establecimientosUI.registroSeleccionado}"/>
+                            </p:commandLink>
+                            <p:commandLink action="#{establecimientosUI.verLibros}"
+                                           update="formContent:fldsPrincipal">
+                                <p:graphicImage library="images" name="archive.png" title="Ver libros"/>
+                                <f:setPropertyActionListener value="#{establecimiento}" target="#{establecimientosUI.registroSeleccionado}"/>
+                            </p:commandLink>
+                            <p:commandLink action="#{establecimientosUI.verLineasAereas}"
+                                           update="formContent:fldsPrincipal">
+                                <p:graphicImage library="images" name="calculator.png" title="Ver l&iacute;neas a&eacute;reas"/>
+                                <f:setPropertyActionListener value="#{establecimiento}" target="#{establecimientosUI.registroSeleccionado}"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                    <p:dataTable    var="documento"
+                                    value="#{establecimientosUI.listDocumentos}"
+                                    filteredValue="#{establecimientosUI.listDocumentosTemp}"
+                                    paginator="true"
+                                    rows="10"
+                                    reflow="true"
+                                    paginatorPosition="bottom"
+                                    emptyMessage="No hay documentos asociados"
+                                    rendered="#{establecimientosUI.seccionActiva eq 2}">
+                        <p:column   headerText="Fecha Autorizaci&oacute;n" style="text-align: center">
+                            <h:outputText value="#{documento.fechaAutorizacion}"/>
+                        </p:column>
+                        <p:column   headerText="N&uacute;mero Resoluci&oacute;n"
+                                    filterBy="#{documento.numeroResolucion}"
+                                    filterMatchMode="contains"
+                                    style="text-align: center">
+                            <h:outputText value="#{documento.numeroResolucion}"/>
+                        </p:column>
+                        <p:column   headerText="Tipo Documento"
+                                    filterBy="#{documento.tipoDocumento}"
+                                    filterMatchMode="contains">
+                            <h:outputText value="#{documento.tipoDocumento}"/>
+                        </p:column>
+                        <p:column   headerText="Serie"
+                                    filterBy="#{documento.serie}"
+                                    filterMatchMode="contains"
+                                    style="text-align: center">
+                            <h:outputText value="#{documento.serie}"/>
+                        </p:column>
+                        <p:column   headerText="N&uacute;mero Inicial" style="text-align: center">
+                            <h:outputText value="#{documento.numeroInicial}"/>
+                        </p:column>
+                        <p:column   headerText="N&uacute;mero Final" style="text-align: center">
+                            <h:outputText value="#{documento.numeroFinal}"/>
+                        </p:column>
+                        <p:column   headerText="Total" style="text-align: center">
+                            <h:outputText value="#{documento.total}"/>
+                        </p:column>
+                        <p:column   headerText="Estado resoluci&oacute;n autorizada" style="text-align: center">
+                            <h:outputText value="#{documento.estadoResolucion}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:dataTable    var="maquina"
+                                    value="#{establecimientosUI.listMaquinas}"
+                                    filteredValue="#{establecimientosUI.listMaquinasTemp}"
+                                    paginator="true"
+                                    rows="10"
+                                    reflow="true"
+                                    paginatorPosition="bottom"
+                                    emptyMessage="No hay m&aacute;quinas asociadas"
+                                    rendered="#{establecimientosUI.seccionActiva eq 3}">
+                        <p:column   headerText="Fecha Autorizaci&oacute;n" style="text-align: center">
+                            <h:outputText value="#{maquina.fechaAutorizacion}"/>
+                        </p:column>
+                        <p:column   headerText="N&uacute;mero Resoluci&oacute;n Autorizaci&oacute;n"
+                                    filterBy="#{maquina.numeroResolucion}"
+                                    filterMatchMode="contains"
+                                    style="text-align: center">
+                            <h:outputText value="#{maquina.numeroResolucion}"/>
+                        </p:column>
+                        <p:column   headerText="Marca" style="text-align: center">
+                            <h:outputText value="#{maquina.marca}"/>
+                        </p:column>
+                        <p:column   headerText="Modelo" style="text-align: center">
+                            <h:outputText value="#{maquina.modelo}"/>
+                        </p:column>
+                        <p:column   headerText="Serie"
+                                    filterBy="#{maquina.numeroSerie}"
+                                    filterMatchMode="contains"
+                                    style="text-align: center">
+                            <h:outputText value="#{maquina.numeroSerie}"/>
+                        </p:column>
+                        <p:column   headerText="N&uacute;mero Terminales" style="text-align: center">
+                            <h:outputText value="#{maquina.numeroTerminales}"/>
+                        </p:column>
+                        <p:column   headerText="Estado M&aacute;quina" style="text-align: center">
+                            <h:outputText value="#{maquina.estadoMaquina}"/>
+                        </p:column>
+                        <p:column   headerText="Estado Auto Impresor" style="text-align: center">
+                            <h:outputText value="#{maquina.estadoImpresor}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:dataTable    var="libro"
+                                    value="#{establecimientosUI.listLibros}"
+                                    filteredValue="#{establecimientosUI.listLibrosTemp}"
+                                    paginator="true"
+                                    rows="10"
+                                    reflow="true"
+                                    paginatorPosition="bottom"
+                                    emptyMessage="No hay libros asociados"
+                                    rendered="#{establecimientosUI.seccionActiva eq 4}">
+                        <p:column   headerText="Fecha Autorizaci&oacute;n" style="text-align: center">
+                            <h:outputText value="#{libro.fechaAutorizacion}"/>
+                        </p:column>
+                        <p:column   headerText="N&uacute;mero Resoluci&oacute;n"
+                                    filterBy="#{libro.noResolucionAutorizacion}"
+                                    filterMatchMode="contains"
+                                    style="text-align: center">
+                            <h:outputText value="#{libro.noResolucionAutorizacion}"/>
+                        </p:column>
+                        <p:column   headerText="Descripci&oacute;n"
+                                    filterBy="#{libro.descripcion}"
+                                    filterMatchMode="contains">
+                            <h:outputText value="#{libro.descripcion}"/>
+                        </p:column>
+                        <p:column   headerText="Tipo Libro" style="text-align: center">
+                            <h:outputText value="#{libro.tipoLibro}"/>
+                        </p:column>
+                        <p:column   headerText="N&uacute;mero Hojas" style="text-align: center">
+                            <h:outputText value="#{libro.numeroHojas}"/>
+                        </p:column>
+                        <p:column   headerText="Estado" 
+                                    filterBy="#{libro.estado}"
+                                    filterMatchMode="contains"
+                                    style="text-align: center">
+                            <h:outputText value="#{libro.estado}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:dataTable    var="linea"
+                                    value="#{establecimientosUI.listLineasAereas}"
+                                    filteredValue="#{establecimientosUI.listLineasAereasTemp}"
+                                    paginator="true"
+                                    rows="10"
+                                    reflow="true"
+                                    paginatorPosition="bottom"
+                                    emptyMessage="No hay l&iacute;neas a&eacute;reas asociadas"
+                                    rendered="#{establecimientosUI.seccionActiva eq 5}">
+                        <p:column   headerText="Fecha Autorizaci&oacute;n" style="text-align: center">
+                            <h:outputText value="#{linea.fechaAutorizacion}"/>
+                        </p:column>
+                        <p:column   headerText="N&uacute;mero Resoluci&oacute;n"
+                                    filterBy="#{linea.noResolucionAutorizacion}"
+                                    filterMatchMode="contains"
+                                    style="text-align: center">
+                            <h:outputText value="#{linea.noResolucionAutorizacion}"/>
+                        </p:column>
+                        <p:column   headerText="Descripci&oacute;n del Documento"
+                                    filterBy="#{linea.descripcion}"
+                                    filterMatchMode="contains">
+                            <h:outputText value="#{linea.descripcion}"/>
+                        </p:column>
+                        <p:column   headerText="N&uacute;mero Serie"
+                                    filterBy="#{linea.serie}"
+                                    filterMatchMode="contains"
+                                    style="text-align: center">
+                            <h:outputText value="#{linea.serie}"/>
+                        </p:column>
+                        <p:column   headerText="N&uacute;mero Inicial" style="text-align: center">
+                            <h:outputText value="#{linea.numeracionInicial}"/>
+                        </p:column>
+                        <p:column   headerText="N&uacute;mero Final" style="text-align: center">
+                            <h:outputText value="#{linea.numeracionFinal}"/>
+                        </p:column>
+                        <p:column   headerText="Estado" 
+                                    filterBy="#{linea.estado}"
+                                    filterMatchMode="contains"
+                                    style="text-align: center">
+                            <h:outputText value="#{linea.estado}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

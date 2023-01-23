@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head> 
+    </h:head>
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:fieldset id="fldsPrincipal" rendered="#{not empty nombramientosUI.listNombramientos or empty nombramientosUI.listNombramientos}">
+                    <center>
+                        <div align="left"><p:outputLabel value="Auditor&iacute;as" styleClass="tituloVista"/></div>
+                        <p:separator/>
+                        <p:messages><p:effect type="bounce" event="load"/></p:messages>
+                        <br/><br/><br/>
+                        <p:fieldset style="max-width: 300px">
+                            <br/><br/>
+                            <p:panelGrid columns="1" styleClass="ui-form-effect ui-noborder" style="width: 100%">
+                                <h:panelGroup>
+                                    <p:outputLabel value="Fecha inicio"/>
+                                    <p:calendar pattern="dd/MM/yyyy"
+                                                navigator="true"
+                                                readonlyInput="true"
+                                                title="Seleccione la fecha de inicio para la consulta"
+                                                maxdate="#{nombramientosUI.fechaActual}"
+                                                value="#{sesionUI.fechaInicioConsultaNombramientos}">
+                                        <p:ajax event="dateSelect" update="fldsPrincipal"/>
+                                    </p:calendar>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:outputLabel value="Fecha fin"/>
+                                    <p:calendar pattern="dd/MM/yyyy"
+                                                navigator="true"
+                                                readonlyInput="true"
+                                                title="Seleccione la fecha de fin para la consulta"
+                                                maxdate="#{nombramientosUI.fechaActual}"
+                                                value="#{sesionUI.fechaFinConsultaNombramientos}">
+                                        <p:ajax event="dateSelect" update="fldsPrincipal"/>
+                                    </p:calendar>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                            <br/>
+                            <p:commandButton    value="Consultar"
+                                                update="formContent"
+                                                styleClass="ui-btn-primary"
+                                                disabled="#{sesionUI.fechaInicioConsultaNombramientos eq null or sesionUI.fechaFinConsultaNombramientos eq null}"
+                                                action="#{nombramientosUI.consultar(sesionUI.fechaInicioConsultaNombramientos,sesionUI.fechaFinConsultaNombramientos)}"
+                                                title="Click para consultar"
+                                                style="float: right"/>
+                            <br/><br/><br/>
+                        </p:fieldset>
+                        <br/><br/><br/><br/>
+                        <p:dataTable    var="nombramiento"
+                                        value="#{nombramientosUI.listNombramientos}"
+                                        filteredValue="#{nombramientosUI.listNombramientosTemp}"
+                                        paginator="true"
+                                        rows="10"
+                                        reflow="true"
+                                        paginatorPosition="bottom"
+                                        emptyMessage="No hay auditor&iacute;as asociadas al periodo de consulta"
+                                        rendered="#{not empty nombramientosUI.listNombramientos}">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="2" headerText="Nombramiento" filterBy="#{nombramiento.nombramiento}" filterMatchMode="contains"/>
+                                    <p:column rowspan="2" headerText="Expediente" filterBy="#{nombramiento.expediente}" filterMatchMode="contains"/>
+                                    <p:column rowspan="2" headerText="Estado"/>
+                                    <p:column colspan="2" headerText="Per&iacute;odo Nombramiento"/>
+                                    <p:column rowspan="2" headerText="Fecha Emisi&oacute;n"/>
+                                    <p:column rowspan="2" headerText="Programa"/>
+                                    <p:column rowspan="2" headerText="Opciones"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="Inicio"/>
+                                    <p:column headerText="Fin"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column style="text-align: center"><h:outputText value="#{nombramiento.nombramiento}"/></p:column>
+                            <p:column style="text-align: center"><h:outputText value="#{nombramiento.expediente}"/></p:column>
+                            <p:column><h:outputText value="#{nombramiento.estadoNombramiento}"/></p:column>
+                            <p:column style="text-align: center"><h:outputText value="#{nombramiento.periodoDel}"/></p:column>
+                            <p:column style="text-align: center"><h:outputText value="#{nombramiento.periodoAl}"/></p:column>
+                            <p:column style="text-align: center"><h:outputText value="#{nombramiento.fechaEmision}"/></p:column>
+                            <p:column style="text-align: center"><h:outputText value="#{nombramiento.nombrePlan}"/></p:column>
+                            <p:column style="text-align: center">
+                                <p:commandLink action="#{nombramientosUI.verNombramiento}" update="formContent:fldsPrincipal">
+                                    <p:graphicImage library="images" name="page_search.png" title="Ver detalle de nombramiento"/>
+                                    <f:setPropertyActionListener value="#{nombramiento}" target="#{nombramientosUI.registroSeleccionado}"/>
+                                </p:commandLink>
+                                <p:commandLink action="#{nombramientosUI.verProveedores}" update="formContent:fldsPrincipal">
+                                    <p:graphicImage library="images" name="community_users.png" title="Ver proveedores asociados"/>
+                                    <f:setPropertyActionListener value="#{nombramiento}" target="#{nombramientosUI.registroSeleccionado}"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                        <br/>
+                    </center>
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

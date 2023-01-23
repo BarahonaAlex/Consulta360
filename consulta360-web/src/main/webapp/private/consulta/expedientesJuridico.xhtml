@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head> 
+    </h:head>
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:fieldset id="fldsPrincipal" rendered="#{not empty expedientesJuridicoUI.listExpedientesJuridico or empty expedientesJuridicoUI.listExpedientesJuridico}">
+                    <center>
+                        <div align="left"><p:outputLabel value="Expedientes en jur&iacute;dico" styleClass="tituloVista"/></div>
+                        <p:separator/>
+                        <p:messages><p:effect type="bounce" event="load"/></p:messages>
+                        <br/><br/><br/>
+                        <p:fieldset style="max-width: 300px">
+                            <br/><br/>
+                            <p:panelGrid columns="1" styleClass="ui-form-effect ui-noborder" style="width: 100%">
+                                <h:panelGroup>
+                                    <p:outputLabel value="Fecha inicio"/>
+                                    <p:calendar pattern="dd/MM/yyyy"
+                                                navigator="true"
+                                                readonlyInput="true"
+                                                title="Seleccione la fecha de inicio para la consulta"
+                                                maxdate="#{expedientesJuridicoUI.fechaActual}"
+                                                value="#{expedientesJuridicoUI.fechaInicio}"
+                                                disabled="#{not empty expedientesJuridicoUI.listExpedientesJuridico}">
+                                        <p:ajax event="dateSelect" update="fldsPrincipal"/>
+                                    </p:calendar>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:outputLabel value="Fecha fin"/>
+                                    <p:calendar pattern="dd/MM/yyyy"
+                                                navigator="true"
+                                                styleClass="ui-calendar-center"
+                                                readonlyInput="true"
+                                                title="Seleccione la fecha de fin para la consulta"
+                                                maxdate="#{expedientesJuridicoUI.fechaActual}"
+                                                value="#{expedientesJuridicoUI.fechaFin}"
+                                                disabled="#{not empty expedientesJuridicoUI.listExpedientesJuridico}">
+                                        <p:ajax event="dateSelect" update="fldsPrincipal"/>
+                                    </p:calendar>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                            <br/>
+                            <p:commandButton    value="#{not empty expedientesJuridicoUI.listExpedientesJuridico ? 'Nueva Consulta' : 'Consultar'}"
+                                                update="formContent"
+                                                title="Consultar expedientes asociados"
+                                                style="float: right"
+                                                styleClass="ui-btn-primary"
+                                                disabled="#{expedientesJuridicoUI.fechaInicio==null || expedientesJuridicoUI.fechaFin==null}"
+                                                action="#{expedientesJuridicoUI.consultarExpedientes}"/>
+                            <br/><br/><br/>
+                        </p:fieldset>
+                        <br/><br/><br/>
+                        <p:dataTable    var="registro"
+                                        value="#{expedientesJuridicoUI.listExpedientesJuridico}"
+                                        filteredValue="#{expedientesJuridicoUI.listExpedientesJuridicoTemp}"
+                                        paginator="true"
+                                        rows="10"
+                                        reflow="true"
+                                        paginatorPosition="bottom"
+                                        emptyMessage="No hay expedientes asociados"
+                                        rendered="#{not empty expedientesJuridicoUI.listExpedientesJuridico}">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="2" headerText="Expediente" filterBy="#{registro.numeroExpediente}" filterMatchMode="contains"/>
+                                    <p:column rowspan="2" headerText="Unidad"/>
+                                    <p:column rowspan="2" headerText="Motivo de Ingreso"/>
+                                    <p:column rowspan="2" headerText="Fecha de Ingreso"/>
+                                    <p:column rowspan="2" headerText="Responsable"/>
+                                    <p:column colspan="2" headerText="Per&iacute;odo"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="Inicio"/>
+                                    <p:column headerText="Fin"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column style="text-align: center"><h:outputText value="#{registro.numeroExpediente}"/></p:column>
+                            <p:column><h:outputText value="#{registro.nombreUnidad}"/></p:column>
+                            <p:column><h:outputText value="#{registro.motivoIngreso}"/></p:column>
+                            <p:column style="text-align: center"><h:outputText value="#{registro.fechaIngreso}"/></p:column>
+                            <p:column><h:outputText value="#{registro.nombreResponsable}"/></p:column>
+                            <p:column style="text-align: center"><h:outputText value="#{registro.periodoInicial}"/></p:column>
+                            <p:column style="text-align: center"><h:outputText value="#{registro.periodoFinal}"/></p:column>
+                        </p:dataTable>
+                    </center>
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

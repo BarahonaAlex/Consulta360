@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head> 
+    </h:head>
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <script language="javascript">
+                    if(top.frames.length > 0){
+                        window.open("main.jsf", "_blank");
+                        window.stop();
+                    }
+                </script>
+                <div id="dlgInicio" class="ui-dlg-hidden" style="max-width: 300px">
+                    <div class="ui-dlg">
+                        <div class="ui-dlg-header" style="display: none"><div></div></div>
+                        <div class="ui-dlg-content" style="text-align: left">
+                            <br/><br/><br/><br/><br/><br/>
+                            <p:outputLabel value="Sistema institucional" style="font-weight: bold; font-size: 20px !important"/>
+                            <br/>
+                            <p:outputLabel value="Consulta 360" style="font-size: 14px !important"/>
+                            <br/><br/><br/><br/><br/><br/>
+                            <p:panelGrid id="pnlIngresoNit" columns="1" class="ui-inputfield-effect" style="width: 100%">
+                                <h:panelGroup>
+                                    <p:inputText value="#{mainUI.nit}" placeholder="." title="Ingrese el NIT que desea consultar"/>
+                                    <p:outputLabel value="NIT a consultar"/>
+                                    <p:messages/>
+                                    <p:focus/>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                            <p:commandButton    value="Consultar"
+                                                action="#{mainUI.validarNit}"
+                                                update="pnlIngresoNit pnlEncabezado pnlDatosContribuyente"
+                                                class="ui-btn-primary"
+                                                style="float: right"
+                                                title="Presione para consultar"/>
+                            <p:commandButton    id="btnCancelar"
+                                                value="Cancelar"
+                                                onclick="ocultarModal('dlgInicio');"
+                                                style="float: right; margin-right: 15px !important; display: #{not empty mainUI.datos.nitContribuyente ? 'block' : 'none'}"
+                                                title="Presione para cerrar esta ventana"/>
+                            <br/><br/><br/><br/><br/><br/><br/>
+                        </div>
+                    </div>
+                </div>
+                <p:panelGrid id="pnlEncabezado" columns="3" styleClass="encabezado360" style="display: #{not empty mainUI.datos.nitContribuyente ? 'table' : 'none'}">
+                    <h:panelGroup styleClass="primeraColumnaEncabezado360">
+                        <p:commandLink onclick="window.location.reload()">
+                            <p:graphicImage library="images" name="iconoBlancoSAT36px.png" title="Nueva consulta"/>
+                        </p:commandLink>
+                        <p:commandLink id="btnMenu" style="display: none">
+                            <p:graphicImage library="images" name="menuBlanco36px.png" title="Men&uacute;"/>
+                        </p:commandLink>
+                        <p:menu styleClass="menuConsulta360" overlay="true" trigger="btnMenu" my="left top" at="left bottom" toggleable="true">
+                            <p:submenu label="General" styleClass="#{mainUI.seccionActiva.contains('1.')?'selectedMenu':''}">
+                                <p:menuitem value="Expedientes" onclick="cargarFrame('expedientes.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('1.1')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('1.1')?'selectedItemMenu':''}"/>
+                                <p:menuitem value="Perfil del contribuyente" onclick="cargarFrame('perfilContribuyente.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('1.2')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('1.2')?'selectedItemMenu':''}"/>
+                            </p:submenu>
+                            <p:submenu label="Recaudaci&oacute;n" styleClass="#{mainUI.seccionActiva.contains('2.')?'selectedMenu':''}">
+                                <p:menuitem value="Establecimientos" onclick="cargarFrame('establecimientos.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('2.1')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('2.1')?'selectedItemMenu':''}"/>
+                                <p:menuitem value="Declaraciones" onclick="cargarFrame('declaraciones.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('2.2')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('2.2')?'selectedItemMenu':''}"/>
+                                <p:menuitem value="Libros" onclick="cargarFrame('librosAutorizados.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('2.3')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('2.3')?'selectedItemMenu':''}"/>
+                                <p:menuitem value="Afiliaciones" onclick="cargarFrame('afiliaciones.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('2.4')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('2.4')?'selectedItemMenu':''}"/>
+                            </p:submenu>
+                            <p:submenu label="Fiscalizaci&oacute;n" styleClass="#{mainUI.seccionActiva.contains('3.')?'selectedMenu':''}">
+                                <p:menuitem value="Comportamiento tributario" onclick="cargarFrame('comportamientoTributario.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('3.1')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('3.1')?'selectedItemMenu':''}"/>
+                                <p:menuitem value="Auditor&iacute;as" onclick="cargarFrame('nombramientos.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('3.2')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('3.2')?'selectedItemMenu':''}">
+                                    <f:setPropertyActionListener target="#{sesionUI.fechaInicioConsultaNombramientos}" value="#{null}"/>
+                                    <f:setPropertyActionListener target="#{sesionUI.fechaFinConsultaNombramientos}" value="#{null}"/>
+                                </p:menuitem>
+                            </p:submenu>
+                            <p:submenu label="Jur&iacute;dico" styleClass="#{mainUI.seccionActiva.contains('4.')?'selectedMenu':''}">
+                                <p:menuitem value="Expedientes" onclick="cargarFrame('expedientesJuridico.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('4.1')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('4.1')?'selectedItemMenu':''}"/>
+                            </p:submenu>
+                            <p:submenu label="Aduanas" styleClass="#{mainUI.seccionActiva.contains('5.')?'selectedMenu':''}">
+                                <p:menuitem value="Declaraciones" onclick="cargarFrame('declaracionesAduaneras.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('5.1')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('5.1')?'selectedItemMenu':''}"/>
+                            </p:submenu>
+                        </p:menu> 
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="segundaColumnaEncabezado360">
+                        <p:menubar>
+                            <p:submenu label="General" styleClass="general#{mainUI.seccionActiva.contains('1.')?' selectedMenu':''}">
+                                <p:menuitem value="Expedientes" onclick="cargarFrame('expedientes.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('1.1')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('1.1')?'selectedItemMenu':''}"/>
+                                <p:menuitem value="Perfil del contribuyente" onclick="cargarFrame('perfilContribuyente.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('1.2')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('1.2')?'selectedItemMenu':''}"/>
+                            </p:submenu>
+
+                            <p:submenu label="Recaudaci&oacute;n"  styleClass="menuVertical">
+                                <p:menuitem value="Visualización De Recaudación" onclick="cargarFrame('#{mainUI.visualizacion}')" action="#{mainUI.setSeccionActiva('3.2')}" update="pnlEncabezado"/>
+                                 <p:menuitem value="Relacionamientos" onclick="cargarFrame('#{mainUI.relacionamiento}')" action="#{mainUI.setSeccionActiva('3.2')}" update="pnlEncabezado"/>
+                                <p:menuitem value="Establecimientos" onclick="cargarFrame('establecimientos.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('2.1')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('2.1')?'selectedItemMenu':''}"/>
+                                <p:menuitem value="Declaraciones" onclick="cargarFrame('declaraciones.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('2.2')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('2.2')?'selectedItemMenu':''}"/>     
+                                <p:menuitem value="Libros" onclick="cargarFrame('librosAutorizados.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('3.1')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('3.1')?'selectedItemMenu':''}"/>
+                                <p:menuitem value="Afiliaciones" onclick="cargarFrame('afiliaciones.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('3.2')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('3.2')?'selectedItemMenu':''}"/>
+                                <p:menuitem value="Omisos" onclick="cargarFrame('#{mainUI.omisos}')" action="#{mainUI.setSeccionActiva('3.2')}" update="pnlEncabezado" />                                
+                                <p:menuitem value="Convenios de Pago" onclick="cargarFrame('#{mainUI.conveniosPago}')" action="#{mainUI.setSeccionActiva('3.2')}" update="pnlEncabezado"/>                                
+                                <p:menuitem value="Vehiculos" onclick="cargarFrame('#{mainUI.vehiculos}')" action="#{mainUI.setSeccionActiva('3.2')}" update="pnlEncabezado"/>
+                                
+                            </p:submenu>
+                            <p:submenu label="Fiscalizaci&oacute;n" styleClass="fiscalizacion#{mainUI.seccionActiva.contains('3.')?' selectedMenu':''}">
+                                <p:menuitem value="Comportamiento tributario" onclick="cargarFrame('comportamientoTributario.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('3.1')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('3.1')?'selectedItemMenu':''}"/>
+                                <p:menuitem value="Auditor&iacute;as" onclick="cargarFrame('nombramientos.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('3.2')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('3.2')?'selectedItemMenu':''}">
+                                    <f:setPropertyActionListener target="#{sesionUI.fechaInicioConsultaNombramientos}" value="#{null}"/>
+                                    <f:setPropertyActionListener target="#{sesionUI.fechaFinConsultaNombramientos}" value="#{null}"/>
+                                </p:menuitem>
+                            </p:submenu>
+                            <p:submenu label="Jur&iacute;dico" styleClass="juridico#{mainUI.seccionActiva.contains('4.')?' selectedMenu':''}">
+                                <p:menuitem value="Expedientes" onclick="cargarFrame('expedientesJuridico.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('4.1')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('4.1')?'selectedItemMenu':''}"/>
+                            </p:submenu>
+                            <p:submenu label="Aduanas" styleClass="aduanas#{mainUI.seccionActiva.contains('5.')?' selectedMenu':''}">
+                                <p:menuitem value="Declaraciones" onclick="cargarFrame('declaracionesAduaneras.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('5.1')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('5.1')?'selectedItemMenu':''}"/>
+                            </p:submenu>
+
+                            <p:submenu label="Investigaci&oacute;n Fiscal" styleClass="menuVertical">
+                                <p:menuitem value="Declaraciones Presentadas Detalladas por Período" onclick="cargarFrame('decPre.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('3.2')}" update="pnlEncabezado"/>
+                                <p:submenu label="Cruces">
+                                    <p:menuitem value="Ingresos Reportados por clientes vs Declarado IVA(DisuasIVA)" onclick="cargarFrame('ingresosFelvsDeclarado.jsf?pNit=#{mainUI.datos.nitContribuyente}')" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')"/>
+                                    <p:menuitem value="Ingresos FEL vs Declarado IVA GENERAL" onclick="cargarFrame('ingresosFelvsDeclaradoIvaGeneral.jsf?pNit=#{mainUI.datos.nitContribuyente}')" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')"/>
+                                    <p:menuitem value="Ingresos FEL vs DECLARADO IVA PEQUEÑO"  onclick="cargarFrame('ingresosFelvsDeclaradoIvaPeque.jsf?pNit=#{mainUI.datos.nitContribuyente}')" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')"/>
+                                    <p:menuitem value="RETENIVA" onclick="cargarFrame('ingRetenIvaIngresosDeclaIvaGeneral.jsf?pNit=#{mainUI.datos.nitContribuyente}')" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')"/>
+                                    <p:menuitem value="Base Imponiple ISO" onclick="cargarFrame('baseImponibleIso.jsf?pNit=#{mainUI.datos.nitContribuyente}')" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')"/>
+                                    <p:menuitem value="Ingresos IVA vs Ingresos ISR Mensual" onclick="cargarFrame('ingresosIvavsIngresosIsr.jsf?pNit=#{mainUI.datos.nitContribuyente}')" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')"/>
+                                    <p:menuitem value="EXENIVA" onclick="cargarFrame('exeniva.jsf?pNit=#{mainUI.datos.nitContribuyente}')" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" />
+
+                                </p:submenu>
+                                
+
+                                <p:submenu label="Indicadores">
+                                    <p:menuitem value="Consulta de Indicadores por NIT" onclick="cargarFrame('consultaDeIndicadoresPorNit.jsf?pNit=#{mainUI.datos.nitContribuyente}')" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" />
+                                    <p:menuitem value="Consulta de Indicadores (Dashboard)"/>
+                                </p:submenu>
+
+                                <p:submenu label="Tipologias de evasión (Marcas y consulta de detalle)">
+                                    <p:menuitem value="Consulta de Tipologías de evasión" onclick="cargarFrame('tipologiasEvasion.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('2.4')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('2.4')?'selectedItemMenu':''}"/>
+                                   
+                                </p:submenu>
+                               
+
+                                <p:submenu label="Verificaciones en Campo">
+                                    <p:menuitem value="Consulta de verificaciones en Campo" onclick="cargarFrame('verificacionesEnCampo.jsf?pNit=#{mainUI.datos.nitContribuyente}')" action="#{mainUI.setSeccionActiva('2.4')}" update="pnlEncabezado" oncomplete="mostrarModal('dlgStatus')" styleClass="#{mainUI.seccionActiva.contains('2.4')?'selectedItemMenu':''}"/>
+                                   
+
+                                </p:submenu> 
+
+                            </p:submenu>
+
+                        </p:menubar>
+                    </h:panelGroup>
+
+                    <h:panelGroup styleClass="terceraColumnaEncabezado360">
+                        <p:commandLink onclick="mostrarModal('dlgInicio')" update="pnlIngresoNit btnCancelar">
+                            <p:graphicImage library="images" name="usuarioBlanco36px.png" title="Consultar otro NIT"/>
+                        </p:commandLink>
+                    </h:panelGroup>
+                </p:panelGrid>
+                <br/><br/><br/><br/><br/>
+                <p:fieldset id="pnlDatosContribuyente" styleClass="datosContribuyente" style="display: #{not empty mainUI.datos.nitContribuyente ? 'block' : 'none'}">
+                    <div><p:graphicImage library="images" name="usuarioBlanco36px.png"/></div>
+                    <br/>
+                    <p:outputLabel value="#{mainUI.datos.nombreContribuyente}" style="font-weight: bold"/>
+                    <br/>
+                    <p:outputLabel value="#{mainUI.datos.nitContribuyente}"/>
+                </p:fieldset>
+                <br/><br/><br/>
+                <div id="dlgStatus" class="ui-dlg-hidden" style="max-width: 330px">
+                    <div class="ui-dlg">
+                        <div class="ui-dlg-center-header"><div>PROCESANDO</div></div>
+                        <div class="ui-dlg-content">
+                            <center>
+                                <br/>
+                                <p:graphicImage value="/resources/images/loading.gif"/>
+                                <br/>
+                                <p:outputLabel value="Por favor, espere un momento"/>
+                                <br/>
+                                <br/>
+                                <br/>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+                <script language="javascript">
+                    function mostrarModal(id) {
+                        var element = document.getElementById(id);
+                        element.setAttribute("class", "ui-dlg-visible");
+
+                        var childs = element.childNodes[1].childNodes;
+                        childs[1].style.maxWidth = element.style.maxWidth;
+                        childs[3].style.maxWidth = element.style.maxWidth;
+                    }
+                    function ocultarModal(id) {
+                        document.getElementById(id).setAttribute("class", "ui-dlg-hidden");
+                    }
+                    function personalizarFrame(frame) {
+                        if (frame.src !== '') {
+                            frame.contentDocument.body.setAttribute("class", "paginaEmbebida");
+                            ocultarModal('dlgStatus');
+                        }
+                    }
+                    function cargarFrame(pUrl) {
+                        document.getElementById('paginaEmbebida').src = pUrl;
+                    }
+                    $(document).ready(function () {
+                        $('.ui-btn-floating').click(function () {
+                            $('body, html').animate({
+                                scrollTop: '0px'
+                            }, 300);
+                        });
+
+                        $(window).scroll(function () {
+                            if ($(this).scrollTop() > 0) {
+                                $('.ui-btn-floating').slideDown(300);
+                            } else {
+                                $('.ui-btn-floating').slideUp(300);
+                            }
+                        });
+                    });
+                </script>
+                <iframe id="paginaEmbebida"
+                        frameborder="0"
+                        scrolling="no"
+                        onload="personalizarFrame(this)"
+                        style="width: 100%; height: 8000px"/>
+                <span class="ui-btn-floating"/>
+                <script>jQuery(document).ready(function () {
+                        mostrarModal('dlgInicio');
+                    });</script>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,1110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"	  
+      xmlns:p="http://primefaces.org/ui"
+
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head> 
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <ui:composition template="../../template/common/layout.xhtml">
+            <ui:define name="data">
+                <p:fieldset rendered="#{perfilContribuyenteUI.datos eq null or perfilContribuyenteUI.datos ne null}">
+                    <p:panelGrid id="encabezadoPerfil" columns="2" style="width: 100%" styleClass="ui-noborder">
+                        <p:outputLabel value="Perfil del contribuyente" styleClass="tituloVista" style="margin-left: -10px"/>
+                        <p:column>
+                            <div    class="riesgoInstitucional" 
+                                    style="background: #{
+                                    perfilContribuyenteUI.datos.tipoRiesgo eq 'Riesgo No Establecido' ? '#2E7D32' :
+                                        perfilContribuyenteUI.datos.tipoRiesgo eq 'Riesgo Bajo' ? '#4CAF50' :
+                                        perfilContribuyenteUI.datos.tipoRiesgo eq 'Riesgo Medio' ? '#FBC02D' :
+                                        perfilContribuyenteUI.datos.tipoRiesgo eq 'Riesgo Alto' ? '#EF6C00' :
+                                        perfilContribuyenteUI.datos.tipoRiesgo eq 'Riesgo Extremo' ? '#b71c1c' : ''
+                                                    }">
+                                <div>#{perfilContribuyenteUI.datos.tipoRiesgo}</div>
+                            </div>
+                            <p:commandButton id="mostrarHistorialGeneral" value="Historial" 
+                                             action="#{perfilContribuyenteUI.mostrarRiesgoGeneral()}" class="historialRiesgo" 
+                                             style="color: #fff !important; -webkit-text-fill-color: #fff;"
+                                             update="historialGeneral encabezadoPerfil"
+                                             rendered="#{perfilContribuyenteUI.mostrarBotonHistorial}"
+                                             />
+                            <p:commandButton id="mostrarHistorialGeneral2" value="Ocultar Historial" 
+                                             action="#{perfilContribuyenteUI.ocultarRiesgoGeneral()}" class="historialRiesgo" 
+                                             style="color: #fff !important; -webkit-text-fill-color: #fff;"
+                                             update="historialGeneral encabezadoPerfil"
+                                             rendered="#{perfilContribuyenteUI.mostrarBotonHistorial ne true}"
+                                             />
+                        </p:column>
+                    </p:panelGrid>
+                    <p:separator/>
+
+                    <div align="right" >
+                        <h:commandLink action="#{perfilContribuyenteUI.exportare()}">  
+                            <p:graphicImage value="../../resources/images/exportar_excel.png" width="100px"/>  
+
+                        </h:commandLink> 
+
+                        <h:commandLink value="" action="#{perfilContribuyenteUI.descargarPDF()}">
+                            <p:graphicImage value="../../resources/images/exportar_pdf.png" width="100px"/> 
+
+                        </h:commandLink> 
+
+                    </div>    
+
+                    <center><p:messages><p:effect type="bounce" event="load"/></p:messages></center>
+                    <p:panelGrid id="historialGeneral" columns="1" style="width: 100%;text-align: center !important" styleClass="ui-noborder" >
+                        <br/>
+
+                        <p:outputLabel value="Riesgo General" class="historialRiesgo2"
+                                       rendered="#{perfilContribuyenteUI.mostrarHistorial}"
+                                       />
+                        <br/>
+
+                        <p:dataTable    var="historial1" 
+                                        value="#{perfilContribuyenteUI.historialRiesgoInstitcional}"
+                                        paginator="true"
+                                        rows="5"
+                                        reflow="true"
+                                        paginatorPosition="bottom"
+                                        emptyMessage="No existen riesgos registrados. Se sugiere verificar la secci&oacute;n de Solicitud de Devoluci&oacute;n de Cr&eacute;dito Fiscal"
+                                        styleClass="DataTable"
+                                        rendered="#{perfilContribuyenteUI.mostrarHistorial}"
+                                        >
+                            <p:column   headerText="Riesgo" style="text-align: center; background:
+                                            #{
+                                        historial1.riesgo eq 'Riesgo No Establecido' ? '#2E7D32' :
+                                            historial1.riesgo eq 'Riesgo Bajo' ? '#4CAF50' :
+                                            historial1.riesgo eq 'Riesgo Medio' ? '#FBC02D' :
+                                            historial1.riesgo eq 'Riesgo Alto' ? '#EF6C00' :
+                                            historial1.riesgo eq 'Riesgo Extremo' ? '#b71c1c' : ''
+                                                        }
+                                        ;color:white !important 
+                                        ">
+                                <h:outputText value="#{historial1.riesgo}"/>
+                            </p:column>
+                            <p:column   headerText="Vigente a partir de" style="text-align: center">
+                                <h:outputText value="#{historial1.vigenteAPartirDe}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" locale="es_GT"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column   headerText="A&ntilde;o informaci&oacute;n base" style="text-align: center">
+                                <h:outputText value="#{historial1.anioInformacionBase}"/>
+                            </p:column>
+                            <p:column headerText="Ver Explicaci&oacute;n Variable de Riesgo" style="text-align: center">
+                                <p:commandLink  action="#{detalleRiesgoUI.verDetalleRiesgo}" >
+                                    <p:graphicImage library="images" name="Lupa.png" title="Ver Detalle de Riesgo" style="height:32px !important; width:32px !important;"/>
+                                    <f:setPropertyActionListener target="#{detalleRiesgoUI.historialRiesgoSeleccionado}" value="#{historial1}"/>                                    
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panelGrid>
+                    <br/><br/>
+
+                    <p:panelGrid columns="2" styleClass="datosIdentificacion ui-noborder">
+
+                        <p:outputLabel value="Personer&iacute;a jur&iacute;dica"/>
+                        <h:outputLabel value="#{perfilContribuyenteUI.datos.personeriaJuridica}"/>
+                        <p:outputLabel value="Clasificaci&oacute;n"/>
+                        <h:outputLabel value="#{perfilContribuyenteUI.datos.clasificacion}"/>
+                        <p:outputLabel value="Actividad econ&oacute;mica"/>
+                        <h:outputLabel value="#{perfilContribuyenteUI.datos.actividadEconomica}"/>
+                        <p:outputLabel value="Estado"/>
+                        <h:outputLabel value="#{perfilContribuyenteUI.datos.estado}"/>
+                        <p:outputLabel value="Exento"/>
+                        <h:outputLabel value="#{perfilContribuyenteUI.datos.exento}"/>
+                        <p:outputLabel value="Fec. Nac./Const."/>
+                        <h:outputLabel value="#{perfilContribuyenteUI.datos.fechaNacConst}"/>
+                        <p:outputLabel value="Fecha de inscripci&oacute;n"/>
+                        <h:outputLabel value="#{perfilContribuyenteUI.datos.fechaInscripcion}"/>
+                        <p:outputLabel value="Domicilio fiscal"/>
+                        <h:outputLabel value="#{perfilContribuyenteUI.datos.domicilioFiscal}"/>
+                        <p:outputLabel value="Tel&eacute;fono"/>
+                        <h:outputLabel value="#{perfilContribuyenteUI.datos.telefono}"/>
+                        <p:outputLabel value="Representante legal principal"/>
+                        <h:outputLabel value="#{perfilContribuyenteUI.datos.representanteLegal}"/>
+                        <p:outputLabel value="Contador actual registrado"/>
+                        <h:outputLabel value="#{perfilContribuyenteUI.datos.contadorActual}"/>
+                        <p:outputLabel value="Omiso"/>
+                        <h:outputLabel value="#{perfilContribuyenteUI.datos.omiso}"/>
+                        <p:outputLabel value="Usuario zona franca"/>
+                        <h:outputLabel value="#{perfilContribuyenteUI.datos.usuarioZonaFranca}"/>
+                        <p:outputLabel value="Registro fiscal de veh&iacute;culos"/>
+                        <h:outputLabel value="#{perfilContribuyenteUI.datos.registroVehiculos eq '0' ? 'No' : 'Sí ('.concat(perfilContribuyenteUI.datos.registroVehiculos).concat(')')}"/>
+                        <p:outputLabel value="Cantidad de negocios"/>
+                        <h:outputLabel value="#{perfilContribuyenteUI.datos.negocios}"/>
+
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="4" styleClass="datosIdentificacion ui-noborder">
+
+                        <p:outputLabel value="Cuenta con usuario de Agencia Virtual"/>
+                        <h:outputText  value="#{perfilContribuyenteUI.datos.agenciaVirtual}"/>
+
+                        <!--
+                                                <p:column>
+                                                    <p:outputLabel  style="margin-left:200px" value="Status:"/>
+                                                    <h:outputText style="margin-right: 250px; margin-left: 10px" value="#{perfilContribuyenteUI.datos.agenteRetencion}"/>
+                                                </p:column>-->
+                        <!--
+                                                <p:column>
+                                                    <p:outputLabel  value="Fecha status:"/>
+                                                    <h:outputText  style=" margin-left: 10px" value="#{perfilContribuyenteUI.datos.exportador}"/>
+                                                </p:column>-->
+
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="2" styleClass="datosIdentificacion ui-noborder">
+
+                        <p:outputLabel value="Email"/>
+                        <h:outputText  value="#{perfilContribuyenteUI.encabezado.correoAgenciaVirtual}"/>
+
+                        <p:outputLabel value="Email notificaciones"/>
+                        <h:outputText  value="#{perfilContribuyenteUI.encabezado.correoRtu}"/>
+
+
+                        <p:outputLabel value="Plan Operativo"/>
+                        <h:outputText  value="#{perfilContribuyenteUI.encabezado.planOperativo}"/>
+
+
+                        <p:outputLabel value="Total direcciones comerciales"/>
+                        <h:outputText  value="#{perfilContribuyenteUI.totalEstablecimientos}"/>
+                    </p:panelGrid>
+
+                    <br/><br/>
+                    <br/><br/>
+                    <p:dataTable 
+                        id="contribuyentes"
+                        var="campos"
+                        value="#{perfilContribuyenteUI.listaCamposEspeciales}"
+                        reflow="true"
+                        emptyMessage="No existen establecimientos registrados">
+
+                        <p:column>
+                            <h:outputText value="#{campos.nombre}"/>
+                        </p:column>
+                        <p:column style="text-align: center">
+                            <h:outputText value="#{campos.caracteristica}"/>
+                        </p:column>
+                        <p:column   headerText="Estado" style="text-align: center">
+                            <h:outputText value="#{campos.estado}"/>
+                        </p:column>
+                        <p:column   headerText="Fecha de Estado" style="text-align: center">
+                            <h:outputText value="#{campos.fechaEstado}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                    <br/><br/>
+
+                    <br/><br/>
+
+
+
+
+                    <p:dataTable 
+                        id="contribuyente"
+                        var="establecimiento"
+                        value="#{perfilContribuyenteUI.listEstablecimientos}"
+                        reflow="true"
+                        emptyMessage="No existen establecimientos registrados">
+
+                        <p:column   headerText="Nombre">
+                            <h:outputText value="#{establecimiento.nombreComercial}"/>
+                        </p:column>
+                        <p:column   headerText="Dirección">
+                            <h:outputText value="#{establecimiento.direccionEstablecimiento}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                    <br/>
+                    <p:commandLink id="commandMostrarMasTab16" action="#{perfilContribuyenteUI.mostrarMasEstablecimiento()}" style="margin-right:20px;" ajax="false" disabled="#{perfilContribuyenteUI.bloquearMostrarMas}">
+                        <h:outputText value="Mostrar mas" />
+                    </p:commandLink>
+                    <br/><br/>
+
+                    <br/><br/>
+                    <p:accordionPanel activeIndex="null">
+                        <p:ajax event="tabChange" listener="#{perfilContribuyenteUI.onTabChange}" update="formContent"/>
+                        <p:tab id="tab1" title="Afiliaciones a los impuestos">
+                            <br/>
+                            <p:dataTable    var="afiliacion"
+                                            value="#{perfilContribuyenteUI.listaAfiliacionesNube}"
+                                            paginator="true"
+                                            rows="10"
+                                            reflow="true"
+                                            paginatorPosition="bottom"
+                                            emptyMessage="No existen afiliaciones registradas">
+                                <p:column   headerText="Impuesto">
+                                    <h:outputText value="#{afiliacion.nombreImpuesto}"/>
+                                </p:column>
+                                <p:column   headerText="R&eacute;gimen">
+                                    <h:outputText value="#{afiliacion.regimen}"/>
+                                </p:column>
+                                <p:column   headerText="Fecha de Adición">
+                                    <h:outputText value="#{afiliacion.fechaAdiciono}"/>
+                                </p:column>
+                                <p:column   headerText="Forma de acreditamiento">
+                                    <h:outputText value="#{afiliacion.acreditamiento}"/>
+                                </p:column>
+                                <p:column   headerText="Monto morosidad ISCV">
+                                    <h:outputText value="#{afiliacion.morosidad}"/>
+                                </p:column>
+                                <p:column   headerText="Estado">
+                                    <h:outputText value="#{afiliacion.estado}"/>
+                                </p:column>
+
+                            </p:dataTable>
+                            <br/>
+                        </p:tab>
+                        <p:tab id="tab2" title="Acreditamientos">
+                            <br/>
+                            <p:dataTable    var="acreditacion"
+                                            value="#{perfilContribuyenteUI.listAcreditaciones}"
+                                            paginator="true"
+                                            rows="10"
+                                            reflow="true"
+                                            paginatorPosition="bottom"
+                                            emptyMessage="No existen acreditaciones registradas">
+                                <p:column   headerText="Acreditaci&oacute;n">
+                                    <h:outputText value="#{acreditacion}"/>
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                        </p:tab>
+                        <p:tab id="tab3" title="Apoderados activos">
+                            <br/>
+                            <p:dataTable    var="apoderado"
+                                            value="#{perfilContribuyenteUI.listApoderados}"
+                                            paginator="true"
+                                            rows="10"
+                                            reflow="true"
+                                            paginatorPosition="bottom"
+                                            emptyMessage="No existen apoderados activos">
+                                <p:column   headerText="NIT" style="text-align: center">
+                                    <h:outputText value="#{apoderado.nit}"/>
+                                </p:column>
+                                <p:column   headerText="Nombre" style="width: 50%">
+                                    <h:outputText value="#{apoderado.nombre}"/>
+                                </p:column>
+                                <p:column   headerText="Fecha de nombramiento" style="text-align: center">
+                                    <h:outputText value="#{apoderado.fechaNombramiento}"/>
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                        </p:tab>
+                        <p:tab id="tab4" title="Solicitudes de devoluci&oacute;n de cr&eacute;dito fiscal">
+                            <br/>
+                            <p:panelGrid id="tab4Encabezado" columns="1" style="width: 100%;float: right !important" styleClass="ui-noborder" >
+
+                                <p:column>
+                                    <div    class="riesgoInstitucionalDCF"
+                                            style="background: #{
+                                            perfilContribuyenteUI.datos.tipoRiesgoDCF eq 'Riesgo No Establecido' ? '#2E7D32' :
+                                                perfilContribuyenteUI.datos.tipoRiesgoDCF eq 'Riesgo Bajo' ? '#4CAF50' :
+                                                perfilContribuyenteUI.datos.tipoRiesgoDCF eq 'Riesgo Medio' ? '#FBC02D' :
+                                                perfilContribuyenteUI.datos.tipoRiesgoDCF eq 'Riesgo Alto' ? '#EF6C00' :
+                                                perfilContribuyenteUI.datos.tipoRiesgoDCF eq 'Riesgo Extremo' ? '#b71c1c' : ''
+                                                        }">
+                                        <div>#{perfilContribuyenteUI.datos.tipoRiesgoDCF}</div>
+                                    </div>
+                                    <p:commandButton id="mostrarHistorialGeneralDCF" value="Historial" 
+                                                     action="#{perfilContribuyenteUI.mostrarRiesgoGeneralDCF()}" class="historialRiesgoDCF" 
+                                                     style="color: #fff !important; -webkit-text-fill-color: #fff;"
+                                                     update="subTab4 tab4Encabezado"
+                                                     rendered="#{perfilContribuyenteUI.mostrarBotonHistorialDCF}"
+                                                     />
+                                    <p:commandButton id="mostrarHistorialGeneral2DCF" value="Ocultar Historial" 
+                                                     action="#{perfilContribuyenteUI.ocultarRiesgoGeneralDCF()}" class="historialRiesgoDCF" 
+                                                     style="color: #fff !important; -webkit-text-fill-color: #fff;"
+                                                     update="subTab4 tab4Encabezado"
+                                                     rendered="#{perfilContribuyenteUI.mostrarBotonHistorialDCF ne true}"
+                                                     />   
+
+                                </p:column>  
+                            </p:panelGrid>
+                            <p:panelGrid id="subTab4" columns="1" style="width: 100%;text-align: center !important" styleClass="ui-noborder" >
+
+
+                                <br/>
+                                <p:dataTable    var="solicitud"
+                                                value="#{perfilContribuyenteUI.listSolicitudesDCF}"
+                                                paginator="true"
+                                                rows="10"
+                                                reflow="true"
+                                                paginatorPosition="bottom"
+                                                styleClass="DataTable"
+                                                emptyMessage="No existen solicitudes de devoluci&oacute;n de cr&eacute;dito fiscal registradas">
+                                    <p:column style="width: 40%">
+                                        <h:outputText value="#{solicitud.descripcion}"/>
+                                    </p:column>
+                                    <p:column   headerText="#{perfilContribuyenteUI.anioActual-4}" style="text-align: center">
+                                        <h:outputText value="#{solicitud.cantidadAnioActualMenos4}"/>
+                                    </p:column>
+                                    <p:column   headerText="#{perfilContribuyenteUI.anioActual-3}" style="text-align: center">
+                                        <h:outputText value="#{solicitud.cantidadAnioActualMenos3}"/>
+                                    </p:column>
+                                    <p:column   headerText="#{perfilContribuyenteUI.anioActual-2}" style="text-align: center">
+                                        <h:outputText value="#{solicitud.cantidadAnioActualMenos2}"/>
+                                    </p:column>
+                                    <p:column   headerText="#{perfilContribuyenteUI.anioActual-1}" style="text-align: center">
+                                        <h:outputText value="#{solicitud.cantidadAnioActualMenos1}"/>
+                                    </p:column>
+                                    <p:column   headerText="#{perfilContribuyenteUI.anioActual}" style="text-align: center">
+                                        <h:outputText value="#{solicitud.cantidadAnioActual}"/>
+                                    </p:column>
+                                </p:dataTable>
+                                <br/>
+
+                                <p:outputLabel value="Historial" class="historialRiesgo2"
+                                               rendered="#{perfilContribuyenteUI.mostrarHistorialDFC}"/>
+
+                                <br/>
+
+                                <p:dataTable id="historialDCFTabla"    
+                                             var="historial2" style="border-style: none !important"
+                                             value="#{perfilContribuyenteUI.historialDCFRiesgoInstitcional}"
+                                             paginator="true"
+                                             rows="5"
+                                             reflow="true"
+                                             paginatorPosition="bottom"
+                                             emptyMessage="No existen riesgos registrados"
+                                             rendered="#{perfilContribuyenteUI.mostrarHistorialDFC}"
+                                             styleClass="DataTable">
+                                    <p:column   headerText="Riesgo" style="text-align: center;background:
+                                            #{
+                                                historial2.riesgo eq 'Riesgo No Establecido' ? '#2E7D32' :
+                                                    historial2.riesgo eq 'Riesgo Bajo' ? '#4CAF50' :
+                                                    historial2.riesgo eq 'Riesgo Medio' ? '#FBC02D' :
+                                                    historial2.riesgo eq 'Riesgo Alto' ? '#EF6C00' :
+                                                    historial2.riesgo eq 'Riesgo Extremo' ? '#b71c1c' : ''
+                                                        }
+                                                ;color:white !important ">
+                                        <h:outputText value="#{historial2.riesgo}"/>
+                                    </p:column>
+                                    <p:column   headerText="Vigente a partir de" style="text-align: center">
+                                        <h:outputText value="#{historial2.vigenteAPartirDe}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy" locale="es_GT"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column   headerText="A&ntilde;o informaci&oacute;n base" style="text-align: center">
+                                        <h:outputText value="#{historial2.anioInformacionBase}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Ver Explicaci&oacute;n Variable de Riesgo" style="text-align: center">
+                                        <p:commandLink  action="#{detalleRiesgoUI.verDetalleRiesgo}" >
+                                            <p:graphicImage library="images" name="Lupa.png" title="Ver Detalle de Riesgo" style="height:3%; width:5%;"/>
+                                            <f:setPropertyActionListener target="#{detalleRiesgoUI.historialRiesgoSeleccionado}" value="#{historial2}"/>                                    
+                                        </p:commandLink>
+                                    </p:column>                                
+
+                                </p:dataTable>
+                                <br/>
+                            </p:panelGrid>
+                        </p:tab>
+                        <p:tab id="tab5" title="Omisiones Activas (últimos 5 años)">
+                            <br/>
+                            <p:dataTable    var="omiso"
+                                            value="#{perfilContribuyenteUI.listOmisos}"
+                                            paginator="true"
+                                            rows="10"
+                                            reflow="true"
+                                            paginatorPosition="bottom"
+                                            emptyMessage="No existen omisos registrados">
+                                <p:column style="width: 40%">
+                                    <h:outputText value="#{omiso.descripcion}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-4}" style="text-align: center">
+                                    <h:outputText value="#{omiso.cantidadAnioActualMenos4}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-3}" style="text-align: center">
+                                    <h:outputText value="#{omiso.cantidadAnioActualMenos3}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-2}" style="text-align: center">
+                                    <h:outputText value="#{omiso.cantidadAnioActualMenos2}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-1}" style="text-align: center">
+                                    <h:outputText value="#{omiso.cantidadAnioActualMenos1}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual}" style="text-align: center">
+                                    <h:outputText value="#{omiso.cantidadAnioActual}"/>
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                        </p:tab>
+                        <p:tab id="tab6" title="Libros autorizados (últimos 5 años)">
+                            <br/>
+                            <p:dataTable    var="libro"
+                                            value="#{perfilContribuyenteUI.listLibrosAutorizados}"
+                                            paginator="true"
+                                            rows="10"
+                                            reflow="true"
+                                            paginatorPosition="bottom"
+                                            emptyMessage="No existen libros autorizados">
+                                <p:column style="width: 40%">
+                                    <h:outputText value="#{libro.descripcion}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-4}" style="text-align: center">
+                                    <h:outputText value="#{libro.cantidadAnioActualMenos4}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-3}" style="text-align: center">
+                                    <h:outputText value="#{libro.cantidadAnioActualMenos3}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-2}" style="text-align: center">
+                                    <h:outputText value="#{libro.cantidadAnioActualMenos2}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-1}" style="text-align: center">
+                                    <h:outputText value="#{libro.cantidadAnioActualMenos1}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual}" style="text-align: center">
+                                    <h:outputText value="#{libro.cantidadAnioActual}"/>
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                        </p:tab>
+                        <p:tab id="tab7" title="Otros libros autorizados (últimos 5 años)">
+                            <br/>
+                            <p:dataTable    var="otroLibro"
+                                            value="#{perfilContribuyenteUI.listOtrosLibrosAutorizados}"
+                                            paginator="true"
+                                            rows="10"
+                                            reflow="true"
+                                            paginatorPosition="bottom"
+                                            emptyMessage="No existen otros libros autorizados">
+                                <p:column style="width: 40%">
+                                    <h:outputText value="#{otroLibro.descripcion}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-4}" style="text-align: center">
+                                    <h:outputText value="#{otroLibro.cantidadAnioActualMenos4}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-3}" style="text-align: center">
+                                    <h:outputText value="#{otroLibro.cantidadAnioActualMenos3}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-2}" style="text-align: center">
+                                    <h:outputText value="#{otroLibro.cantidadAnioActualMenos2}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-1}" style="text-align: center">
+                                    <h:outputText value="#{otroLibro.cantidadAnioActualMenos1}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual}" style="text-align: center">
+                                    <h:outputText value="#{otroLibro.cantidadAnioActual}"/>
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                        </p:tab>
+                        <p:tab id="tab8" title="Facturas autorizadas (últimos 5 años)">
+                            <br/>
+                            <p:dataTable    var="factura"
+                                            value="#{perfilContribuyenteUI.listFacturasAutorizadas}"
+                                            reflow="true"
+                                            emptyMessage="No existen facturas autorizadas">
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-4}" style="text-align: center">
+                                    <h:outputText value="#{factura.cantidadAnioActualMenos4}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-3}" style="text-align: center">
+                                    <h:outputText value="#{factura.cantidadAnioActualMenos3}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-2}" style="text-align: center">
+                                    <h:outputText value="#{factura.cantidadAnioActualMenos2}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-1}" style="text-align: center">
+                                    <h:outputText value="#{factura.cantidadAnioActualMenos1}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual}" style="text-align: center">
+                                    <h:outputText value="#{factura.cantidadAnioActual}"/>
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                        </p:tab>
+
+                        <p:tab id="tab9" title="Vehículos activos e inactivos (Dec 70-94- Art 11)(últimos 5 años)">
+                            <br/>
+                            <p:dataTable value="" var="" styleClass="hBorder" rowStyleClass="hColor" rendered="#{perfilContribuyenteUI.listVehiculosAnio.size()>0}">
+                                <p:column  headerText="">
+                                    <h:outputText  value="Activos" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+
+                                <p:columns value="#{perfilContribuyenteUI.listVehiculosAnio}" var="datos">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{datos.nombreAnio}" />
+                                    </f:facet>
+                                    <h:outputText value="#{datos.cantidadVehiculos}" />				       
+                                </p:columns>
+                            </p:dataTable>                     
+                            <br/>
+                        </p:tab>
+
+                        <p:tab id="tab10" title="Carga tributaria (últimos 5 años)">
+                            <br/>
+                            <p:dataTable    var="cargaTributaria"
+                                            value="#{perfilContribuyenteUI.cargaTributaria}"
+                                            reflow="true"
+                                            emptyMessage="No existen cargas tributarias registradas">
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-4}" style="text-align: center">
+                                    <h:outputText value="#{cargaTributaria.cantidadAnioActualMenos4}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-3}" style="text-align: center">
+                                    <h:outputText value="#{cargaTributaria.cantidadAnioActualMenos3}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-2}" style="text-align: center">
+                                    <h:outputText value="#{cargaTributaria.cantidadAnioActualMenos2}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-1}" style="text-align: center">
+                                    <h:outputText value="#{cargaTributaria.cantidadAnioActualMenos1}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual}" style="text-align: center">
+                                    <h:outputText value="#{cargaTributaria.cantidadAnioActual}"/>
+                                </p:column>
+                                <p:column   headerText="Promedio" style="text-align: center">
+                                    <h:outputText value="#{cargaTributaria.promedio}"/>
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                        </p:tab>
+                        <p:tab id="tab11" title="Auditor&iacute;as en proceso y terminadas (últimos 5 años ) ">
+                            <br/>
+                            <p:dataTable    var="auditoria"
+                                            value="#{perfilContribuyenteUI.listAuditorias}"
+                                            paginator="true"
+                                            rows="10"
+                                            reflow="true"
+                                            paginatorPosition="bottom"
+                                            emptyMessage="No existen auditor&iacute;as registradas">
+                                <p:column style="width: 40%">
+                                    <h:outputText value="#{auditoria.descripcion}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-4}" style="text-align: center">
+                                    <h:outputText value="#{auditoria.cantidadAnioActualMenos4}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-3}" style="text-align: center">
+                                    <h:outputText value="#{auditoria.cantidadAnioActualMenos3}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-2}" style="text-align: center">
+                                    <h:outputText value="#{auditoria.cantidadAnioActualMenos2}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-1}" style="text-align: center">
+                                    <h:outputText value="#{auditoria.cantidadAnioActualMenos1}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual}" style="text-align: center">
+                                    <h:outputText value="#{auditoria.cantidadAnioActual}"/>
+                                </p:column>
+                                <p:column   headerText="Total" style="text-align: center">
+                                    <h:outputText value="#{auditoria.total}"/>
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                        </p:tab>
+                        <p:tab id="tab12" title="Expedientes jur&iacute;dico (últimos 5 años)">
+                            <br/>
+                            <p:dataTable    var="expJuridico"
+                                            value="#{perfilContribuyenteUI.listExpedientesJuridico}"
+                                            paginator="true"
+                                            rows="10"
+                                            reflow="true"
+                                            paginatorPosition="bottom"
+                                            emptyMessage="No existen expedientes registrados">
+                                <p:column style="width: 40%">
+                                    <h:outputText value="#{expJuridico.descripcion}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-4}" style="text-align: center">
+                                    <h:outputText value="#{expJuridico.cantidadAnioActualMenos4}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-3}" style="text-align: center">
+                                    <h:outputText value="#{expJuridico.cantidadAnioActualMenos3}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-2}" style="text-align: center">
+                                    <h:outputText value="#{expJuridico.cantidadAnioActualMenos2}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-1}" style="text-align: center">
+                                    <h:outputText value="#{expJuridico.cantidadAnioActualMenos1}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual}" style="text-align: center">
+                                    <h:outputText value="#{expJuridico.cantidadAnioActual}"/>
+                                </p:column>
+                                <p:column   headerText="Total" style="text-align: center">
+                                    <h:outputText value="#{expJuridico.total}"/>
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                        </p:tab>
+                        <p:tab id="tab13" title="Expedientes tributa (últimos 5 años)">
+                            <br/>
+                            <p:dataTable    var="expTributa"
+                                            value="#{perfilContribuyenteUI.listExpedientesTributa}"
+                                            reflow="true"
+                                            emptyMessage="No existen expedientes registrados">
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-4}" style="text-align: center">
+                                    <h:outputText value="#{expTributa.cantidadAnioActualMenos4}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-3}" style="text-align: center">
+                                    <h:outputText value="#{expTributa.cantidadAnioActualMenos3}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-2}" style="text-align: center">
+                                    <h:outputText value="#{expTributa.cantidadAnioActualMenos2}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-1}" style="text-align: center">
+                                    <h:outputText value="#{expTributa.cantidadAnioActualMenos1}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual}" style="text-align: center">
+                                    <h:outputText value="#{expTributa.cantidadAnioActual}"/>
+                                </p:column>
+                                <p:column   headerText="Total" style="text-align: center">
+                                    <h:outputText value="#{expTributa.total}"/>
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                        </p:tab>
+                        <p:tab id="tab14" title="Expedientes administrativos (últimos 5 años)">
+                            <br/>
+                            <p:dataTable    var="expAdministrativo"
+                                            value="#{perfilContribuyenteUI.listExpedientesAdm}"
+                                            reflow="true"
+                                            emptyMessage="No existen expedientes registrados">
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-4}" style="text-align: center">
+                                    <h:outputText value="#{expAdministrativo.cantidadAnioActualMenos4}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-3}" style="text-align: center">
+                                    <h:outputText value="#{expAdministrativo.cantidadAnioActualMenos3}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-2}" style="text-align: center">
+                                    <h:outputText value="#{expAdministrativo.cantidadAnioActualMenos2}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-1}" style="text-align: center">
+                                    <h:outputText value="#{expAdministrativo.cantidadAnioActualMenos1}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual}" style="text-align: center">
+                                    <h:outputText value="#{expAdministrativo.cantidadAnioActual}"/>
+                                </p:column>
+                                <p:column   headerText="Total" style="text-align: center">
+                                    <h:outputText value="#{expAdministrativo.total}"/>
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                        </p:tab>
+
+                        <!--                        /*modulo de omisiones inactivas o subsanas*/-->
+                        <p:tab id="tab15" title="Omisiones inactivas o subsanas (último 5 años)">
+                            <br/>
+                            <p:dataTable    var="omiso"
+                                            value="#{perfilContribuyenteUI.listOmisosInactivos}"
+                                            paginator="true"
+                                            rows="10"
+                                            reflow="true"
+                                            paginatorPosition="bottom"
+                                            emptyMessage="No existen omisos registrados">
+                                <p:column style="width: 40%">
+                                    <h:outputText value="#{omiso.descripcion}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-4}" style="text-align: center">
+                                    <h:outputText value="#{omiso.cantidadAnioActualMenos4}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-3}" style="text-align: center">
+                                    <h:outputText value="#{omiso.cantidadAnioActualMenos3}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-2}" style="text-align: center">
+                                    <h:outputText value="#{omiso.cantidadAnioActualMenos2}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual-1}" style="text-align: center">
+                                    <h:outputText value="#{omiso.cantidadAnioActualMenos1}"/>
+                                </p:column>
+                                <p:column   headerText="#{perfilContribuyenteUI.anioActual}" style="text-align: center">
+                                    <h:outputText value="#{omiso.cantidadAnioActual}"/>
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                        </p:tab>
+
+
+                        <p:tab id="tab16" title="Verificaciones en campo">
+                            <br/>
+                            <p:dataTable    var="Verificacion"
+                                            value="#{perfilContribuyenteUI.listVerificaciones}"
+                                            reflow="true"
+                                            emptyMessage="No existen expedientes registrados">
+
+                                <p:column   headerText="Dirección" style="text-align: center">
+                                    <h:outputText value="#{Verificacion.direccionVerificada}"/> 
+                                </p:column>
+                                <p:column   headerText="x" style="text-align: center">
+                                    <h:outputText value="#{Verificacion.longitud}"/>
+                                </p:column>
+                                <p:column   headerText="y" style="text-align: center">
+                                    <h:outputText value="#{Verificacion.latitud}"/>
+                                </p:column>
+
+                                <p:column   headerText="Fecha" style="text-align: center">
+                                    <h:outputText value="#{Verificacion.fechaCreacion}"/>
+                                </p:column>
+
+                                <p:column   headerText="Resultado" style="text-align: center">
+                                    <h:outputText value="#{Verificacion.estadoDireccion}"/>
+                                </p:column>              
+                            </p:dataTable>                     
+                            <br/>
+                            <p:commandLink id="commandMostrarMasTab16" action="#{perfilContribuyenteUI.mostrarMas()}" style="margin-right:20px;" ajax="false" disabled="#{perfilContribuyenteUI.bloquearMostrarMas}">
+                                <h:outputText value="Mostrar mas" />
+                            </p:commandLink>
+                        </p:tab>
+
+
+                        <p:tab id="tab17" title="Establecimientos">
+                            <br/>
+                            <br/>
+                            <p:dataTable value="" var="" styleClass="hBorder" rowStyleClass="hColor" rendered="#{perfilContribuyenteUI.listEstablecimientosActivos.size()>0}">
+                                <p:column  headerText="">
+                                    <h:outputText  value="Establecimientos Activos" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+
+                                <p:columns value="#{perfilContribuyenteUI.listEstablecimientosActivos}" var="columnEstablecimientos">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{columnEstablecimientos.anioConsulta}" />
+                                    </f:facet>
+                                    <h:outputText value="#{columnEstablecimientos.cantidadRegistro}" />				       
+                                </p:columns>
+                            </p:dataTable>    
+                            <br/><br/>
+                            <br/><br/>
+                            <p:dataTable value="" var="" styleClass="hBorder" rowStyleClass="hColor" rendered="#{perfilContribuyenteUI.listEstablecimientosActivos.size()>0}">
+                                <p:column  headerText="">
+                                    <h:outputText  value="Establecimientos Inactivos" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+
+                                <p:columns value="#{perfilContribuyenteUI.listEstablecimientosInactivos}" var="columnEstablecimientos">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{columnEstablecimientos.anioConsulta}" />
+                                    </f:facet>
+                                    <h:outputText value="#{columnEstablecimientos.cantidadRegistro}" />				       
+                                </p:columns>
+                            </p:dataTable>    
+
+                            <br/>    
+                            <br/>
+                        </p:tab>
+
+
+                        <p:tab id="tab18" title="Partes Relacionadas ">
+                            <br/>
+
+                            <p:dataTable value="#{perfilContribuyenteUI.listContadorRelacionamientos}"  var="contador" styleClass="hBorder" rendered="#{perfilContribuyenteUI.listContadorRelacionamientos.size()>0}">
+
+                                <p:column  headerText="NIT Contador">
+                                    <h:outputText  value="#{contador.nit}" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+                                <p:column  headerText="Nombre contribuyente">
+                                    <h:outputText  value="#{contador.nombreContribuyente}" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+                                <p:column  headerText="Contador de: (cantidad de contribuyentes)">
+                                    <h:outputText  value="#{contador.cantidadContribContador}" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+                                <p:column  headerText="Representante Legal de: (cantidad de contribuyentes)">
+                                    <h:outputText  value="#{contador.cantidadContribRepLeg}" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+                                <p:column  headerText="Notario de: (cantidad de contribuyentes)">
+                                    <h:outputText  value="#{contador.cantidadConribAbogados}" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+
+
+                            </p:dataTable>  
+
+
+                            <br/><br/>
+
+                            <p:dataTable value="#{perfilContribuyenteUI.listRepresentanteRelacionamientos}"  var="representante" styleClass="hBorder" rendered="#{perfilContribuyenteUI.listContadorRelacionamientos.size()>0}">
+
+                                <p:column  headerText="NIT Representante">
+                                    <h:outputText  value="#{representante.nit}" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+                                <p:column  headerText="Nombre contribuyente">
+                                    <h:outputText  value="#{representante.nombreContribuyente}" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+                                <p:column  headerText="Contador de: (cantidad de contribuyentes)">
+                                    <h:outputText  value="#{representante.cantidadContribContador}" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+                                <p:column  headerText="Representante Legal de: (cantidad de contribuyentes)">
+                                    <h:outputText  value="#{representante.cantidadContribRepLeg}" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+                                <p:column  headerText="Notario de: (cantidad de contribuyentes)">
+                                    <h:outputText  value="#{representante.cantidadConribAbogados}" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+
+                            </p:dataTable> 
+                            <br/> <br/>
+
+
+                            <p:dataTable value="#{perfilContribuyenteUI.listNotarioRelacionamientos}"  var="notario" styleClass="hBorder" rendered="#{perfilContribuyenteUI.listNotarioRelacionamientos.size()>0}">
+
+                                <p:column  headerText="NIT Notario">
+                                    <h:outputText  value="#{notario.nit}" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+                                <p:column  headerText="Nombre contribuyente">
+                                    <h:outputText  value="#{notario.nombreContribuyente}" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+                                <p:column  headerText="Contador de: (cantidad de contribuyentes)">
+                                    <h:outputText  value="#{notario.cantidadContribContador}" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+                                <p:column  headerText="Representante Legal de: (cantidad de contribuyentes)">
+                                    <h:outputText  value="#{notario.cantidadContribRepLeg}" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+                                <p:column  headerText="Notario de: (cantidad de contribuyentes)">
+                                    <h:outputText  value="#{notario.cantidadConribAbogados}" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+
+                            </p:dataTable> 
+                        </p:tab>
+
+
+
+                        <!--                         modulo de Tipologias-->
+                        <p:tab id="tab19" title="Tipologias de Evasión (últimos 5 años)">
+                            <br/>
+                            <p:dataTable value="" var="" styleClass="hBorder" rowStyleClass="hColor" rendered="#{perfilContribuyenteUI.listTipologiasAnual.size()>0}">
+                                <p:column  headerText="">
+                                    <h:outputText  value="Total tipologias identificadas" style="border-left-width:3px !important; border-left-color:#5b9cd8 !important"/>
+                                </p:column>
+
+                                <p:columns value="#{perfilContribuyenteUI.listTipologiasAnual}" var="column">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{column.nombreAnio}" />
+                                    </f:facet>
+                                    <h:outputText value="#{column.cantidadAnios}" />				       
+                                </p:columns>
+                            </p:dataTable>                     
+                            <br/>
+                        </p:tab>
+
+                        <!--                         modulo de Indicadores-->
+                        <p:tab id="tab20" title="Indicadores">
+                            <br/>
+                            <p:panelGrid columns="2" styleClass=" ui-noborder">
+                                <p:outputLabel value="Relación Débito Crédito"/>
+                                <p:outputLabel value=""/>
+                                <p:outputLabel value="Contibuyente"/>
+                            </p:panelGrid>
+
+                            <p:dataTable value="" var="" styleClass="hBorder" rowStyleClass="hColor" rendered="#{perfilContribuyenteUI.listaIndicadoresDebitoCredito.size()>0}">
+
+                                <p:columns value="#{perfilContribuyenteUI.listaIndicadoresDebitoCredito}" var="column">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{column.anio}" />
+                                    </f:facet>
+                                    <h:outputText value="#{column.cantidadRegistros}" />				       
+                                </p:columns>
+                            </p:dataTable>                     
+                            <br/>
+
+                            <br/>
+                            <p:outputLabel value="Sector económico"/>
+
+                            <p:dataTable value="" var="" styleClass="hBorder" rowStyleClass="hColor" rendered="#{perfilContribuyenteUI.listaIndicadoresDebitoCredito.size()>0}">
+
+                                <p:columns value="#{perfilContribuyenteUI.listaIndicadoresDebitoCredito}" var="column">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{column.anio}" />
+                                    </f:facet>
+                                    <h:outputText value="#{column.sectorEconomico}" />				       
+                                </p:columns>
+                            </p:dataTable>                     
+                            <br/>
+
+
+
+                            <br/>
+                            <p:panelGrid columns="2" styleClass=" ui-noborder">
+                                <p:outputLabel value="Gastos Generales"/>
+                                <p:outputLabel value=""/>
+                                <p:outputLabel value="Contibuyente"/>
+                            </p:panelGrid>
+
+                            <p:dataTable value="" var="" styleClass="hBorder" rowStyleClass="hColor" rendered="#{perfilContribuyenteUI.listaIndicadoresGastosGenerales.size()>0}">
+
+                                <p:columns value="#{perfilContribuyenteUI.listaIndicadoresGastosGenerales}" var="column">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{column.anio}" />
+                                    </f:facet>
+                                    <h:outputText value="#{column.cantidadRegistros}" />				       
+                                </p:columns>
+                            </p:dataTable>                     
+                            <br/>
+
+                            <br/>
+                            <p:outputLabel value="Sector económico"/>
+
+                            <p:dataTable value="" var="" styleClass="hBorder" rowStyleClass="hColor" rendered="#{perfilContribuyenteUI.listaIndicadoresGastosGenerales.size()>0}">
+
+                                <p:columns value="#{perfilContribuyenteUI.listaIndicadoresGastosGenerales}" var="column">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{column.anio}" />
+                                    </f:facet>
+                                    <h:outputText value="#{column.sectorEconomico}" />				       
+                                </p:columns>
+                            </p:dataTable>                     
+                            <br/>
+
+
+
+
+                            <br/>
+                            <p:panelGrid columns="2" styleClass=" ui-noborder">
+                                <p:outputLabel value="Rentabilidad"/>
+                                <p:outputLabel value=""/>
+                                <p:outputLabel value="Contibuyente"/>
+                            </p:panelGrid>
+
+                            <p:dataTable value="" var="" styleClass="hBorder" rowStyleClass="hColor" rendered="#{perfilContribuyenteUI.listaIndicadoresRentabilidad.size()>0}">
+
+                                <p:columns value="#{perfilContribuyenteUI.listaIndicadoresRentabilidad}" var="column">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{column.anio}" />
+                                    </f:facet>
+                                    <h:outputText value="#{column.cantidadRegistros}" />				       
+                                </p:columns>
+                            </p:dataTable>                     
+                            <br/>
+
+                            <br/>
+                            <p:outputLabel value="Sector económico"/>
+
+                            <p:dataTable value="" var="" styleClass="hBorder" rowStyleClass="hColor" rendered="#{perfilContribuyenteUI.listaIndicadoresRentabilidad.size()>0}">
+
+                                <p:columns value="#{perfilContribuyenteUI.listaIndicadoresRentabilidad}" var="column">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{column.anio}" />
+                                    </f:facet>
+                                    <h:outputText value="#{column.sectorEconomico}" />				       
+                                </p:columns>
+                            </p:dataTable>                     
+                            <br/>
+
+
+
+                            <br/>
+                            <p:panelGrid columns="2" styleClass=" ui-noborder">
+                                <p:outputLabel value="Cobertura de proveedores"/>
+                                <p:outputLabel value=""/>
+                                <p:outputLabel value="Contibuyente"/>
+                            </p:panelGrid>
+
+                            <p:dataTable value="" var="" styleClass="hBorder" rowStyleClass="hColor" rendered="#{perfilContribuyenteUI.listaIndicadoresProveedores.size()>0}">
+
+
+                                <p:columns value="#{perfilContribuyenteUI.listaIndicadoresProveedores}" var="column">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{column.anio}" />
+                                    </f:facet>
+                                    <h:outputText value="#{column.cantidadRegistros}" />				       
+                                </p:columns>
+                            </p:dataTable>                     
+                            <br/>
+
+                            <br/>
+                            <p:outputLabel value="Sector económico"/>
+
+                            <p:dataTable value="" var="" styleClass="hBorder" rowStyleClass="hColor" rendered="#{perfilContribuyenteUI.listaIndicadoresProveedores.size()>0}">
+
+                                <p:columns value="#{perfilContribuyenteUI.listaIndicadoresProveedores}" var="column">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{column.anio}" />
+                                    </f:facet>
+                                    <h:outputText value="#{column.sectorEconomico}" />				       
+                                </p:columns>
+                            </p:dataTable>                     
+                            <br/>
+
+                        </p:tab>
+
+                        <!--                           /*modulo de Importaciones*/-->
+                        <p:tab id="tab21" title="Importaciones (último 5 años)">
+                            <br/>
+                            <p:dataTable    var="datosAduanas"
+                                            value="#{perfilContribuyenteUI.obtenerConteoDeclaracionesAduanas}" 
+                                            rendered="true"
+                                            emptyMessage="No existen expedientes registrados">
+
+                                <p:column   headerText="Año" style="text-align: center">
+                                    <h:outputText value="#{datosAduanas.anio}"/> 
+                                </p:column>
+                                <p:column   headerText="No.DUAS" style="text-align: center">
+                                    <h:outputText value="#{datosAduanas.cantidad_declaraciones}"/>
+                                </p:column>
+                                <p:column   headerText="VALOR CIF en $" style="text-align: center">
+                                    <h:outputText value="#{datosAduanas.fob_suma}"/>
+                                </p:column>
+                                <p:column   headerText="Valor CIF en Q" style="text-align: center">
+                                    <h:outputText value="#{datosAduanas.cif_suma}"/>
+                                </p:column>        
+                                <p:columnGroup type="footer">
+                                    <p:row>
+                                        <p:column  style="text-align:right" footerText="Totales:"/>
+                                        <p:column>
+                                            <f:facet name="footer">
+                                                <h:outputText value="#{perfilContribuyenteUI.sumatoriaDeclaraciones}">
+                                                </h:outputText>
+                                            </f:facet>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="footer">
+                                                <h:outputText value="#{perfilContribuyenteUI.sumatoriaValorCIF}">
+                                                </h:outputText>
+                                            </f:facet>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="footer">
+                                                <h:outputText value="#{perfilContribuyenteUI.sumatoriaValorFob}">
+                                                </h:outputText>
+                                            </f:facet>
+                                        </p:column>
+                                    </p:row>
+                                </p:columnGroup>
+                            </p:dataTable>                     
+                            <br/>
+                        </p:tab>
+
+                        <!--                            /*modulo de Convenios activos*/-->
+                        <p:tab id="tab22" title="Convenios activos">
+                            <br/>
+                            <p:dataTable    var="datosConvenios"
+                                            value="#{perfilContribuyenteUI.listConveniosActivos}" 
+                                            rendered="true"
+                                            emptyMessage="No existen expedientes registrados">
+
+
+                                <p:column   headerText="Correlativo" style="text-align: center">
+                                    <h:outputText value="#{datosConvenios.correlativo}"/> 
+                                </p:column>
+
+                                <p:column   headerText="Fecha" style="text-align: center">
+                                    <h:outputText value="#{datosConvenios.fechaRuat}"/> 
+                                </p:column>
+                                <p:column   headerText="Expediente" style="text-align: center">
+                                    <h:outputText value="#{datosConvenios.idExpediente}"/>
+                                </p:column>
+                                <p:column   headerText="Fecha RUAT" style="text-align: center">
+                                    <h:outputText value="#{datosConvenios.fechaRuat}"/>
+                                </p:column>
+                                <p:column   headerText="Monto Autarizado" style="text-align: center">
+                                    <h:outputText value="#{datosConvenios.montoAutorizado}"/>
+                                </p:column>     
+                                <p:column   headerText="Pagado" style="text-align: center">
+                                    <h:outputText value="#{datosConvenios.valorPago}"/>
+                                </p:column>   
+                                <p:column   headerText="Incumplido" style="text-align: center">
+                                    <h:outputText value="#{datosConvenios.valorIncumplido}"/>
+                                </p:column> 
+                                <p:column   headerText="Restante" style="text-align: center">
+                                    <h:outputText value="#{datosConvenios.valorRestante}"/>
+                                </p:column> 
+                            </p:dataTable>                     
+                            <br/>
+                        </p:tab>
+
+                    </p:accordionPanel>
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
